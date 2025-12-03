@@ -34,110 +34,67 @@ This lab assumes you have:
 
 ---
 
-## Task 1: Provision Autonomous AI Lakehouse
+## Task 1: Load Sample Airline Data into SOURCE_DATA Schema
 
-1. Log in to your cloud tenancy and navigate to Oracle AI Database > Autonomous AI Database
-
-![AI Database](./images/ai-database.png)
-
-2. Select Create Autonomous AI Database 
-
-3. Give it a name (e.g. **aidp-db**) and select workload type as Lakehouse. Select database version 26ai and leave other options as default. 
-
-![Create AI Database](./images/create-aidp-db.png)
-
-4. Provide a password and set Access Type to 'Secure access from everywhere' 
-
-![Create AI Database](./images/create-aidp-db-2.png)
-
-**NOTE** If you would like to use a private database, a DB Tools Connection will need to be created to use SQL Developer web. This is outside the scope of this lab. For details, see [Create Database Tools Connection](https://docs.oracle.com/en-us/iaas/database-tools/doc/using-oracle-cloud-infrastructure-console.html).
-
-5. Create the AI Database. The provisioning process will take a few minutes.
-
-6. Once provisioned, navigate to Database actions > SQL. This will open SQL Developer as admin user. 
-
-![SQL Developer](./images/sql-developer.png)
-
----
-
-## Task 2: Create Gold Schema 
-
-1. Create a Gold Schema (User) in Autonomous Data Lakehouse. Replace "strong\_password" with your own password.
+1. In SQL Developer Web (as SOURCE_DATA), create the AIRLINE_SAMPLE table:
 
 ```sql
 <copy>
-CREATE USER gold IDENTIFIED BY "strong_password";
+CREATE TABLE AIRLINE_SAMPLE (
+  FLIGHT_ID   NUMBER,
+  AIRLINE     VARCHAR2(20),
+  ORIGIN      VARCHAR2(3),
+  DEST        VARCHAR2(3),
+  DEP_DELAY   NUMBER,
+  ARR_DELAY   NUMBER,
+  DISTANCE    NUMBER
+);
 </copy>
 ```
 
-2. Grant Required Roles/Privileges to Gold Schema
+2. Insert sample data:
 
 ```sql
 <copy>
--- Data privileges
-GRANT CONNECT, RESOURCE TO gold;
-
--- Allow creation of tables, views, and other objects
-GRANT CREATE SESSION TO gold;
-GRANT CREATE TABLE TO gold;
-GRANT CREATE VIEW TO gold;
-GRANT CREATE SEQUENCE TO gold;
-GRANT CREATE PROCEDURE TO gold;
-GRANT UNLIMITED TABLESPACE TO gold;
-
--- Enable DBMS_CLOUD 
-GRANT EXECUTE ON DBMS_CLOUD TO gold;
-
--- Grant access to data_pump_dir (used for saveAsTable operation in spark)
-GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold;
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1001, 'Skynet Airways', 'JFK', 'LAX', 10, 5, 2475);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1002, 'Sunwind Lines', 'ORD', 'SFO', -3, -5, 1846);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1003, 'BlueJet', 'ATL', 'SEA', 0, 15, 2182);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1004, 'Quantum Flyers', 'DFW', 'MIA', 5, 20, 1121);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1005, 'Nebula Express', 'BOS', 'DEN', 12, 8, 1754);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1006, 'Skynet Airways', 'SEA', 'ORD', -5, -2, 1721);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1007, 'Sunwind Lines', 'MIA', 'ATL', 7, 4, 595);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1008, 'BlueJet', 'SFO', 'BOS', 22, 18, 2704);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1009, 'Quantum Flyers', 'LAX', 'JFK', -1, 0, 2475);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1010, 'Nebula Express', 'DEN', 'DFW', 14, 20, 641);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1011, 'Skynet Airways', 'PHX', 'SEA', 3, -2, 1107);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1012, 'BlueJet', 'ORD', 'ATL', -7, -10, 606);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1013, 'Quantum Flyers', 'BOS', 'JFK', 9, 11, 187);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1014, 'Sunwind Lines', 'LAX', 'DFW', 13, 15, 1235);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1015, 'Nebula Express', 'SFO', 'SEA', 0, 3, 679);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1016, 'Skynet Airways', 'ATL', 'DEN', 6, 5, 1199);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1017, 'BlueJet', 'DFW', 'PHX', -2, 1, 868);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1018, 'Quantum Flyers', 'ORD', 'BOS', 8, -1, 867);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1019, 'Sunwind Lines', 'JFK', 'MIA', 10, 16, 1090);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1020, 'Nebula Express', 'DEN', 'ORD', -4, 0, 888);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1021, 'Skynet Airways', 'SEA', 'ATL', 16, 12, 2182);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1022, 'BlueJet', 'MIA', 'LAX', 5, 7, 2342);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1023, 'Quantum Flyers', 'DEN', 'BOS', 2, -2, 1754);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1024, 'Sunwind Lines', 'SFO', 'JFK', -6, -8, 2586);
+INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DELAY, DISTANCE) VALUES (1025, 'Nebula Express', 'ORD', 'MIA', 11, 13, 1197);
 </copy>
 ```
 
-3. Log out of admin schema once gold schema is created.
+3. Verify the data:
 
-## Task 3: Add REST capabilities to GOLD Schema
-
-**NOTE** If unable to sign in directly as gold schema, enable REST access
-
-1. Navigate to AI DB > database actions > database users > search for 'gold' > select three dots > enable rest > log in to sql developer web as gold
-
-![Enable REST](./images/enable-rest-gold.png)
-
-## Task 4: Log in to SQL Developer as GOLD Schema 
-
-1. Navigate back to AI DB > database actions > SQL > Once in SQL Developer select ADMIN (top right) > Sign Out
-
-2. Provide gold as username and give password as defined in previous task. Sign in. 
-
-![Sign in Gold Schema](./images/sign-in-gold.png)
-
-**NOTE** If still unable to log in, try navigating back to database user page and click the following link - 
-
-![Access REST Gold](./images/access-rest-gold.png)
-
-3. Navigate to Development > SQL. Once access is confirmed you can proceed to next task.
-
-## Task 5: Provision AI Data Platform Instance
-
-1. Navigate to Analytics & AI > AI Data Platform 
-
-![AI Data Platform](./images/create-aidp.png)
-
-2. Provide a name for AIDP and workspace
-
-![Create AIDP](./images/create-aidp-2.png)
-
-3. Set the access level as standard and explicitly 'Add' the policies. If the policies aren't added it will fail to create. Optional policies can also be added depending on the use case. For this lab, we will need to enable object deletion - 
-
-![Enable Object Deletion](./images/aidp-add-additional-policies.png)
-
-![Add Policies](./images/aidp-save-policies.png)
-
-4. Create the instance. This will take a few minutes to provision.
+```sql
+<copy>
+SELECT * FROM AIRLINE_SAMPLE;
+</copy>
+```
 
 ---
 
-## Task 6: Connect AIDP to ATP and AI Lakehouse
+## Task 2: Connect AIDP to ATP and AI Lakehouse
 
 1. Once AIDP is provisioned, navigate to the service console - 
 
@@ -157,19 +114,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold;
 
 ---
 
-## Task 7: Set Up Object Storage
-
-1. Navigate to **Object Storage** in the OCI Console.
-
-2. Create bucket **aidp-demo-bucket** in the AIDP compartment.
-
-3. Create a folder 'delta' in the bucket.
-
-![Create New Bucket Folder](./images/bucket-create-new-folder.png)
-
----
-
-## Task 8: Launch AIDP Workspace and Notebook
+## Task 3: Launch AIDP Workspace and Notebook
 
 1. In AIDP, create workspace **airline-workspace** with default catalog **airlines\_external\_adb\_gold**.
 
@@ -191,7 +136,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold;
 
 ---
 
-## Task 9: Extract from ATP to Bronze Layer
+## Task 4: Extract from ATP to Bronze Layer
 
 1. In the notebook, confirm ATP table:
 
@@ -269,7 +214,7 @@ df_v0.show()
 
 ---
 
-## Task 10: Create Silver Medallian Schema & Enrich Data with Generative AI 
+## Task 5: Create Silver Medallian Schema & Enrich Data with Generative AI 
 
 1. Write to silver schema of medallian architecture 
 
@@ -369,7 +314,7 @@ enhanced_df.show(10, False)
 
 ---
 
-## Task 11: Write Enriched Data to Gold Schema 
+## Task 6: Write Enriched Data to Gold Schema 
 
 1. Save new data to gold schema 
 
@@ -458,7 +403,7 @@ df_gold_typed.createOrReplaceTempView("df_gold")
 
 ---
 
-## Task 12: Create Gold Table and Insert Data
+## Task 7: Create Gold Table and Insert Data
 
 1. In AI Lakehouse SQL Developer, sign in as GOLD, create the gold table:
 
