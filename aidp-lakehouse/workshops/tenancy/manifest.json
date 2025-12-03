@@ -14,7 +14,7 @@
         "filename": "https://oracle-livelabs.github.io/common/labs/cloud-login/cloud-login.md"
       },
       {
-        "title": "Lab 1: Set Up Source System and Extract Transactional Data",
+        "title": "Lab 1: Set Up Source System and Target System, AI Data Platform and Object Storage",
         "description": "Labs that follow the introduction are numbered, starting with Lab 1",
         "filename": "../../source-setup/source-setup.md"
       },
