@@ -2,22 +2,20 @@
 
 ## Introduction
 
-This lab guides you through setting up Oracle Autonomous Transaction Processing (ATP) as the Source System for transactional airline data, setting up Autonomous AI Lakehouse as the target System, AI Data Platform instance and Object Storage bucket.
+This lab guides you through setting up Oracle Autonomous Transaction Processing (ATP) as the Source System for transactional airline data, setting up Autonomous AI Lakehouse as the Target System, AI Data Platform instance and Object Storage bucket.
 This establishes a realistic starting point for extracting operational data into the lakehouse pipeline.
 
 > **Estimated Time:** 1 hour
 
 ---
 
-### About Oracle Autonomous Transaction Processing (ATP)
+### About Oracle Autonomous Transaction Processing (ATP) and Oracle AI Data Platform (AIDP) and Autonomous AI Lakehouse
 
 ATP is an autonomous database service optimized for transaction processing (OLTP) workloads, such as storing and managing operational data like flight records. In this workshop, ATP serves as the source system, simulating a real-world transactional database from which data is extracted for analytics.
 
----
+AI Data Platform (AIDP) unifies all types of data—structured, unstructured, batch, and real-time into an open, and connected platform, laying the foundation for trusted and AI-ready data pipelines. It's an integrated environment with built-in tools and GenAI agent frameworks to build and deploy AI-powered applications faster, without the complexity of connecting separate tools.
 
-### About Oracle AI Data Platform (AIDP) and Autonomous AI Lakehouse
-
-AIDP enables scalable data engineering with Spark and Delta Lake. Autonomous AI Lakehouse provides fast, secure analytics storage. Together, they form a modern lakehouse for transforming raw data into insights.
+Autonomous AI Lakehouse provides fast, secure analytics storage. Together, they form a modern lakehouse for transforming raw data into insights.
 
 ---
 
@@ -25,7 +23,7 @@ AIDP enables scalable data engineering with Spark and Delta Lake. Autonomous AI 
 
 In this lab, you will:
 - Provision an ATP instance
-- Create a SOURCE_DATA_01 schema in ATP
+- Create a Source\_Data\_01 schema in ATP
 - Provision Autonomous AI Lakehouse 
 - Create a Gold_01 schema in AI Lakehouse
 - Provision AI Data Platform
@@ -65,7 +63,7 @@ This lab assumes you have:
 
 ---
 
-## Task 2: Create SOURCE_DATA_01 Schema
+## Task 2: Create SOURCE\_DATA\_01 Schema
 
 1. Once provisioned, navigate to **Database Actions > SQL** in the ATP instance details.
 
@@ -73,7 +71,7 @@ This lab assumes you have:
 
 2. Sign in as the ADMIN user.
 
-3. Create the SOURCE_DATA_01 schema (replace "strong\_password" with a secure password):
+3. Create the SOURCE\_DATA\_01 schema (replace "strong\_password" with a secure password):
 
 ```sql
 <copy>
@@ -101,11 +99,11 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO SOURCE_DATA_01;
 
 ---
 
-## Task 3: Add REST capabilities to SOURCE_DATA_01 Schema
+## Task 3: Add REST capabilities to SOURCE\_DATA\_01 Schema
 
-**NOTE** If unable to sign in directly as SOURCE\_DATA_01 schema, enable REST access
+**NOTE** If unable to sign in directly as SOURCE\_DATA\_01 schema, enable REST access
 
-1. Navigate to AI DB > database actions > database users > search for 'SOURCE\_DATA_01' > select three dots > enable rest > log in to sql developer web as SOURCE\_DATA_01
+1. Navigate to AI DB > database actions > database users > search for 'SOURCE\_DATA\_01' > select three dots > enable rest > log in to sql developer web as SOURCE\_DATA\_01
 
 ![Database Users](./images/atp-db-users.png)
 
@@ -115,11 +113,11 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO SOURCE_DATA_01;
 
 ![Set Quota](./images/unlimited-quota.png)
 
-## Task 4: Log in to SQL Developer as SOURCE_DATA_01 Schema 
+## Task 4: Log in to SQL Developer as SOURCE\_DATA\_01 Schema 
 
 1. Navigate back to AI DB > database actions > SQL > Once in SQL Developer select ADMIN (top right) > Sign Out
 
-2. Provide SOURCE_DATA_01 as username and give password as defined in previous task. Sign in. 
+2. Provide SOURCE\_DATA\_01 as username and give password as defined in previous task. Sign in. 
 
 ![Sign in SOURCE_DATA_01 Schema](./images/source-data-sign-in.png)
 
