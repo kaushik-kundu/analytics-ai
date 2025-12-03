@@ -41,7 +41,7 @@ This lab assumes you have:
 
 ## Task 1: Load Sample Airline Data into Source_XX Schema in ATP instance
 
-1. In SQL Developer Web (as Source_XX), create the AIRLINE_SAMPLE table:
+1. In SQL Developer Web (as Source\_XX in ATP database), create the AIRLINE_SAMPLE table:
 
 ```sql
 <copy>
@@ -121,7 +121,7 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ## Task 3: Launch AIDP Workspace and Notebook
 
-1. In AIDP, create workspace **airline-workspace_XX** with default catalog **airlines\_external\_adb\_gold\_XX**.
+1. In AIDP, create workspace **airline-workspace_xx** with default catalog **airlines\_external\_adb\_gold\_xx**.
 
 ![Create AIDP Workspace](./images/create-aidp-workspace.png)
 
@@ -133,7 +133,7 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ![Create Notebook](./images/create-notebook.png)
 
-4. Create/attach cluster **my_workspace_cluster**.
+4. Create and attach cluster **my\_workspace\_cluster\_xx**.
 
 ![Create Cluster](./images/create-cluster.png)
 
@@ -147,10 +147,10 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ```python
 <copy>
-airlines_sample_table = "atp_external_catalog_XX.source_XX.AIRLINE_SAMPLE"
+airlines_sample_table = "atp_external_catalog_xx.source_xx.AIRLINE_SAMPLE"
 
 # Confirm AIRLINE_SAMPLE table is reflected in spark
-spark.sql("SHOW TABLES IN atp_external_catalog_XX.source_XX").show(truncate=False)
+spark.sql("SHOW TABLES IN atp_external_catalog_xx.source_xx").show(truncate=False)
 
 df = spark.table(airlines_sample_table)
 
@@ -158,32 +158,34 @@ df.show()
 </copy>
 ```
 
-**NOTE** for each iteration of code blocks it's recommended to run that section individually to validate the scripts. Once all the code blocks are validated, you can run this entire notebook as a job in a workflow.
+**NOTE** 
+For each iteration of code blocks it's recommended to run that section individually to validate the scripts. Once all the code blocks are validated, you can run this entire notebook as a job in a workflow.
+For creating next code block in a new cell, click on the "+" icon.
 
-2. Write the new data frame to your Object Storage bucket. Replace '**aidp-demo-bucket_XX**' with your oci bucket name and '**your-os-namespace**' with object storage namespace - 
+2. Write the new data frame to your Object Storage bucket. Replace '**aidp-demo-bucket_xx**' with your oci bucket name and '**your-os-namespace**' with object storage namespace - 
 
 ```python
 <copy>
-delta_path = "oci://aidp-demo-bucket_XX@your-os-namespace/delta/airline_sample"
+delta_path = "oci://aidp-demo-bucket_xx@your-os-namespace/delta/airline_sample"
 df.write.format("delta").mode("overwrite").save(delta_path)
 </copy>
 ```
 
-**NOTE** **aidp-demo-bucket_XX** refers to the bucket name in OCI, and **your-os-namespace** is the namespace found in the bucket - 
+**NOTE** **aidp-demo-bucket_xx** refers to the bucket name in OCI, and **your-os-namespace** is the namespace found in the bucket - 
 
 ![Get OS Namespace](./images/get-os-namespace.png)
 
 **NOTE** Only one table can be associated with a given delta path. If a table is created on a path that already is associated with another table, it will throw an error. The associated table will have to be deleted then re-write the dataframe to the path. 
 
-3. Create bronze table for first stage of medallian architecture. Here we will create a new (standard) catalog, called "**airlines\_data\_catalog\_XX**". This is distinct from the external catalog to the ATP & AI Lakehouse created earlier. "**airlines\_data\_catalog\_XX**" will be used to store the bronze, silver, and gold layers of the medallian architecture.
+3. Create bronze table for first stage of medallian architecture. Here we will create a new (standard) catalog, called "**airlines\_data\_catalog\_xx**". This is distinct from the external catalog to the ATP & AI Lakehouse created earlier. "**airlines\_data\_catalog\_xx**" will be used to store the bronze, silver, and gold layers of the medallian architecture.
 
 ```python
 <copy>
-bronze_table = "airlines_data_catalog_XX.bronze.airline_sample_delta"
+bronze_table = "airlines_data_catalog_xx.bronze.airline_sample_delta"
 
 # Create New Internal Catalog & Schema to store data
-spark.sql("CREATE CATALOG IF NOT EXISTS airlines_data_catalog_XX")
-spark.sql("CREATE SCHEMA IF NOT EXISTS airlines_data_catalog_XX.bronze")
+spark.sql("CREATE CATALOG IF NOT EXISTS airlines_data_catalog_xx")
+spark.sql("CREATE SCHEMA IF NOT EXISTS airlines_data_catalog_xx.bronze")
 
 # Drop the table if it exists, to avoid conflicts
 spark.sql(f"DROP TABLE IF EXISTS {bronze_table}")
@@ -227,11 +229,11 @@ df_v0.show()
 <copy>
 df_clean = spark.table(bronze_table)
 
-silver_path = "oci://aidp-demo-bucket_XX@your-os-namespace/delta/silver/airline_sample"
-silver_table = "airlines_data_catalog_XX.silver.airline_sample_delta"
+silver_path = "oci://aidp-demo-bucket_xx@your-os-namespace/delta/silver/airline_sample"
+silver_table = "airlines_data_catalog_xx.silver.airline_sample_delta"
 
 # Create Silver Schema to store data
-spark.sql("CREATE SCHEMA IF NOT EXISTS airlines_data_catalog_XX.silver")
+spark.sql("CREATE SCHEMA IF NOT EXISTS airlines_data_catalog_xx.silver")
 
 # Write cleaned DataFrame to object storage as Delta
 df_clean.write.format("delta").mode("overwrite").save(silver_path)
@@ -258,7 +260,7 @@ spark.sql(f"SELECT * FROM {silver_table}").show()
 # Enrich data by adding aggregates/average delays and distance 
 from pyspark.sql import functions as F
 
-df = spark.table("airlines_data_catalog_XX.silver.airline_sample_delta")
+df = spark.table("airlines_data_catalog_xx.silver.airline_sample_delta")
 
 # Calculate averages by airline
 avg_df = df.groupBy("AIRLINE").agg(
@@ -327,11 +329,11 @@ enhanced_df.show(10, False)
 <copy>
 # Save Averaged Data to Gold Schema 
 
-gold_path = "oci://aidp-demo-bucket_XX@your-os-namespace/delta/gold/airline_sample_avg"
-gold_table = "airlines_data_catalog_XX.gold.airline_sample_avg"
+gold_path = "oci://aidp-demo-bucket_xx@your-os-namespace/delta/gold/airline_sample_avg"
+gold_table = "airlines_data_catalog_xx.gold.airline_sample_avg"
 
 # Create Gold Schema 
-spark.sql("CREATE SCHEMA IF NOT EXISTS airlines_data_catalog_XX.gold")
+spark.sql("CREATE SCHEMA IF NOT EXISTS airlines_data_catalog_xx.gold")
 
 enhanced_df.write.format("delta").option("mergeSchema", "true").mode("overwrite").save(gold_path)
 
@@ -431,12 +433,14 @@ CREATE TABLE AIRLINE_SAMPLE_GOLD (
 </copy>
 ```
 
-2. Back in AIDP notebook, insert data:
+2. Back in AIDP notebook, refresh the external catalog "airlines_external_adb_gold_xx" from Master_Catalog
+
+3. Using the airlines-notebook Notebook, insert data:
 
 ```sql
 <copy>
 %sql
-INSERT into airlines_external_adb_gold_XX.gold.airline_sample_gold select * from df_gold
+INSERT into airlines_external_adb_gold_xx.gold_xx.airline_sample_gold select * from df_gold
 </copy>
 ```
 

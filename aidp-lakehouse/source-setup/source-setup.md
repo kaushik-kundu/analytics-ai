@@ -224,7 +224,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 ## Task 9: Provision AI Data Platform Instance
 
-1. Navigate to Analytics & AI > AI Data Platform 
+1. Navigate to Analytics & AI > AI Data Platform > AI Data Platform Workbench
 
 ![AI Data Platform](./images/create-aidp.png)
 
@@ -244,7 +244,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 1. Navigate to **Object Storage** in the OCI Console.
 
-2. Create bucket **aidp-demo-bucket_XX** in the AIDP compartment.
+2. Create bucket **aidp-demo-bucket_xx** in the AIDP compartment.
 
 3. Create a folder 'delta' in the bucket.
 
