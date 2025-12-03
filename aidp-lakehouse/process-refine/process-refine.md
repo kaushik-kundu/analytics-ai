@@ -464,9 +464,8 @@ Proceed to Lab 3 to visualize the gold data in Oracle Analytics Cloud.
 
 **Authors**
 * **Luke Farley**, Senior Cloud Engineer, ONA Data Platform
-
-**Contributors**
 * **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform
+
 
 **Last Updated By/Date:**
 * **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform, December 2025
