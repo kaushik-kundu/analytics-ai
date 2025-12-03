@@ -5,36 +5,30 @@
 
 This lab builds on Lab 1 by extracting transactional airline data from ATP, processing it through bronze, silver, and gold layers in Oracle AI Data Platform (AIDP) using Spark and Delta Lake, and publishing the refined gold data to Autonomous AI Lakehouse for analytics.
 
-> **Estimated Time:** 1.5 hours
-
----
-
-### About Oracle AI Data Platform (AIDP) and Autonomous AI Lakehouse
-
-AIDP enables scalable data engineering with Spark and Delta Lake. Autonomous AI Lakehouse provides fast, secure analytics storage. Together, they form a modern lakehouse for transforming raw data into insights.
+> **Estimated Time:** 1 hour
 
 ---
 
 ### Objectives
 
 In this lab, you will:
-- Provision Autonomous AI Lakehouse and AIDP
+- Load sample airline transactional data into ATP
 - Connect AIDP to ATP source and AI Lakehouse
 - Extract data from ATP to bronze layer in AIDP
 - Clean, enrich, and transform to silver and gold layers
-- Create GOLD schema in AI Lakehouse with required permissions and publish refined data
+- Publish refined gold data to GOLD schema in AI Lakehouse
 
 ---
 
 ### Prerequisites
 
 This lab assumes you have:
-- Completed Lab 1 with ATP and SOURCE_DATA schema set up
-- Access to AIDP and Autonomous AI Lakehouse
+- Completed Lab 1 with ATP and AIDP and Autonomous AI Lakehouse set up
+- Access to AIDP
 
 ---
 
-## Task 1: Load Sample Airline Data into SOURCE_DATA Schema
+## Task 1: Load Sample Airline Data into SOURCE_DATA Schema in ATP instance
 
 1. In SQL Developer Web (as SOURCE_DATA), create the AIRLINE_SAMPLE table:
 
@@ -452,5 +446,8 @@ Proceed to Lab 3 to visualize the gold data in Oracle Analytics Cloud.
 **Authors**
 * **Luke Farley**, Senior Cloud Engineer, ONA Data Platform
 
+**Contributors**
+* **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform S&E
+
 **Last Updated By/Date:**
-* **Luke Farley**, Senior Cloud Engineer, ONA Data Platform, November 2025
+* **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform, December 2025

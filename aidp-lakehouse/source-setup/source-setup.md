@@ -1,10 +1,11 @@
-# Lab 1: Set Up Source System and Extract Transactional Data
+# Lab 1: Set Up Source System and Target System, AI Data Platform and Object Storage
 
 ## Introduction
 
-This lab guides you through setting up Oracle Autonomous Transaction Processing (ATP) as the source system for transactional airline data. You'll provision ATP, create a dedicated source schema, and load sample airline data. This establishes a realistic starting point for extracting operational data into the lakehouse pipeline.
+This lab guides you through setting up Oracle Autonomous Transaction Processing (ATP) as the Source System for transactional airline data, setting up Autonomous AI Lakehouse as the target System, AI Data Platform instance and Object Storage bucket.
+This establishes a realistic starting point for extracting operational data into the lakehouse pipeline.
 
-> **Estimated Time:** 45 minutes
+> **Estimated Time:** 1 hour
 
 ---
 
@@ -24,8 +25,11 @@ AIDP enables scalable data engineering with Spark and Delta Lake. Autonomous AI 
 
 In this lab, you will:
 - Provision an ATP instance
-- Create a SOURCE_DATA schema
-- Load sample airline transactional data into ATP
+- Create a SOURCE_DATA_01 schema in ATP
+- Provision Autonomous AI Lakehouse 
+- Create a Gold_01 schema in AI Lakehouse
+- Provision AI Data Platform
+- Provision Object Storage buckets
 
 ---
 
@@ -34,6 +38,9 @@ In this lab, you will:
 This lab assumes you have:
 - An Oracle Cloud account (or provided lab credentials)
 - Access to Oracle Autonomous Transaction Processing (ATP)
+- Access to Oracle Autonomous AI Lakehouse
+- Access to Oracle AI Data Platform
+- Access to Oracle Object Storage
 - Basic familiarity with web-based Oracle Cloud interfaces
 
 ---
@@ -244,5 +251,8 @@ With the source data loaded in ATP, proceed to Lab 2 to extract and process it i
 **Authors**
 * **Luke Farley**, Senior Cloud Engineer, ONA Data Platform
 
+**Contributors**
+* **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform S&E
+
 **Last Updated By/Date:**
-* **Luke Farley**, Senior Cloud Engineer, ONA Data Platform, November 2025
+* **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform, December 2025
