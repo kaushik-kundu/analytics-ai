@@ -117,11 +117,11 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_XX;
 
 ![Database Users](./images/atp-db-users.png)
 
-![Enable REST](./images/enable-rest-source.png)
+![Enable REST](./images/enable-rest-source1.png)
 
 2. Once enabled edit the user and set Quota to Unlimited 
 
-![Set Quota](./images/unlimited-quota.png)
+![Set Quota](./images/unlimited-quota1.png)
 
 ## Task 4: Log in to SQL Developer as Source_XX Schema 
 
@@ -129,11 +129,11 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_XX;
 
 2. Provide Source_XX as username and give password as defined in previous task. Sign in. 
 
-![Sign in Source_XX Schema](./images/source-data-sign-in.png)
+![Sign in Source_XX Schema](./images/source-data-sign-in1.png)
 
 **NOTE** If still unable to log in, try navigating back to database user page and click the following link - 
 
-![Access REST Source_XX](./images/source-data-sign-in-2.png)
+![Access REST Source_XX](./images/source-data-sign-in-21.png)
 
 3. Navigate to Development > SQL 
 
@@ -206,7 +206,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 2. Once enabled edit the user and set Quota to Unlimited 
 
-![Enable REST](./images/enable-rest-gold.png)
+![Enable REST](./images/enable-rest-gold1.png)
 
 ## Task 8: Log in to SQL Developer as GOLD_XX Schema 
 
@@ -214,11 +214,11 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 2. Provide gold_XX as username and give password as defined in previous task. Sign in. 
 
-![Sign in Gold_XX Schema](./images/sign-in-gold.png)
+![Sign in Gold_XX Schema](./images/sign-in-gold1.png)
 
 **NOTE** If still unable to log in, try navigating back to database user page and click the following link - 
 
-![Access REST Gold_XX](./images/access-rest-gold.png)
+![Access REST Gold_XX](./images/access-rest-gold1.png)
 
 3. Navigate to Development > SQL. Once access is confirmed you can proceed to next task.
 
@@ -248,7 +248,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 3. Create a folder 'delta' in the bucket.
 
-![Create New Bucket Folder](./images/bucket-create-new-folder.png)
+![Create New Bucket Folder](./images/bucket-create-new-folder1.png)
 
 ## Next Steps
 
