@@ -103,7 +103,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_XX;
 
 **NOTE** If unable to sign in directly as Source_XX schema, enable REST access
 
-1. Navigate to AI DB > database actions > database users > search for Source_XX > select three dots > enable rest > log in to sql developer web as Source_XX
+1. Navigate to AI DB > database actions > database users > search for Source\_XX > select three dots > enable rest > log in to sql developer web as Source\_XX
 
 ![Database Users](./images/atp-db-users.png)
 
