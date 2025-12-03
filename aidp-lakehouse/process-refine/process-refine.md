@@ -435,7 +435,7 @@ CREATE TABLE AIRLINE_SAMPLE_GOLD (
 </copy>
 ```
 
-2. Back in AIDP notebook, refresh the external catalog "airlines_external_adb_gold_xx" from Master_Catalog
+2. Back in AIDP notebook, refresh the external catalog "airlines\_external\_adb\_gold\_xx" from Master_Catalog
 
 ![Refresh Catalog](./images/refresh-catalog.png)
 
