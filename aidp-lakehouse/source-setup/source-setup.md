@@ -33,7 +33,7 @@ In this lab, you will:
 
 ### Important Note
 
-If multiple users are working on this workshop, then replace _XX by _01, _02, _03 etc.
+If multiple users are concurrently working on this workshop, then for different users _01, _02, _03 can be used, instead of using _XX.
 
 For example:
 - Use Source\_01, Source\_02, Source\_03 etc instead of Source\_XX
