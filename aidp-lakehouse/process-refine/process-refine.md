@@ -101,7 +101,7 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ## Task 2: Connect AIDP to ATP and AI Lakehouse
 
-1. Once AIDP is provisioned, navigate to the service console - 
+1. Navigate to the service console of AIDP - 
 
 ![AIDP Home](./images/aidp-home.png)
 
@@ -109,13 +109,13 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ![Create Catalog](./images/create-catalog.png)
 
-3. For ATP: Provide catalog name (e.g. **atp\_external\_catalog\_XX**), select External Catalog, External source type Oracle Autonomous Transaction Processing, choose your ATP instance, provide Source_XX username and password.
+3. For ATP: Provide catalog name (e.g. **atp\_external\_catalog\_xx**), select External Catalog, External source type Oracle Autonomous Transaction Processing, choose your ATP instance, provide Source_XX username and password.
 
-![ATP External Catalog](./images/atp-external-catalog.png)
+![ATP External Catalog](./images/atp-external-catalog1.png)
 
-4. For AI Lakehouse: Provide catalog name (e.g. **airlines\_external\_adb\_gold\_XX**), select External Catalog, External source type Oracle Autonomous Data Warehouse, choose your AI Lakehouse instance, provide Gold_XX username and password.
+4. For AI Lakehouse: Provide catalog name (e.g. **airlines\_external\_adb\_gold\_xx**), select External Catalog, External source type Oracle Autonomous Data Warehouse, choose your AI Lakehouse instance, provide Gold_XX username and password.
 
-![Create External Catalog](./images/adl-external-catalog.png)
+![Create External Catalog](./images/adl-external-catalog1.png)
 
 ---
 
@@ -123,15 +123,15 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 1. In AIDP, create workspace **airline-workspace_xx** with default catalog **airlines\_external\_adb\_gold\_xx**.
 
-![Create AIDP Workspace](./images/create-aidp-workspace.png)
+![Create AIDP Workspace](./images/create-aidp-workspace1.png)
 
-2. Create folder 'demo'.
+2. Click on the airline-workspace_xx link to navigate to that workspace. Create folder 'demo'.
 
-![Create Demo Folder](./images/create-folder-workspace.png)
+![Create Demo Folder](./images/create-folder-workspace1.png)
 
 3. Create notebook 'airlines-notebook'.
 
-![Create Notebook](./images/create-notebook.png)
+![Create Notebook](./images/create-notebook1.png)
 
 4. Create and attach cluster **my\_workspace\_cluster\_xx**.
 
@@ -162,6 +162,8 @@ df.show()
 For each iteration of code blocks it's recommended to run that section individually to validate the scripts. Once all the code blocks are validated, you can run this entire notebook as a job in a workflow.
 For creating next code block in a new cell, click on the "+" icon.
 
+![Run Next Code Cell](./images/run-next-code-cell.png)
+
 2. Write the new data frame to your Object Storage bucket. Replace '**aidp-demo-bucket_xx**' with your oci bucket name and '**your-os-namespace**' with object storage namespace - 
 
 ```python
@@ -173,7 +175,7 @@ df.write.format("delta").mode("overwrite").save(delta_path)
 
 **NOTE** **aidp-demo-bucket_xx** refers to the bucket name in OCI, and **your-os-namespace** is the namespace found in the bucket - 
 
-![Get OS Namespace](./images/get-os-namespace.png)
+![Get OS Namespace](./images/get-os-namespace1.png)
 
 **NOTE** Only one table can be associated with a given delta path. If a table is created on a path that already is associated with another table, it will throw an error. The associated table will have to be deleted then re-write the dataframe to the path. 
 
