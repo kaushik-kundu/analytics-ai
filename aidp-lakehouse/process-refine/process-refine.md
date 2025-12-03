@@ -437,6 +437,8 @@ CREATE TABLE AIRLINE_SAMPLE_GOLD (
 
 2. Back in AIDP notebook, refresh the external catalog "airlines_external_adb_gold_xx" from Master_Catalog
 
+![Refresh Catalog](./images/refresh-catalog.png)
+
 3. Using the airlines-notebook Notebook, insert data:
 
 ```sql
