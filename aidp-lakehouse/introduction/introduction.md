@@ -1,4 +1,3 @@
-
 # Introduction
 
 ## About this Workshop
@@ -26,7 +25,7 @@ By completing this workshop, you will:
 - Design data visualizations and dashboards with **Oracle Analytics Cloud** (OAC)
 
 **Architecture Overview:**  
-![Lakehouse Architecture Diagram](images/ai-lakehouse-aidp.png)
+![Lakehouse Architecture Diagram](images/ai-lakehouse-aidp-2.png)
 
 **Key Oracle Services Touched:**
 * **Autonomous Transaction Processing (ATP):** Transactional source for operational data
