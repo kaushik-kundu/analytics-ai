@@ -214,7 +214,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 2. Provide gold_XX as username and give password as defined in previous task. Sign in. 
 
-![Sign in Gold_XX Schema](./images/sign-in-gold1.png)
+![Sign in Gold_XX Schema](./images/sign-in-gold2.png)
 
 **NOTE** If still unable to log in, try navigating back to database user page and click the following link - 
 
