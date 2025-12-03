@@ -117,11 +117,11 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_XX;
 
 ![Database Users](./images/atp-db-users.png)
 
-<img src="./images/enable-rest-source1.png" alt="Enable REST" width="300" height="150">
+<img src="./images/enable-rest-source1.png" alt="Enable REST" width="500" height="150">
 
 2. Once enabled edit the user and set Quota to Unlimited 
 
-<img src="./images/unlimited-quota1.png" alt="Set Quota" width="300" height="200">
+<img src="./images/unlimited-quota1.png" alt="Set Quota" width="500" height="300">
 
 ## Task 4: Log in to SQL Developer as Source_XX Schema 
 
@@ -129,7 +129,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_XX;
 
 2. Provide Source_XX as username and give password as defined in previous task. Sign in. 
 
-<img src="./images/source-data-sign-in1.png" alt="Sign in Source_XX Schema" width="300" height="200">
+<img src="./images/source-data-sign-in1.png" alt="Sign in Source_XX Schema" width="500" height="300">
 
 
 **NOTE** If still unable to log in, try navigating back to database user page and click the following link - 
@@ -215,7 +215,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 2. Provide gold_XX as username and give password as defined in previous task. Sign in. 
 
-<img src="./images/sign-in-gold1.png" alt="Sign in Gold_XX Schema" width="300" height="200">
+<img src="./images/sign-in-gold1.png" alt="Sign in Gold_XX Schema" width="500" height="300">
 
 **NOTE** If still unable to log in, try navigating back to database user page and click the following link - 
 
