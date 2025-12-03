@@ -3,7 +3,7 @@
 
 ## Introduction
 
-This lab builds on Lab 1 by extracting transactional airline data from ATP, processing it through bronze, silver, and gold layers in Oracle AI Data Platform (AIDP) using Spark and Delta Lake, and publishing the refined gold data to Autonomous AI Lakehouse for analytics.
+This lab builds on Lab 1 by loading sample airline data in ATP, extracting transactional airline data from ATP, processing it through bronze, silver, and gold layers in Oracle AI Data Platform (AIDP) using Spark and Delta Lake, and publishing the refined gold data to Autonomous AI Lakehouse for analytics.
 
 > **Estimated Time:** 1 hour
 
@@ -28,9 +28,18 @@ This lab assumes you have:
 
 ---
 
-## Task 1: Load Sample Airline Data into SOURCE_DATA Schema in ATP instance
+### Important Note
 
-1. In SQL Developer Web (as SOURCE_DATA), create the AIRLINE_SAMPLE table:
+If multiple users are working on this workshop, then replace _XX by _01, _02, _03 etc.
+
+For example 
+- Use Source_01, Source_02, Source_03 etc instead of Source_XX
+- Use Gold_01, Gold_02, Gold_03 etc instead of Gold_XX
+---
+
+## Task 1: Load Sample Airline Data into Source_XX Schema in ATP instance
+
+1. In SQL Developer Web (as Source_XX), create the AIRLINE_SAMPLE table:
 
 ```sql
 <copy>
@@ -98,11 +107,11 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ![Create Catalog](./images/create-catalog.png)
 
-3. For ATP: Provide catalog name (e.g. **atp\_external\_catalog**), select External Catalog, External source type Oracle Autonomous Transaction Processing, choose your ATP instance, provide SOURCE_DATA username and password.
+3. For ATP: Provide catalog name (e.g. **atp\_external\_catalog\_XX**), select External Catalog, External source type Oracle Autonomous Transaction Processing, choose your ATP instance, provide Source_XX username and password.
 
 ![ATP External Catalog](./images/atp-external-catalog.png)
 
-4. For AI Lakehouse: Provide catalog name (e.g. **airlines\_external\_adb\_gold**), select External Catalog, External source type Oracle Autonomous Data Warehouse, choose your AI Lakehouse instance, provide GOLD username and password.
+4. For AI Lakehouse: Provide catalog name (e.g. **airlines\_external\_adb\_gold\_XX**), select External Catalog, External source type Oracle Autonomous Data Warehouse, choose your AI Lakehouse instance, provide Gold_XX username and password.
 
 ![Create External Catalog](./images/adl-external-catalog.png)
 
@@ -110,7 +119,7 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ## Task 3: Launch AIDP Workspace and Notebook
 
-1. In AIDP, create workspace **airline-workspace** with default catalog **airlines\_external\_adb\_gold**.
+1. In AIDP, create workspace **airline-workspace_XX** with default catalog **airlines\_external\_adb\_gold\_XX**.
 
 ![Create AIDP Workspace](./images/create-aidp-workspace.png)
 
@@ -136,10 +145,10 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ```python
 <copy>
-airlines_sample_table = "atp_external_catalog.source_data.AIRLINE_SAMPLE"
+airlines_sample_table = "atp_external_catalog_XX.source_XX.AIRLINE_SAMPLE"
 
 # Confirm AIRLINE_SAMPLE table is reflected in spark
-spark.sql("SHOW TABLES IN atp_external_catalog.source_data").show(truncate=False)
+spark.sql("SHOW TABLES IN atp_external_catalog_XX.source_XX").show(truncate=False)
 
 df = spark.table(airlines_sample_table)
 
@@ -149,30 +158,30 @@ df.show()
 
 **NOTE** for each iteration of code blocks it's recommended to run that section individually to validate the scripts. Once all the code blocks are validated, you can run this entire notebook as a job in a workflow.
 
-2. Write the new data frame to your Object Storage bucket. Replace '**aidp-demo-bucket**' with your oci bucket name and '**your-os-namespace**' with object storage namespace - 
+2. Write the new data frame to your Object Storage bucket. Replace '**aidp-demo-bucket_XX**' with your oci bucket name and '**your-os-namespace**' with object storage namespace - 
 
 ```python
 <copy>
-delta_path = "oci://aidp-demo-bucket@your-os-namespace/delta/airline_sample"
+delta_path = "oci://aidp-demo-bucket_XX@your-os-namespace/delta/airline_sample"
 df.write.format("delta").mode("overwrite").save(delta_path)
 </copy>
 ```
 
-**NOTE** **aidp-demo-bucket** refers to the bucket name in OCI, and **your-os-namespace** is the namespace found in the bucket - 
+**NOTE** **aidp-demo-bucket_XX** refers to the bucket name in OCI, and **your-os-namespace** is the namespace found in the bucket - 
 
 ![Get OS Namespace](./images/get-os-namespace.png)
 
 **NOTE** Only one table can be associated with a given delta path. If a table is created on a path that already is associated with another table, it will throw an error. The associated table will have to be deleted then re-write the dataframe to the path. 
 
-3. Create bronze table for first stage of medallian architecture. Here we will create a new (standard) catalog, called "**airlines\_data\_catalog**". This is distinct from the external catalog to the ATP & AI Lakehouse created earlier. "**airlines\_data\_catalog**" will be used to store the bronze, silver, and gold layers of the medallian architecture.
+3. Create bronze table for first stage of medallian architecture. Here we will create a new (standard) catalog, called "**airlines\_data\_catalog\_XX**". This is distinct from the external catalog to the ATP & AI Lakehouse created earlier. "**airlines\_data\_catalog\_XX**" will be used to store the bronze, silver, and gold layers of the medallian architecture.
 
 ```python
 <copy>
-bronze_table = "airlines_data_catalog.bronze.airline_sample_delta"
+bronze_table = "airlines_data_catalog_XX.bronze.airline_sample_delta"
 
 # Create New Internal Catalog & Schema to store data
-spark.sql("CREATE CATALOG IF NOT EXISTS airlines_data_catalog")
-spark.sql("CREATE SCHEMA IF NOT EXISTS airlines_data_catalog.bronze")
+spark.sql("CREATE CATALOG IF NOT EXISTS airlines_data_catalog_XX")
+spark.sql("CREATE SCHEMA IF NOT EXISTS airlines_data_catalog_XX.bronze")
 
 # Drop the table if it exists, to avoid conflicts
 spark.sql(f"DROP TABLE IF EXISTS {bronze_table}")
@@ -216,11 +225,11 @@ df_v0.show()
 <copy>
 df_clean = spark.table(bronze_table)
 
-silver_path = "oci://aidp-demo-bucket@your-os-namespace/delta/silver/airline_sample"
-silver_table = "airlines_data_catalog.silver.airline_sample_delta"
+silver_path = "oci://aidp-demo-bucket_XX@your-os-namespace/delta/silver/airline_sample"
+silver_table = "airlines_data_catalog_XX.silver.airline_sample_delta"
 
 # Create Silver Schema to store data
-spark.sql("CREATE SCHEMA IF NOT EXISTS airlines_data_catalog.silver")
+spark.sql("CREATE SCHEMA IF NOT EXISTS airlines_data_catalog_XX.silver")
 
 # Write cleaned DataFrame to object storage as Delta
 df_clean.write.format("delta").mode("overwrite").save(silver_path)
@@ -247,7 +256,7 @@ spark.sql(f"SELECT * FROM {silver_table}").show()
 # Enrich data by adding aggregates/average delays and distance 
 from pyspark.sql import functions as F
 
-df = spark.table("airlines_data_catalog.silver.airline_sample_delta")
+df = spark.table("airlines_data_catalog_XX.silver.airline_sample_delta")
 
 # Calculate averages by airline
 avg_df = df.groupBy("AIRLINE").agg(
@@ -316,11 +325,11 @@ enhanced_df.show(10, False)
 <copy>
 # Save Averaged Data to Gold Schema 
 
-gold_path = "oci://aidp-demo-bucket@your-os-namespace/delta/gold/airline_sample_avg"
-gold_table = "airlines_data_catalog.gold.airline_sample_avg"
+gold_path = "oci://aidp-demo-bucket_XX@your-os-namespace/delta/gold/airline_sample_avg"
+gold_table = "airlines_data_catalog_XX.gold.airline_sample_avg"
 
 # Create Gold Schema 
-spark.sql("CREATE SCHEMA IF NOT EXISTS airlines_data_catalog.gold")
+spark.sql("CREATE SCHEMA IF NOT EXISTS airlines_data_catalog_XX.gold")
 
 enhanced_df.write.format("delta").option("mergeSchema", "true").mode("overwrite").save(gold_path)
 
@@ -399,7 +408,7 @@ df_gold_typed.createOrReplaceTempView("df_gold")
 
 ## Task 7: Create Gold Table and Insert Data
 
-1. In AI Lakehouse SQL Developer, sign in as GOLD, create the gold table:
+1. In AI Lakehouse SQL Developer, sign in as Gold_XX, create the gold table:
 
 ```sql
 <copy>
@@ -425,7 +434,7 @@ CREATE TABLE AIRLINE_SAMPLE_GOLD (
 ```sql
 <copy>
 %sql
-INSERT into airlines_external_adb_gold.gold.airline_sample_gold select * from df_gold
+INSERT into airlines_external_adb_gold_XX.gold.airline_sample_gold select * from df_gold
 </copy>
 ```
 

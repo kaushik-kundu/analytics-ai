@@ -23,9 +23,9 @@ Autonomous AI Lakehouse provides fast, secure analytics storage. Together, they 
 
 In this lab, you will:
 - Provision an ATP instance
-- Create a Source_01 schema in ATP
+- Create a Source_XX schema in ATP
 - Provision Autonomous AI Lakehouse 
-- Create a Gold_01 schema in AI Lakehouse
+- Create a Gold_XX schema in AI Lakehouse
 - Provision AI Data Platform
 - Provision Object Storage buckets
 
@@ -63,7 +63,7 @@ This lab assumes you have:
 
 ---
 
-## Task 2: Create Source_01 Schema
+## Task 2: Create Source_XX Schema
 
 1. Once provisioned, navigate to **Database Actions > SQL** in the ATP instance details.
 
@@ -71,27 +71,27 @@ This lab assumes you have:
 
 2. Sign in as the ADMIN user.
 
-3. Create the Source_01 schema (replace "strong\_password" with a secure password):
+3. Create the Source_XX schema (replace "strong\_password" with a secure password):
 
 ```sql
 <copy>
-CREATE USER Source_01 IDENTIFIED BY "strong_password";
+CREATE USER Source_XX IDENTIFIED BY "strong_password";
 -- Data privileges
-GRANT CONNECT, RESOURCE TO Source_01;
+GRANT CONNECT, RESOURCE TO Source_XX;
 
 -- Allow creation of tables, views, and other objects
-GRANT CREATE SESSION TO Source_01;
-GRANT CREATE TABLE TO Source_01;
-GRANT CREATE VIEW TO Source_01;
-GRANT CREATE SEQUENCE TO Source_01;
-GRANT CREATE PROCEDURE TO Source_01;
-GRANT UNLIMITED TABLESPACE TO Source_01;
+GRANT CREATE SESSION TO Source_XX;
+GRANT CREATE TABLE TO Source_XX;
+GRANT CREATE VIEW TO Source_XX;
+GRANT CREATE SEQUENCE TO Source_XX;
+GRANT CREATE PROCEDURE TO Source_XX;
+GRANT UNLIMITED TABLESPACE TO Source_XX;
 
 -- Enable DBMS_CLOUD 
-GRANT EXECUTE ON DBMS_CLOUD TO Source_01;
+GRANT EXECUTE ON DBMS_CLOUD TO Source_XX;
 
 -- Grant access to data_pump_dir (used for saveAsTable operation in spark)
-GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_01;
+GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_XX;
 </copy>
 ```
 
@@ -99,11 +99,11 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_01;
 
 ---
 
-## Task 3: Add REST capabilities to Source_01 Schema
+## Task 3: Add REST capabilities to Source_XX Schema
 
-**NOTE** If unable to sign in directly as Source_01 schema, enable REST access
+**NOTE** If unable to sign in directly as Source_XX schema, enable REST access
 
-1. Navigate to AI DB > database actions > database users > search for 'Source_01' > select three dots > enable rest > log in to sql developer web as Source_01
+1. Navigate to AI DB > database actions > database users > search for Source_XX > select three dots > enable rest > log in to sql developer web as Source_XX
 
 ![Database Users](./images/atp-db-users.png)
 
@@ -113,17 +113,17 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_01;
 
 ![Set Quota](./images/unlimited-quota.png)
 
-## Task 4: Log in to SQL Developer as Source_01 Schema 
+## Task 4: Log in to SQL Developer as Source_XX Schema 
 
 1. Navigate back to AI DB > database actions > SQL > Once in SQL Developer select ADMIN (top right) > Sign Out
 
-2. Provide Source_01 as username and give password as defined in previous task. Sign in. 
+2. Provide Source_XX as username and give password as defined in previous task. Sign in. 
 
-![Sign in Source_01 Schema](./images/source-data-sign-in.png)
+![Sign in Source_XX Schema](./images/source-data-sign-in.png)
 
 **NOTE** If still unable to log in, try navigating back to database user page and click the following link - 
 
-![Access REST Source_01](./images/source-data-sign-in-2.png)
+![Access REST Source_XX](./images/source-data-sign-in-2.png)
 
 3. Navigate to Development > SQL 
 
@@ -153,60 +153,60 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_01;
 
 ---
 
-## Task 6: Create Gold_01 Schema 
+## Task 6: Create Gold_XX Schema 
 
-1. Create a Gold_01 Schema (User) in Autonomous Data Lakehouse. Replace "strong\_password" with your own password.
+1. Create a Gold_XX Schema (User) in Autonomous Data Lakehouse. Replace "strong\_password" with your own password.
 
 ```sql
 <copy>
-CREATE USER gold_01 IDENTIFIED BY "strong_password";
+CREATE USER gold_XX IDENTIFIED BY "strong_password";
 </copy>
 ```
 
-2. Grant Required Roles/Privileges to Gold_01 Schema
+2. Grant Required Roles/Privileges to Gold_XX Schema
 
 ```sql
 <copy>
 -- Data privileges
-GRANT CONNECT, RESOURCE TO gold_01;
+GRANT CONNECT, RESOURCE TO gold_XX;
 
 -- Allow creation of tables, views, and other objects
-GRANT CREATE SESSION TO gold_01;
-GRANT CREATE TABLE TO gold_01;
-GRANT CREATE VIEW TO gold_01;
-GRANT CREATE SEQUENCE TO gold_01;
-GRANT CREATE PROCEDURE TO gold_01;
-GRANT UNLIMITED TABLESPACE TO gold_01;
+GRANT CREATE SESSION TO gold_XX;
+GRANT CREATE TABLE TO gold_XX;
+GRANT CREATE VIEW TO gold_XX;
+GRANT CREATE SEQUENCE TO gold_XX;
+GRANT CREATE PROCEDURE TO gold_XX;
+GRANT UNLIMITED TABLESPACE TO gold_XX;
 
 -- Enable DBMS_CLOUD 
-GRANT EXECUTE ON DBMS_CLOUD TO gold_01;
+GRANT EXECUTE ON DBMS_CLOUD TO gold_XX;
 
 -- Grant access to data_pump_dir (used for saveAsTable operation in spark)
-GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_01;
+GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 </copy>
 ```
 
-3. Log out of admin schema once gold_01 schema is created.
+3. Log out of admin schema once gold_XX schema is created.
 
-## Task 7: Add REST capabilities to GOLD_01 Schema
+## Task 7: Add REST capabilities to GOLD_XX Schema
 
-**NOTE** If unable to sign in directly as gold_01 schema, enable REST access
+**NOTE** If unable to sign in directly as gold_XX schema, enable REST access
 
-1. Navigate to AI DB > database actions > database users > search for 'gold_01' > select three dots > enable rest > log in to sql developer web as gold_01
+1. Navigate to AI DB > database actions > database users > search for 'gold_XX' > select three dots > enable rest > log in to sql developer web as gold_XX
 
 ![Enable REST](./images/enable-rest-gold.png)
 
-## Task 8: Log in to SQL Developer as GOLD_01 Schema 
+## Task 8: Log in to SQL Developer as GOLD_XX Schema 
 
 1. Navigate back to AI DB > database actions > SQL > Once in SQL Developer select ADMIN (top right) > Sign Out
 
-2. Provide gold_01 as username and give password as defined in previous task. Sign in. 
+2. Provide gold_XX as username and give password as defined in previous task. Sign in. 
 
-![Sign in Gold_01 Schema](./images/sign-in-gold.png)
+![Sign in Gold_XX Schema](./images/sign-in-gold.png)
 
 **NOTE** If still unable to log in, try navigating back to database user page and click the following link - 
 
-![Access REST Gold_01](./images/access-rest-gold.png)
+![Access REST Gold_XX](./images/access-rest-gold.png)
 
 3. Navigate to Development > SQL. Once access is confirmed you can proceed to next task.
 
@@ -232,7 +232,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_01;
 
 1. Navigate to **Object Storage** in the OCI Console.
 
-2. Create bucket **aidp-demo-bucket_01** in the AIDP compartment.
+2. Create bucket **aidp-demo-bucket_XX** in the AIDP compartment.
 
 3. Create a folder 'delta' in the bucket.
 
