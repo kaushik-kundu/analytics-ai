@@ -69,7 +69,7 @@ This workshop assumes you have:
 
 **Authors**
 * **Luke Farley**, Senior Cloud Engineer, ONA Data Platform
-* **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform S&E
+* **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform
 
 **Contributors**
 * **Enjing Li**, Senior Cloud Engineer, ONA Data Platform

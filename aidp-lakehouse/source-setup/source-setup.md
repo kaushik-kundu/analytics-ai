@@ -262,7 +262,7 @@ With the source data loaded in ATP, proceed to Lab 2 to extract and process it i
 * **Luke Farley**, Senior Cloud Engineer, ONA Data Platform
 
 **Contributors**
-* **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform S&E
+* **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform
 
 **Last Updated By/Date:**
 * **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform, December 2025
