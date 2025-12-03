@@ -20,6 +20,16 @@ In this lab, you will:
 
 ---
 
+### Important Note
+
+If multiple users are working on this workshop, then replace _XX by _01, _02, _03 etc.
+
+For example:
+- Use Source_01, Source_02, Source_03 etc instead of Source_XX
+- Use Gold_01, Gold_02, Gold_03 etc instead of Gold_XX
+
+---
+
 ### Prerequisites
 
 This lab assumes you have:
@@ -28,14 +38,6 @@ This lab assumes you have:
 
 ---
 
-### Important Note
-
-If multiple users are working on this workshop, then replace _XX by _01, _02, _03 etc.
-
-For example 
-- Use Source_01, Source_02, Source_03 etc instead of Source_XX
-- Use Gold_01, Gold_02, Gold_03 etc instead of Gold_XX
----
 
 ## Task 1: Load Sample Airline Data into Source_XX Schema in ATP instance
 
