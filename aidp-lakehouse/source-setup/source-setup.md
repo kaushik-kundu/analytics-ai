@@ -31,6 +31,16 @@ In this lab, you will:
 
 ---
 
+### Important Note
+
+If multiple users are working on this workshop, then replace _XX by _01, _02, _03 etc.
+
+For example:
+- Use Source\_01, Source\_02, Source\_03 etc instead of Source\_XX
+- Use Gold\_01, Gold\_02, Gold\_03 etc instead of Gold\_XX
+
+---
+
 ### Prerequisites
 
 This lab assumes you have:
@@ -192,7 +202,9 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 **NOTE** If unable to sign in directly as gold_XX schema, enable REST access
 
-1. Navigate to AI DB > database actions > database users > search for 'gold_XX' > select three dots > enable rest > log in to sql developer web as gold_XX
+1. Navigate to AI DB > database actions > database users > search for gold\_XX > select three dots > enable rest > log in to sql developer web as gold\_XX
+
+2. Once enabled edit the user and set Quota to Unlimited 
 
 ![Enable REST](./images/enable-rest-gold.png)
 

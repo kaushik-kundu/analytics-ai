@@ -25,8 +25,8 @@ In this lab, you will:
 If multiple users are working on this workshop, then replace _XX by _01, _02, _03 etc.
 
 For example:
-- Use Source_01, Source_02, Source_03 etc instead of Source_XX
-- Use Gold_01, Gold_02, Gold_03 etc instead of Gold_XX
+- Use Source\_01, Source\_02, Source\_03 etc instead of Source\_XX
+- Use Gold\_01, Gold\_02, Gold\_03 etc instead of Gold\_XX
 
 ---
 
