@@ -53,7 +53,7 @@ This lab assumes you have:
 
 ![Select Lakehouse](./images/create-adl-conn.png)
 
-3. Provide the details for the lakehouse, and upload the wallet as client credentials from Task 1. Use GOLD schema credentials.
+3. Provide the details for the lakehouse, and upload the wallet as client credentials from Task 1. Use GOLD_XX schema credentials.
 
 ![Create ADL Connection](./images/create-adl-conn-3.jpg)
 
