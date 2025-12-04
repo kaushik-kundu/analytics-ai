@@ -250,6 +250,18 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 ![Create New Bucket Folder](./images/bucket-create-new-folder1.png)
 
+## Task 11: Provision Analytics Cloud Instance
+
+1. Navigate to Analytics Cloud in the OCI console 
+
+![Analytics Cloud](./images/oac.png)
+
+2. Create a new Analytics Cloud instance. Provide a name such as **aidpoac**. Leave the remaining options as default and create. 
+
+![Create OAC](./images/create-oac.png)
+
+3. After a few minutes the instance will create.
+
 ## Next Steps
 
 With the source data loaded in ATP, proceed to Lab 2 to extract and process it in the AI Data Platform and Lakehouse.

@@ -45,41 +45,35 @@ This lab assumes you have:
 
 ## Task 2: Connect OAC to Your Gold Data Table
 
-1. Navigate to Analytics Cloud in the OCI console 
+1. In Analytics Cloud instance, navigate to the service console. 
 
-![Analytics Cloud](./images/oac.png)
-
-2. Create a new Analytics Cloud instance. Provide a name such as **aidpoac**. Leave the remaining options as default and create. 
-
-![Create OAC](./images/create-oac.png)
-
-3. After a few minutes the instance will create. Navigate to the service console. 
-
-4. Go to **Create → Connection**, then select Oracle Autonomous Warehouse (Now Autonomous AI Lakehouse) 
+2. Go to **Create → Connection**, then select Oracle Autonomous Warehouse (Now Autonomous AI Lakehouse) 
 
 ![Create Connection](./images/create-connection.png)
 
 ![Select Lakehouse](./images/create-adl-conn.png)
 
-5. Provide the details for the lakehouse, and upload the wallet as client credentials from Task 1. Use GOLD schema credentials.
+3. Provide the details for the lakehouse, and upload the wallet as client credentials from Task 1. Use GOLD schema credentials.
 
-![Create ADL Connection](./images/create-adl-conn-2.png)
+![Create ADL Connection](./images/create-adl-conn-3.jpg)
 
-6. Select Save.
+4. Select Save.
 
-7. From the OAC home page, select Create > Dataset
+5. From the OAC home page, select Create > Dataset
 
 ![Create Dataset](./images/create-dataset.png)
 
-8. Select the **adl-conn** just created 
+6. Select the **adl-conn-xx** just created 
 
-![Create ADL Dataset](./images/create-dataset-adl-conn.png)
+![Create ADL Dataset](./images/create-adl-conn-4.jpg)
 
-9. Expand the Schemas on the left-hand side and GOLD schema. Drag and drop the **AIRLINE_SAMPLE_GOLD** table to the white space to the right 
+7. Expand the Schemas on the left-hand side and GOLD_XX schema. Drag and drop the **AIRLINE_SAMPLE_GOLD** table to the white space to the right 
 
-![Create Gold Dataset](./images/create-dataset-gold.png)
+![Create Gold Dataset](./images/create-dataset-gold1.jpg)
 
-10. Select the save button at the top right to create the dataset. 
+8. Select the save button at the top right to create the dataset. 
+
+![Save Gold Dataset](./images/create-dataset1.png)
 
 ---
 
@@ -89,7 +83,7 @@ This lab assumes you have:
 
 2. Select the dataset just created > Add to workbook
 
-![Select Dataset](./images/select-dataset.png)
+![Select Dataset](./images/select-dataset1.png)
 
 3. You can now drag and drop fields for visualization. For example, to create a pie chart of the average departure delay by airline, drag the following fields onto the canvas - 
     - AVG_DEP_DELAY
@@ -119,12 +113,81 @@ This lab assumes you have:
 
 - Once all the charts are configured, the workbook will show all the analytics on one page - 
 
-![Analytics AIDP](./images/analytics-aidp.png)
+![Analytics AIDP](./images/aidp-oac-workbook1.png)
+
+6. Save the Workbook
+
+![Analytics AIDP](./images/aidp-oac-workbook3.png)
 
 
 ---
 
-## Task 4 (Optional): Add More Visualizations
+## Task 4: Configure OAC Assistant
+
+1. From the OAC Navigator, go to Console
+
+![Console](./images/oac-genai1.png)
+
+2. Click on Generative AI
+
+![GenAI](./images/oac-genai2.png)
+
+3. Under "Oracle Analytics AI Assistant Features," select Oracle Analytics from the Gen AI Service dropdown and click Update to enable the service
+
+![GenAI](./images/oac-genai3.png)
+
+4. From the OAC Home Page, open the OAC Workbook "aidp-gold-xx-workbook" (that you created) in edit mode
+
+5. Open the  "Present" tab, and ensure that the "Workbook Assistant" is turned On in the Insights panel
+
+![Assistant1](./images/aidp-oac-workbook2.png)
+
+---
+
+## Task 5: Index OAC Dataset for OAC Assistant
+
+1. From the OAC Navigator, go to Data
+
+![Data1](./images/oac-assistant1.png)
+
+2. For the "aidp_gold_xx_dataset" that you created, click on Menu and then Inspect
+
+![Data2](./images/oac-assistant2.png)
+
+3. Click on "Search", and in the dropdown select "Assistants and Homepage Search"
+
+![Data3](./images/oac-assistant3.png)
+
+4. Ensure that the dataset is indexed correctly as shown, click Save and then click Run Now
+
+![Data4](./images/oac-assistant4.png)
+
+5. The dataset indexing gets initiated.
+
+![Data5](./images/oac-assistant5.png)
+
+---
+
+## Task 6: View OAC Assistant
+
+1. From the OAC Home Page, open the OAC Workbook "aidp-gold-xx-workbook" (that you created), and then click Auto Insights -> Assistant
+
+![Data6](./images/oac-assistant6.png)
+
+2. You can ask the question "Show average departure delay by airline." in natural language, and you can get the response.
+
+![Data7](./images/oac-assistant7.png)
+
+3. You can change the Chart type to Pie, and see the response.
+
+![Data8](./images/oac-assistant8.png)
+
+4. You can ask a different question "Show average distance by airlines"
+
+![Data9](./images/oac-assistant9.png)
+---
+
+## Task 7 (Optional): Add More Visualizations
 
 - **Scatter Plot:** Explore relationship between arrival and departure delays, color by airline.
 - **Pie Chart:** Show distribution of sentiments across all flights.
@@ -134,7 +197,7 @@ This lab assumes you have:
 
 ---
 
-## Task 5 (Optional): Customize and Share
+## Task 8 (Optional): Customize and Share
 
 - Edit titles, axis labels, and colors for clarity.
 - Save your workbook.
@@ -152,9 +215,10 @@ This lab assumes you have:
 
 **Authors**
 * **Luke Farley**, Senior Cloud Engineer, ONA Data Platform
+* **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform
 
 **Contributors**
 * **Enjing Li**, Senior Cloud Engineer, ONA Data Platform
 
 **Last Updated By/Date:**
-* **Luke Farley**, Senior Cloud Engineer, ONA Data Platform, November 2025
+* **Kaushik Kundu**, Master Principal Cloud Architect, ONA Data Platform, December 2025
