@@ -67,7 +67,7 @@ This lab assumes you have:
 
 ![Create ADL Dataset](./images/create-adl-conn-4.jpg)
 
-7. Expand the Schemas on the left-hand side and GOLD_XX schema. Drag and drop the **AIRLINE_SAMPLE_GOLD** table to the white space to the right 
+7. Expand the Schemas on the left-hand side and GOLD\_XX schema. Drag and drop the **AIRLINE\_SAMPLE\_GOLD** table to the white space to the right 
 
 ![Create Gold Dataset](./images/create-dataset-gold1.jpg)
 
@@ -86,7 +86,7 @@ This lab assumes you have:
 ![Select Dataset](./images/select-dataset1.png)
 
 3. You can now drag and drop fields for visualization. For example, to create a pie chart of the average departure delay by airline, drag the following fields onto the canvas - 
-    - AVG_DEP_DELAY
+    - AVG\_DEP\_DELAY
     - AIRLINE
 
 ![Average Departure Delay Pie Chart](./images/avg-dep-delay-pie.png)
@@ -95,7 +95,7 @@ This lab assumes you have:
 
 ![Average Departure Delay Pie Chart](./images/avg-dep-delay-pie-2.png)
 
-4. We can also create a bar chart by average departure delay. Drag and drop the field AVG_DEP_DELAY onto the canvas, outside of the existing pie chart. Map the following fields - 
+4. We can also create a bar chart by average departure delay. Drag and drop the field AVG\_DEP\_DELAY onto the canvas, outside of the existing pie chart. Map the following fields - 
 
 ![Average Departure Delay Bar Chart](./images/avg-dep-delay-bar.png)
 
@@ -138,7 +138,7 @@ This lab assumes you have:
 
 4. From the OAC Home Page, open the OAC Workbook "aidp-gold-xx-workbook" (that you created) in edit mode
 
-5. Open the  "Present" tab, and ensure that the "Workbook Assistant" is turned On in the Insights panel
+5. In the  "Present" tab, ensure that the "Workbook Assistant" is turned "On" in the Insights Panel
 
 ![Assistant1](./images/aidp-oac-workbook2.png)
 
@@ -150,7 +150,7 @@ This lab assumes you have:
 
 ![Data1](./images/oac-assistant1.png)
 
-2. For the "aidp_gold_xx_dataset" that you created, click on Menu and then Inspect
+2. For the "aidp\_gold\_xx\_dataset" that you created, click on Menu and then Inspect
 
 ![Data2](./images/oac-assistant2.png)
 
@@ -158,11 +158,11 @@ This lab assumes you have:
 
 ![Data3](./images/oac-assistant3.png)
 
-4. Ensure that the dataset is indexed correctly as shown, click Save and then click Run Now
+4. Ensure that the dataset is indexed correctly for "Name & values, click Save, and then click "Run Now"
 
 ![Data4](./images/oac-assistant4.png)
 
-5. The dataset indexing gets initiated.
+5. The dataset index gets initiated.
 
 ![Data5](./images/oac-assistant5.png)
 
@@ -174,7 +174,7 @@ This lab assumes you have:
 
 ![Data6](./images/oac-assistant6.png)
 
-2. You can ask the question "Show average departure delay by airline." in natural language, and you can get the response.
+2. You can ask the question "Show average departure delay by airline." in natural language, and you'll get the response.
 
 ![Data7](./images/oac-assistant7.png)
 
@@ -182,7 +182,7 @@ This lab assumes you have:
 
 ![Data8](./images/oac-assistant8.png)
 
-4. You can ask a different question "Show average distance by airlines"
+4. You can ask a different question "Show average distance by airlines", and see the response.
 
 ![Data9](./images/oac-assistant9.png)
 ---
