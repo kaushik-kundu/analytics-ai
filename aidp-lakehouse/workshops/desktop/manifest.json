@@ -8,12 +8,7 @@
       "filename": "../../introduction/introduction.md"
     },
     {
-      "title": "Get Started with noVNC Remote Desktop",
-      "description": "Using noVNC Remote Desktop",
-      "filename": "https://oracle-livelabs.github.io/common/labs/remote-desktop/using-novnc-remote-desktop.md"
-    },
-    {
-      "title": "Lab 1: Set Up Source System and Target System, AI Data Platform and Object Storage",
+      "title": "Lab 1: Set Up Infrastructure",
       "description": "Labs that follow the introduction are numbered, starting with Lab 1",
       "filename": "../../source-setup/source-setup.md"
     },
