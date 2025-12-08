@@ -185,6 +185,8 @@ This lab assumes you have:
 4. You can ask a different question "Show average distance by airlines", and see the response.
 
 ![Data9](./images/oac-assistant9.png)
+
+
 ---
 
 ## Task 7 (Optional): Add More Visualizations
