@@ -49,7 +49,7 @@ This workshop assumes you have:
 
 ### Lab Sequence
 
-- **Lab 1: Set Up Infrastructure** - Provision ATP, create source schema, provision AI Lakehouse, provision AI Data Platform, create Object Storage bucket, provision Analytics Cloud.
+- **Lab 1: Set Up OCI Resources** - Provision ATP, create source schema, provision AI Lakehouse, provision AI Data Platform, create Object Storage bucket, provision Analytics Cloud.
 - **Lab 2: Process and Refine Data in AI Data Platform and Lakehouse** - Extract from ATP, process in AIDP, publish to AI Lakehouse gold schema.
 - **Lab 3: Gather Insights with Oracle Analytics Cloud (OAC)** - Connect to gold schema, build visualizations, chat with Assistant in natural language.
 

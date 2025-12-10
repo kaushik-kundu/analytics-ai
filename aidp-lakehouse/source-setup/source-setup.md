@@ -53,7 +53,27 @@ This lab assumes you have:
 
 ---
 
-## Task 1: Provision ATP Instance
+## Task 1: Create Compartment
+
+1. Using the Navigation Menu, navigate to "Identity & Security" -> Compartments
+
+![Compartments](./images/comp-1.png)
+
+2. Click "Create compartment"
+
+![Compartments](./images/comp-2.png)
+
+3. Create a new Compartment (Name - "aidp-lab", Description - "AIDP Lab") under Root compartment (Change Parent comapartment to "(root)"). Click on "Create compartment"
+
+![Compartments](./images/comp-3.png)
+
+4. The "aidp-lab" compartment gets created. Ensure to create all OCI resources in this "aidp-lab" compartment.
+
+![Compartments](./images/comp-4.png)
+
+---
+
+## Task 2: Provision ATP Instance
 
 1. Log in to your cloud tenancy and navigate to **Oracle AI Database > Autonomous AI Database**
 
@@ -73,15 +93,14 @@ This lab assumes you have:
 
 ---
 
-## Task 2: Create Source_XX Schema
+## Task 3: Create Source_XX Schema
 
 1. Once provisioned, navigate to **Database Actions > SQL** in the ATP instance details.
 
 ![ATP SQL](./images/atp-sql.png)
 
-2. Sign in as the ADMIN user.
 
-3. Create the Source_XX schema (replace "strong\_password" with a secure password):
+2. Create the Source_XX schema (replace "strong\_password" with a secure password):
 
 ```sql
 <copy>
@@ -105,25 +124,31 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_XX;
 </copy>
 ```
 
-4. Sign out of admin and navigate back to the ATP instance in the console
+3. Sign out of admin and navigate back to the ATP instance in the console
 
 ---
 
-## Task 3: Add REST capabilities to Source_XX Schema
+## Task 4: Add REST capabilities to Source_XX Schema
 
 **NOTE** If unable to sign in directly as Source_XX schema, enable REST access
 
-1. Navigate to AI DB > database actions > database users > search for Source\_XX > select three dots > enable rest > log in to sql developer web as Source\_XX
+1. Navigate to AI DB > database actions > database users > search for Source\_XX > select three dots > Enable REST
 
 ![Database Users](./images/atp-db-users.png)
 
-![Enable REST](./images/enable-rest-source1.png)
+![Enable REST](./images/enable-rest-source2.jpg)
 
-2. Once enabled edit the user and set Quota to Unlimited 
+![Enable REST](./images/enable-rest-source3.png)
 
-![Set Quota](./images/unlimited-quota1.png)
+2. Once enabled edit the user and set Quota to Unlimited. Click “Apply Changes” to save.
 
-## Task 4: Log in to SQL Developer as Source_XX Schema 
+![Set Quota](./images/unlimited-quota2.png)
+
+![Set Quota](./images/unlimited-quota3.png)
+
+## Task 5: Log in to SQL Developer as Source_XX Schema 
+
+You'll check if you can successfully sign-in as Source_XX user.
 
 1. Navigate back to AI DB > database actions > SQL > Once in SQL Developer select ADMIN (top right) > Sign Out
 
@@ -135,9 +160,11 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_XX;
 
 ![Access REST Source_XX](./images/source-data-sign-in-21.png)
 
-3. Navigate to Development > SQL 
+3. Navigate to Development > SQL.
 
-## Task 5: Provision Autonomous AI Lakehouse
+Leave this open for later use once connectivity is verified.
+
+## Task 6: Provision Autonomous AI Lakehouse
 
 1. Log in to your cloud tenancy and navigate to Oracle AI Database > Autonomous AI Database
 
@@ -145,7 +172,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_XX;
 
 2. Select Create Autonomous AI Database 
 
-3. Give it a name (e.g. **aidp-db**) and select workload type as Lakehouse. Select database version 26ai and leave other options as default. 
+3. Give it a display name (e.g. **aidp-db**), and database name (e.g. **aidpdb**) and select workload type as Lakehouse. Select database version 26ai and leave other options as default. 
 
 ![Create AI Database](./images/create-aidp-db.png)
 
@@ -163,7 +190,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_XX;
 
 ---
 
-## Task 6: Create Gold_XX Schema 
+## Task 7: Create Gold_XX Schema 
 
 1. Create a Gold_XX Schema (User) in Autonomous Data Lakehouse. Replace "strong\_password" with your own password.
 
@@ -198,19 +225,39 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 3. Log out of admin schema once gold_XX schema is created.
 
-## Task 7: Add REST capabilities to GOLD_XX Schema
+## Task 8: Add REST capabilities to GOLD_XX Schema
 
 **NOTE** If unable to sign in directly as gold_XX schema, enable REST access
 
-1. Navigate to AI DB > database actions > database users > search for gold\_XX > select three dots > enable rest > log in to sql developer web as gold\_XX
+1. On your provisioned Lakehouse, navigate to Database Actions -> Database Users
 
-2. Once enabled edit the user and set Quota to Unlimited 
+![Enable REST](./images/enable-rest-gold2.png)
 
-![Enable REST](./images/enable-rest-gold1.png)
+2. Search for the user GOLD\_XX and select the 3 dots, then select Enable REST
 
-## Task 8: Log in to SQL Developer as GOLD_XX Schema 
+![Enable REST](./images/enable-rest-gold3.png)
 
-1. Navigate back to AI DB > database actions > SQL > Once in SQL Developer select ADMIN (top right) > Sign Out
+3. Click the REST Enable User button. 
+
+![Enable REST](./images/enable-rest-gold4.png)
+
+4. Once enabled edit the user Gold\_XX
+
+![Enable REST](./images/enable-rest-gold5.png)
+
+5. Set Quota to Unlimited. Click "Apply Changes" to save.
+
+![Enable REST](./images/enable-rest-gold6.png)
+
+## Task 9: Log in to SQL Developer as GOLD_XX Schema 
+
+1. Navigate back to AI DB > database actions > SQL
+
+![Sign in Gold_XX Schema](./images/sign-in-gold3.png)
+
+2. In SQL Developer select ADMIN (top right) > Sign Out
+
+![Sign in Gold_XX Schema](./images/sign-in-gold4.png)
 
 2. Provide gold_XX as username and give password as defined in previous task. Sign in. 
 
@@ -222,7 +269,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 3. Navigate to Development > SQL. Once access is confirmed you can proceed to next task.
 
-## Task 9: Provision AI Data Platform Instance
+## Task 10: Provision AI Data Platform Instance
 
 1. Navigate to Analytics & AI > AI Data Platform > AI Data Platform Workbench
 
@@ -232,25 +279,49 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 ![Create AIDP](./images/create-aidp-2.png)
 
-3. Set the access level as standard and explicitly 'Add' the policies. If the policies aren't added it will fail to create. Optional policies can also be added depending on the use case. For this lab, we will need to enable object deletion - 
+3. In the "Add policies", set the access level as "Standard". If the policies aren't added it will fail to create.
 
-![Enable Object Deletion](./images/aidp-add-additional-policies.png)
+![Add Standard Policies](./images/aidp-standard-policies-1.png)
 
-![Add Policies](./images/aidp-save-policies.png)
+![Add Standard Policies](./images/aidp-standard-policies-2.png)
 
-4. Create the instance. This will take a few minutes to provision.
+4. Once you click Add, the Standard Policies will be added
 
-## Task 10: Set Up Object Storage
+![Add Standard Policies](./images/aidp-standard-policies-3.png)
 
-1. Navigate to **Object Storage** in the OCI Console.
+5. Optional policies can also be added depending on the use case. For this lab, we will need to enable object deletion - 
 
-2. Create bucket **aidp-demo-bucket_xx** in the AIDP compartment.
+![Add Optional Policies](./images/aidp-optional-policies-1.png)
 
-3. Create a folder 'delta' in the bucket.
+![Add Optional Policies](./images/aidp-optional-policies-2.png)
 
-![Create New Bucket Folder](./images/bucket-create-new-folder1.png)
+6. Create the instance. This will take a few minutes to provision.
 
-## Task 11: Provision Analytics Cloud Instance
+## Task 11: Set Up Object Storage
+
+1. In the Navigation Menu (top left), navigate to **Storage** in the OCI Console Menu, and then click on Buckets.
+
+![Create OS Bucket](./images/os-buckets-1.png)
+
+2. Create bucket **aidp-demo-bucket_xx**. Select the default "Standard" storage tier. Click on "Create Bucket".
+
+![Create OS Bucket](./images/os-buckets-2.png)
+
+![Create OS Bucket](./images/os-buckets-3.png)
+
+3. When the bucket is created, click into the bucket. 
+
+![Create OS Bucket](./images/os-buckets-4.png)
+
+4. Click on Objects. Click on Actions -> Create New Folder
+
+![Create OS Bucket](./images/os-buckets-5.png)
+
+5. Create a folder 'delta' in the bucket.
+
+![Create OS Bucket](./images/os-buckets-6.png)
+
+## Task 12: Provision Analytics Cloud Instance
 
 1. Navigate to Analytics Cloud in the OCI console 
 
