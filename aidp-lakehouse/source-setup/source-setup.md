@@ -1,4 +1,4 @@
-# Lab 1: Set Up Source System and Target System, AI Data Platform and Object Storage
+# Lab 1: Set Up OCI Resources
 
 ## Introduction
 
@@ -148,7 +148,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO Source_XX;
 
 ## Task 5: Log in to SQL Developer as Source_XX Schema 
 
-You'll check if you can successfully sign-in as Source_XX user.
+In this task you'll check if you can successfully sign-in as Source_XX user.
 
 1. Navigate back to AI DB > database actions > SQL > Once in SQL Developer select ADMIN (top right) > Sign Out
 
@@ -259,7 +259,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 ![Sign in Gold_XX Schema](./images/sign-in-gold4.png)
 
-2. Provide gold_XX as username and give password as defined in previous task. Sign in. 
+3. Provide gold_XX as username and give password as defined in previous task. Sign in. 
 
 ![Sign in Gold_XX Schema](./images/sign-in-gold2.png)
 
@@ -267,7 +267,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 ![Access REST Gold_XX](./images/access-rest-gold1.png)
 
-3. Navigate to Development > SQL. Once access is confirmed you can proceed to next task.
+4. Navigate to Development > SQL. Once access is confirmed you can proceed to next task.
 
 ## Task 10: Provision AI Data Platform Instance
 
@@ -303,21 +303,23 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 ![Create OS Bucket](./images/os-buckets-1.png)
 
-2. Create bucket **aidp-demo-bucket_xx**. Select the default "Standard" storage tier. Click on "Create Bucket".
+2. Click on "Create bucket" to create a bucket.
 
 ![Create OS Bucket](./images/os-buckets-2.png)
 
+3. Name the bucket **aidp-demo-bucket_xx**. Select the default "Standard" storage tier. Click on "Create Bucket".
+
 ![Create OS Bucket](./images/os-buckets-3.png)
 
-3. When the bucket is created, click into the bucket. 
+4. When the bucket is created, click into the bucket. 
 
 ![Create OS Bucket](./images/os-buckets-4.png)
 
-4. Click on Objects. Click on Actions -> Create New Folder
+5. Click on Objects. Click on Actions -> Create New Folder
 
 ![Create OS Bucket](./images/os-buckets-5.png)
 
-5. Create a folder 'delta' in the bucket.
+6. Create a folder 'delta' in the bucket. Click on "Create folder" to create the folder.
 
 ![Create OS Bucket](./images/os-buckets-6.png)
 
