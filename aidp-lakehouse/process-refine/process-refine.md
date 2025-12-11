@@ -157,23 +157,55 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ## Task 3: Launch AIDP Workspace and Notebook
 
-1. In AIDP, create workspace **airline-workspace_xx** with default catalog **airlines\_external\_adb\_gold\_xx**.
+1. In AIDP, create new workspace - Click on Workspace -> Create button
 
-![Create AIDP Workspace](./images/create-aidp-workspace1.png)
+![Create AIDP Workspace](./images/create-aidp-workspace2.png)
 
-2. Click on the airline-workspace_xx link to navigate to that workspace. Create folder 'demo'.
+2. Name Workspace name as **airline-workspace_xx** with default catalog **atp\_external\_catalog\_xx**. Click the Create button.
+
+![Create AIDP Workspace](./images/create-aidp-workspace3.png)
+
+3. The airline-workspace_xx workspace gets created.
+
+![Create AIDP Workspace](./images/create-aidp-workspace4.png)
+
+4. Click on the airline-workspace_xx link to navigate to that workspace. Create folder **demo**.
 
 ![Create Demo Folder](./images/create-folder-workspace1.png)
 
-3. Create notebook 'airlines-notebook'.
+5. Create new notebook.
 
-![Create Notebook](./images/create-notebook1.png)
+![Create Notebook](./images/create-notebook2.png)
 
-4. Create and attach cluster **my\_workspace\_cluster\_xx**.
+6. Rename the new notebook to **airlines-notebook**.
 
-![Create Cluster](./images/create-cluster.png)
+![Create Notebook](./images/create-notebook3.png)
 
-![Airline Notebook](./images/airline-notebook.png)
+![Create Notebook](./images/create-notebook4.png)
+
+7. Click Cluster, and then Create Cluster
+
+![Create Cluster](./images/create-cluster1.png)
+
+8. Set Cluster name as **my\_workspace\_cluster\_xx**. Keep other values default. Click on Create button.
+
+![Create Cluster](./images/create-cluster2.png)
+
+9. Cluster creation initiates. Wait for 1 minute for cluster to create.
+
+![Create Cluster](./images/create-cluster3.png)
+
+10. Click on CLuster, and attach your newly created cluster
+
+![Create Cluster](./images/create-cluster4.png)
+
+11. You will see the following as the cluster attaches
+
+![Create Cluster](./images/create-cluster5.png)
+
+12. Once the cluster is attached you'll get the message
+
+![Create Cluster](./images/create-cluster6.png)
 
 ---
 
