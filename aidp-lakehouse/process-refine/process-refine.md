@@ -20,16 +20,6 @@ In this lab, you will:
 
 ---
 
-### Important Note
-
-If multiple users are concurrently working on this workshop, then for different users _01, _02, _03 can be used, instead of using _XX.
-
-For example:
-- Use Source\_01, Source\_02, Source\_03 etc instead of Source\_XX
-- Use Gold\_01, Gold\_02, Gold\_03 etc instead of Gold\_XX
-
----
-
 ### Prerequisites
 
 This lab assumes you have:
@@ -41,7 +31,9 @@ This lab assumes you have:
 
 ## Task 1: Load Sample Airline Data into Source_XX Schema in ATP instance
 
-1. In SQL Developer Web (as Source\_XX in ATP database), create the AIRLINE_SAMPLE table:
+1. In SQL Developer Web (as Source\_XX in ATP database airline-source-atp), create the AIRLINE_SAMPLE table.
+
+Paste the following SQL statement in the Worksheet and click the 'Run Statement' button
 
 ```sql
 <copy>
@@ -57,7 +49,13 @@ CREATE TABLE AIRLINE_SAMPLE (
 </copy>
 ```
 
+![Create Schema](./images/source_schema_create1.png)
+
 2. Insert sample data:
+
+Paste the following SQL statements in the Worksheet and click the 'Run Script' button
+
+![Create Data](./images/source_schema_populate1.png)
 
 ```sql
 <copy>
@@ -91,31 +89,69 @@ INSERT INTO AIRLINE_SAMPLE (FLIGHT_ID, AIRLINE, ORIGIN, DEST, DEP_DELAY, ARR_DEL
 
 3. Verify the data:
 
+Paste the following SQL statement in the Worksheet and click the 'Run Statement' button
+
+You should be able to view the data you inserted in the database table.
+
 ```sql
 <copy>
 SELECT * FROM AIRLINE_SAMPLE;
 </copy>
 ```
 
+![View Data](./images/source_schema_data1.png)
+
 ---
 
 ## Task 2: Connect AIDP to ATP and AI Lakehouse
 
-1. Navigate to the service console of AIDP - 
+1. Navigate back to the tab in your browser where you logged into the Oracle Cloud. Using the Navigation menu,  navigate to Analytics & AI -> Data Lake -> AI Data Platform 
 
-![AIDP Home](./images/aidp-home.png)
+![AI Data Platform](./images/create-aidp.png)
 
-2. Select Create > Catalog 
+2. Select the icon to open a new tab with the AIDP interface.
+
+![AIDP Instance](./images/aidp-instance1.png)
+
+3. The AIDP Console opens up.
+
+![AIDP Home](./images/aidp-home1.png)
+
+4. Select Create > Catalog 
 
 ![Create Catalog](./images/create-catalog.png)
 
-3. For ATP: Provide catalog name (e.g. **atp\_external\_catalog\_xx**), select External Catalog, External source type Oracle Autonomous Transaction Processing, choose your ATP instance, provide Source_XX username and password.
+5. For ATP: Provide catalog name (e.g. **atp\_external\_catalog\_xx**), select External Catalog, External source type Oracle Autonomous Transaction Processing
 
-![ATP External Catalog](./images/atp-external-catalog1.png)
+![ATP External Catalog](./images/atp-external-catalog2.png)
 
-4. For AI Lakehouse: Provide catalog name (e.g. **airlines\_external\_adb\_gold\_xx**), select External Catalog, External source type Oracle Autonomous Data Warehouse, choose your AI Lakehouse instance, provide Gold_XX username and password.
+6. Select the 'Choose ATP Instance' and select the 'aidp-lab' compartment from the drop down.
 
-![Create External Catalog](./images/adl-external-catalog1.png)
+![ATP External Catalog](./images/atp-external-catalog3.png)
+
+7. Select the ATP instance 'airline-source-atp' you created in lab 1. 
+
+![ATP External Catalog](./images/atp-external-catalog4.png)
+
+8. Set the connection type to airlinesource_medium
+
+![ATP External Catalog](./images/atp-external-catalog5.png)
+
+9. Provide Source_XX username and password.
+
+![ATP External Catalog](./images/atp-external-catalog6.png)
+
+10. Click on Test Connection, and ensure that the Connection Status is Successful. Then click the Create button.
+
+![ATP External Catalog](./images/atp-external-catalog7.png)
+
+11. Wait till connection is completed. You will see your connection being created.
+
+![ATP External Catalog](./images/atp-external-catalog8.png)
+
+12. Once the catalog is active proceed to the next step. 
+
+![ATP External Catalog](./images/atp-external-catalog9.png)
 
 ---
 

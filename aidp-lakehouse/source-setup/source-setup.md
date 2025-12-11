@@ -81,7 +81,7 @@ This lab assumes you have:
 
 2. Click **Create Autonomous Database**.
 
-3. Provide a display name (e.g., **airline-source-atp**), database name (e.g., **AIRLINESOURCE**), and select **Transaction Processing** as the workload type.
+3. Provide a display name (e.g., **airline-source-atp**), database name (e.g., **AIRLINESOURCE**), and select **Transaction Processing** as the workload type. Choose database version 26ai.
 
 ![ATP Setup](./images/atp-setup.png)
 
@@ -271,7 +271,7 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 ## Task 10: Provision AI Data Platform Instance
 
-1. Navigate to Analytics & AI > AI Data Platform > AI Data Platform Workbench
+1. Navigate to Analytics & AI > Data Lake > AI Data Platform
 
 ![AI Data Platform](./images/create-aidp.png)
 
