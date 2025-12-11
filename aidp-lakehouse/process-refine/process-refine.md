@@ -211,7 +211,11 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ## Task 4: Extract from ATP to Bronze Layer
 
-1. In the notebook, confirm ATP table:
+1. Paste the code block into the airlines-notebook, and make sure the language selected is Python. Click the Run button
+
+![AIDP Notebook](./images/aidp-notebook1.png)
+
+![AIDP Notebook](./images/aidp-notebook2.png)
 
 ```python
 <copy>
@@ -226,13 +230,19 @@ df.show()
 </copy>
 ```
 
+You should see the following results if the code runs correctly. 
+
+![AIDP Notebook](./images/aidp-notebook3.png)
+
 **NOTE** 
 For each iteration of code blocks it's recommended to run that section individually to validate the scripts. Once all the code blocks are validated, you can run this entire notebook as a job in a workflow.
-For creating next code block in a new cell, click on the "+" icon.
 
-![Run Next Code Cell](./images/run-next-code-cell.png)
+2. For creating next code block in a new cell, click on the "+" icon.
 
-2. Write the new data frame to your Object Storage bucket. Replace '**aidp-demo-bucket_xx**' with your oci bucket name and '**your-os-namespace**' with object storage namespace - 
+![AIDP Notebook](./images/aidp-notebook4.png)
+
+Write the new data frame to your Object Storage bucket. **aidp-demo-bucket_xx** refers to the bucket name in OCI
+Replace **your-os-namespace** with your Object Storage namespace. You can get the namespace from Lab 1 Task 11 Step 5
 
 ```python
 <copy>
@@ -240,14 +250,24 @@ delta_path = "oci://aidp-demo-bucket_xx@your-os-namespace/delta/airline_sample"
 df.write.format("delta").mode("overwrite").save(delta_path)
 </copy>
 ```
+![AIDP Notebook](./images/aidp-notebook5.png)
 
-**NOTE** **aidp-demo-bucket_xx** refers to the bucket name in OCI, and **your-os-namespace** is the namespace found in the bucket - 
+You should see the following results if the code runs correctly. 
 
-![Get OS Namespace](./images/get-os-namespace1.png)
+![AIDP Notebook](./images/aidp-notebook6.png)
+
 
 **NOTE** Only one table can be associated with a given delta path. If a table is created on a path that already is associated with another table, it will throw an error. The associated table will have to be deleted then re-write the dataframe to the path. 
 
-3. Create bronze table for first stage of medallian architecture. Here we will create a new (standard) catalog, called "**airlines\_data\_catalog\_xx**". This is distinct from the external catalog to the ATP & AI Lakehouse created earlier. "**airlines\_data\_catalog\_xx**" will be used to store the bronze, silver, and gold layers of the medallian architecture.
+3. For creating next code block in a new cell, click on the "+" icon.
+
+![AIDP Notebook](./images/aidp-notebook7.png)
+
+Create bronze table for first stage of medallian architecture. Here we will create a new (standard) catalog, called "**airlines\_data\_catalog\_xx**". This is distinct from the external catalog to the ATP & AI Lakehouse created earlier. "**airlines\_data\_catalog\_xx**" will be used to store the bronze, silver, and gold layers of the medallian architecture.
+
+Paste the code block. Click the Run button.
+
+![AIDP Notebook](./images/aidp-notebook8.png)
 
 ```python
 <copy>
@@ -269,7 +289,19 @@ spark.sql(f"""
 </copy>
 ```
 
-4. Clean the data 
+You should see the following results if the code runs correctly. 
+
+![AIDP Notebook](./images/aidp-notebook9.png)
+
+4. Click the "+" button to create new code block
+
+![AIDP Notebook](./images/aidp-notebook11.png)
+
+Paste the code block. Click the Run button.
+
+![AIDP Notebook](./images/aidp-notebook10.png)
+
+Clean the data 
 
 ```python
 <copy>
@@ -280,7 +312,19 @@ spark.sql(f"""
 </copy>
 ```
 
-5. Test versioning capabilities of delta tables. With delta lake capabilities the user can now show older versions of tables before they were modified.
+You should see the following results if the code runs correctly. 
+
+![AIDP Notebook](./images/aidp-notebook12.png)
+
+5. Click the "+" button to create new code block
+
+![AIDP Notebook](./images/aidp-notebook13.png)
+
+Test versioning capabilities of delta tables. With delta lake capabilities the user can now show older versions of tables before they were modified.
+
+Paste the code block. Click the Run button.
+
+![AIDP Notebook](./images/aidp-notebook14.png)
 
 ```python 
 <copy>
@@ -289,11 +333,23 @@ df_v0.show()
 </copy>
 ```
 
+You should see the following results if the code runs correctly. 
+
+![AIDP Notebook](./images/aidp-notebook15.png)
+
 ---
 
 ## Task 5: Create Silver Medallian Schema & Enrich Data with Generative AI 
 
-1. Write to silver schema of medallian architecture 
+1. Click the "+" button to create new code block
+
+![AIDP Notebook](./images/aidp-notebook16.png)
+
+Write to silver schema of medallian architecture 
+
+Paste the code block. Click the Run button.
+
+![AIDP Notebook](./images/aidp-notebook17.png)
 
 ```python
 <copy>
@@ -323,7 +379,19 @@ spark.sql(f"SELECT * FROM {silver_table}").show()
 </copy>
 ```
 
-2. Enrich the data 
+You should see the following results if the code runs correctly. 
+
+![AIDP Notebook](./images/aidp-notebook18.png)
+
+2. Click the "+" button to create new code block
+
+![AIDP Notebook](./images/aidp-notebook19.png)
+
+Enrich the data 
+
+Paste the code block. Click the Run button.
+
+![AIDP Notebook](./images/aidp-notebook20.png)
 
 ```python
 <copy>
@@ -346,7 +414,19 @@ enhanced_df.show()
 </copy>
 ```
 
-3. Add new column for Sentiment Analysis 
+You should see the following results if the code runs correctly. 
+
+![AIDP Notebook](./images/aidp-notebook21.png)
+
+3. Click the "+" button to create new code block
+
+![AIDP Notebook](./images/aidp-notebook22.png)
+
+Add new column for Sentiment Analysis 
+
+Paste the code block. Click the Run button.
+
+![AIDP Notebook](./images/aidp-notebook23.png)
 
 ```python
 <copy>
@@ -370,7 +450,19 @@ df_with_review.show()
 </copy>
 ```
 
-4. Test and run AI model against reviews of flights
+You should see the following results if the code runs correctly. 
+
+![AIDP Notebook](./images/aidp-notebook24.png)
+
+4. Click the "+" button to create new code block
+
+![AIDP Notebook](./images/aidp-notebook25.png)
+
+Test and run AI model against reviews of flights
+
+Paste the code block. Click the Run button.
+
+![AIDP Notebook](./images/aidp-notebook26.png)
 
 ```python
 <copy>
@@ -387,7 +479,11 @@ enhanced_df.show(10, False)
 </copy>
 ```
 
-**NOTE** AIDP as of writing (Nov 2025) supports cohere and grok models. Dragging and dropping the other sample models from the catalog can result in 'model not found' errors. A temporary workaround can be to remove the '**default.oci\_ai\_models**' prefix from the model path. This should be fixed in the near future. 
+You should see the following results if the code runs correctly. 
+
+![AIDP Notebook](./images/aidp-notebook27.png)
+
+**NOTE** AIDP as of writing (Dec 2025) supports cohere and grok models. Dragging and dropping the other sample models from the catalog can result in 'model not found' errors. A temporary workaround can be to remove the '**default.oci\_ai\_models**' prefix from the model path. This should be fixed in the near future. 
 
 ---
 

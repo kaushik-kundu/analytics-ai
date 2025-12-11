@@ -315,11 +315,15 @@ GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR TO gold_XX;
 
 ![Create OS Bucket](./images/os-buckets-4.png)
 
-5. Click on Objects. Click on Actions -> Create New Folder
+5. Note the Namespace. It would be required in next lab.
+
+![Create OS Bucket](./images/os-buckets-7.png)
+
+6. Click on Objects. Click on Actions -> Create New Folder
 
 ![Create OS Bucket](./images/os-buckets-5.png)
 
-6. Create a folder 'delta' in the bucket. Click on "Create folder" to create the folder.
+7. Create a folder 'delta' in the bucket. Click on "Create folder" to create the folder.
 
 ![Create OS Bucket](./images/os-buckets-6.png)
 
