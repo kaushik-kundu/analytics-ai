@@ -250,7 +250,7 @@ Paste the code block. Click the Run button.
 ![AIDP Notebook](./images/aidp-notebook5.png)
 
 Write the new data frame to your Object Storage bucket. 
-The **aidp-demo-bucket_xx** refers to the bucket name in OCI
+The **aidp-demo-bucket_xx** refers to the bucket name in OCI.
 Replace **your-os-namespace** with your Object Storage namespace. Please refer to "Lab 1 Task 11 Step 5" for getting your Object Storage namespace.
 
 ```python
@@ -359,7 +359,7 @@ Paste the code block. Click the Run button.
 
 ![AIDP Notebook](./images/aidp-notebook17.png)
 
-The **aidp-demo-bucket_xx** refers to the bucket name in OCI
+The **aidp-demo-bucket_xx** refers to the bucket name in OCI.
 Replace **your-os-namespace** with your Object Storage namespace. Please refer to "Lab 1 Task 11 Step 5" for getting your Object Storage namespace.
 
 ```python
@@ -552,7 +552,7 @@ Paste the code block. Click the Run button.
 
 Save new data to gold schema 
 
-The **aidp-demo-bucket_xx** refers to the bucket name in OCI
+The **aidp-demo-bucket_xx** refers to the bucket name in OCI.
 Replace **your-os-namespace** with your Object Storage namespace. Please refer to "Lab 1 Task 11 Step 5" for getting your Object Storage namespace.
 
 ```python
