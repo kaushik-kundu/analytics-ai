@@ -31,7 +31,7 @@ This lab assumes you have:
 
 ## Task 1: Load Sample Airline Data into Source_XX Schema in ATP instance
 
-1. Navigate back to SQL Developer browser tab for the ATP database airline-source-atp, that you created in Lab 1. Ensure that you can see the SOURCE\_XX user in the top right of the screen.
+1. Navigate back to SQL Developer browser tab for the ATP database "airline-source-atp", that you created in Lab 1. Ensure that you can see the SOURCE\_XX user in the top right of the screen.
 
 Create the AIRLINE_SAMPLE table.
 
@@ -131,7 +131,7 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ![ATP External Catalog](./images/atp-external-catalog3.png)
 
-7. Select the ATP instance 'airline-source-atp' you created in lab 1. 
+7. Select the ATP instance 'airline-source-atp' you created in Lab 1. 
 
 ![ATP External Catalog](./images/atp-external-catalog4.png)
 
@@ -197,7 +197,9 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ![Create Cluster](./images/create-cluster3.png)
 
-10. Click on CLuster, and attach your newly created cluster
+10. Click on 'Cluster' and then 'Attach existing cluster'. After cluster creation completes, you'll be able to see that cluster there.
+
+Attach your newly created cluster
 
 ![Create Cluster](./images/create-cluster4.png)
 
@@ -243,8 +245,13 @@ For each iteration of code blocks it's recommended to run that section individua
 
 ![AIDP Notebook](./images/aidp-notebook4.png)
 
-Write the new data frame to your Object Storage bucket. **aidp-demo-bucket_xx** refers to the bucket name in OCI
-Replace **your-os-namespace** with your Object Storage namespace. You can get the namespace from Lab 1 Task 11 Step 5
+Paste the code block. Click the Run button.
+
+![AIDP Notebook](./images/aidp-notebook5.png)
+
+Write the new data frame to your Object Storage bucket. 
+The **aidp-demo-bucket_xx** refers to the bucket name in OCI
+Replace **your-os-namespace** with your Object Storage namespace. Please refer to "Lab 1 Task 11 Step 5" for getting your Object Storage namespace.
 
 ```python
 <copy>
@@ -252,7 +259,6 @@ delta_path = "oci://aidp-demo-bucket_xx@your-os-namespace/delta/airline_sample"
 df.write.format("delta").mode("overwrite").save(delta_path)
 </copy>
 ```
-![AIDP Notebook](./images/aidp-notebook5.png)
 
 You should see the following results if the code runs correctly. 
 
@@ -265,7 +271,7 @@ You should see the following results if the code runs correctly.
 
 ![AIDP Notebook](./images/aidp-notebook7.png)
 
-Create bronze table for first stage of medallian architecture. Here we will create a new (standard) catalog, called "**airlines\_data\_catalog\_xx**". This is distinct from the external catalog to the ATP & AI Lakehouse created earlier. "**airlines\_data\_catalog\_xx**" will be used to store the bronze, silver, and gold layers of the medallian architecture.
+Create bronze table for first stage of Medallion architecture. Here you will create a new (standard) catalog, called "**airlines\_data\_catalog\_xx**". This is distinct from the external catalog created earlier. The "**airlines\_data\_catalog\_xx**" will be used to store the bronze, silver, and gold layers of the Medallion Architecture.
 
 Paste the code block. Click the Run button.
 
@@ -341,17 +347,20 @@ You should see the following results if the code runs correctly.
 
 ---
 
-## Task 5: Create Silver Medallian Schema & Enrich Data with Generative AI 
+## Task 5: Create Silver Medallion Schema & Enrich Data with Generative AI 
 
 1. Click the "+" button to create new code block
 
 ![AIDP Notebook](./images/aidp-notebook16.png)
 
-Write to silver schema of medallian architecture 
+Write to silver schema of Medallion Architecture 
 
 Paste the code block. Click the Run button.
 
 ![AIDP Notebook](./images/aidp-notebook17.png)
+
+The **aidp-demo-bucket_xx** refers to the bucket name in OCI
+Replace **your-os-namespace** with your Object Storage namespace. Please refer to "Lab 1 Task 11 Step 5" for getting your Object Storage namespace.
 
 ```python
 <copy>
@@ -495,35 +504,35 @@ You should see the following results if the code runs correctly.
 
 ![Create Catalog](./images/create-catalog-a.png)
 
-5. For AI Lakehouse: Provide catalog name (e.g. **airlines\_external\_adb\_gold\_xx**), select External Catalog, External source type Oracle Autonomous Data Warehouse
+2. For AI Lakehouse: Provide catalog name (e.g. **airlines\_external\_adb\_gold\_xx**), select External Catalog, External source type Oracle Autonomous Data Warehouse
 
 ![ADL External Catalog](./images/adl-external-catalog2.png)
 
-6. Select the 'Choose ADW Instance' and select the 'aidp-lab' compartment from the drop down.
+3. Select the 'Choose ADW Instance' and select the 'aidp-lab' compartment from the drop down.
 
 ![ADL External Catalog](./images/adl-external-catalog3.png)
 
-7. Select the Lakehouse instance 'aidp-db' you created in lab 1. 
+4. Select the Lakehouse instance 'aidp-db' you created in Lab 1. 
 
 ![ADL External Catalog](./images/adl-external-catalog4.png)
 
-8. Set the connection type to aidpdb_medium
+5. Set the connection type to aidpdb_medium
 
 ![ADL External Catalog](./images/adl-external-catalog5.png)
 
-9. Provide Gold_XX username and password.
+6. Provide Gold_XX username and password.
 
 ![ADL External Catalog](./images/adl-external-catalog6.png)
 
-10. Click on Test Connection, and ensure that the Connection Status is Successful. Then click the Create button.
+7. Click on Test Connection, and ensure that the Connection Status is Successful. Then click the Create button.
 
 ![ADL External Catalog](./images/adl-external-catalog7.png)
 
-11. Wait till connection is completed. You will see your connection being created.
+8. Wait till connection is completed. You will see your connection being created.
 
 ![ADL External Catalog](./images/adl-external-catalog8.png)
 
-12. Once the catalog is active proceed to the next step. 
+9. Once the catalog is active proceed to the next step. 
 
 ![ADL External Catalog](./images/adl-external-catalog9.png)
 
@@ -542,6 +551,9 @@ Paste the code block. Click the Run button.
 ![AIDP Notebook](./images/aidp-gold-notebook3.png)
 
 Save new data to gold schema 
+
+The **aidp-demo-bucket_xx** refers to the bucket name in OCI
+Replace **your-os-namespace** with your Object Storage namespace. Please refer to "Lab 1 Task 11 Step 5" for getting your Object Storage namespace.
 
 ```python
 <copy>
@@ -659,9 +671,9 @@ You should see the following results if the code runs correctly.
 
 ## Task 8: Create Gold Table and Insert Data
 
-1. Navigate back to SQL Developer browser tab for the AI Lakehouse database aidp-db, that you created in Lab 1. Ensure that you can see the GOLD\_XX user in the top right of the screen.
+1. Navigate back to SQL Developer browser tab for the AI Lakehouse database "aidp-db", that you created in Lab 1. Ensure that you can see the GOLD\_XX user in the top right of the screen.
 
-Create the AIRLINE_SAMPLE_GOLD table
+Create the AIRLINE\_SAMPLE\_GOLD table
 
 Paste the following SQL statement in the Worksheet and click the 'Run Statement' button
 
@@ -690,15 +702,15 @@ CREATE TABLE AIRLINE_SAMPLE_GOLD (
 
 ![Refresh Catalog](./images/refresh-catalog.png)
 
-3. Go back to your notebook. Click airline-workspace_xx workspace link, and then airline-notebook.ipynb link.
+3. To go back to your notebook, click airline-workspace_xx workspace link and then airline-notebook.ipynb link.
 
 ![AIDP Notebook](./images/aidp-gold-notebook1.png)
 
-Click the "+" button to create new code block
+4. Click the "+" button to create new code block
 
 ![AIDP Notebook](./images/aidp-gold-notebook11.png)
 
-Insert data in airline_sample_gold table in AI Lakehouse :
+Insert data in airline\_sample\_gold table in AI Lakehouse :
 
 Paste the code block. Make sure the language selected is SQL. Click the Run button.
 
