@@ -103,7 +103,7 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 ---
 
-## Task 2: Connect AIDP to ATP and AI Lakehouse
+## Task 2: Connect AIDP to ATP Source
 
 1. Navigate back to the tab in your browser where you logged into the Oracle Cloud. Using the Navigation menu,  navigate to Analytics & AI -> Data Lake -> AI Data Platform 
 
@@ -119,7 +119,7 @@ SELECT * FROM AIRLINE_SAMPLE;
 
 4. Select Create > Catalog 
 
-![Create Catalog](./images/create-catalog.png)
+![Create Catalog](./images/create-catalog-a.png)
 
 5. For ATP: Provide catalog name (e.g. **atp\_external\_catalog\_xx**), select External Catalog, External source type Oracle Autonomous Transaction Processing
 
@@ -487,9 +487,59 @@ You should see the following results if the code runs correctly.
 
 ---
 
-## Task 6: Write Enriched Data to Gold Schema 
+## Task 6: Connect AIDP to AI Lakehouse
 
-1. Save new data to gold schema 
+1. In AIDP Console, select Create > Catalog 
+
+![Create Catalog](./images/create-catalog-a.png)
+
+5. For AI Lakehouse: Provide catalog name (e.g. **airlines\_external\_adb\_gold\_xx**), select External Catalog, External source type Oracle Autonomous Data Warehouse
+
+![ADL External Catalog](./images/adl-external-catalog2.png)
+
+6. Select the 'Choose ADW Instance' and select the 'aidp-lab' compartment from the drop down.
+
+![ADL External Catalog](./images/adl-external-catalog3.png)
+
+7. Select the Lakehouse instance 'aidp-db' you created in lab 1. 
+
+![ADL External Catalog](./images/adl-external-catalog4.png)
+
+8. Set the connection type to aidpdb_medium
+
+![ADL External Catalog](./images/adl-external-catalog5.png)
+
+9. Provide Gold_XX username and password.
+
+![ADL External Catalog](./images/adl-external-catalog6.png)
+
+10. Click on Test Connection, and ensure that the Connection Status is Successful. Then click the Create button.
+
+![ADL External Catalog](./images/adl-external-catalog7.png)
+
+11. Wait till connection is completed. You will see your connection being created.
+
+![ADL External Catalog](./images/adl-external-catalog8.png)
+
+12. Once the catalog is active proceed to the next step. 
+
+![ADL External Catalog](./images/adl-external-catalog9.png)
+
+## Task 7: Write Enriched Data to Gold Schema 
+
+1. To go back to your notebook, click airline-workspace_xx workspace link, and then airline-notebook.ipynb link
+
+![AIDP Notebook](./images/aidp-gold-notebook1.png)
+
+2. Click the "+" button to create new code block
+
+![AIDP Notebook](./images/aidp-gold-notebook2.png)
+
+Paste the code block. Click the Run button.
+
+![AIDP Notebook](./images/aidp-gold-notebook3.png)
+
+Save new data to gold schema 
 
 ```python
 <copy>
@@ -516,7 +566,19 @@ df_gold.show()
 </copy>
 ```
 
-2. Confirm all columns are upper case. This is because OAC requires upper case columns for visualizations, otherwise results in errors. 
+You should see the following results if the code runs correctly. 
+
+![AIDP Notebook](./images/aidp-gold-notebook4.png)
+
+3.Click the "+" button to create new code block
+
+![AIDP Notebook](./images/aidp-gold-notebook5.png)
+
+Confirm all columns are upper case. This is because OAC requires upper case columns for visualizations, otherwise results in errors. 
+
+Paste the code block. Click the Run button.
+
+![AIDP Notebook](./images/aidp-gold-notebook6.png)
 
 ```python
 <copy>
@@ -529,7 +591,12 @@ df_gold.show()
 </copy>
 ```
 
-3. Cast columns to decimal type. This is to conform the spark data frames to the AI Lakehouse column definitions. 
+You should see the following results if the code runs correctly. 
+
+![AIDP Notebook](./images/aidp-gold-notebook7.png)
+
+
+4. Cast columns to decimal type. This is to conform the spark data frames to the AI Lakehouse column definitions. 
 
 ```python
 <copy>
@@ -576,7 +643,7 @@ df_gold_typed.createOrReplaceTempView("df_gold")
 
 ---
 
-## Task 7: Create Gold Table and Insert Data
+## Task 8: Create Gold Table and Insert Data
 
 1. In AI Lakehouse SQL Developer, sign in as Gold_XX, create the gold table:
 
