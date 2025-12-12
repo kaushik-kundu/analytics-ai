@@ -39,7 +39,15 @@ This lab assumes you have:
 
 2. Select **Database connection** and download the wallet for the lakehouse.
 
-![Download Wallet](./images/download-wallet.png)
+![Download Wallet](./images/ai-lakehouse-db-wallet1.png)
+
+3. For Wallet Type 'Instance Wallet', click on 'Download Wallet' button
+
+![Download Wallet](./images/ai-lakehouse-db-wallet2.png)
+
+4. Set the wallet password, and click the 'Download' button.
+
+![Download Wallet](./images/ai-lakehouse-db-wallet3.png)
 
 ---
 
@@ -136,11 +144,23 @@ This lab assumes you have:
 
 ![GenAI](./images/oac-genai3.png)
 
-4. From the OAC Home Page, open the OAC Workbook "aidp-gold-xx-workbook" (that you created) in edit mode
+4. From the OAC Home Page, open the OAC Workbook "aidp-gold-xx-workbook" (that you created)
 
-5. In the  "Present" tab, ensure that the "Workbook Assistant" is turned "On" in the Insights Panel
+![Assistant1](./images/aidp-oac-workbook5.png)
+
+![Assistant1](./images/aidp-oac-workbook6.png)
+
+5. CLick the 'edit' mode
+
+![Assistant1](./images/aidp-oac-workbook7.png)
+
+6. Click the  "Present" tab. In the left panel, scroll down to the 'Insights Panel'. Ensure that the "Workbook Assistant" is turned "On" in the 'Insights Panel', and your dataset 'aidp_gold_xx_dataset' is checked.
 
 ![Assistant1](./images/aidp-oac-workbook2.png)
+
+7. Save the updated workbook
+
+![Assistant1](./images/aidp-oac-workbook8.png)
 
 ---
 
