@@ -31,7 +31,9 @@ This lab assumes you have:
 
 ## Task 1: Load Sample Airline Data into Source_XX Schema in ATP instance
 
-1. In SQL Developer Web (as Source\_XX in ATP database airline-source-atp), create the AIRLINE_SAMPLE table.
+1. Navigate back to SQL Developer browser tab for the ATP database airline-source-atp, that you created in Lab 1. Ensure that you can see the SOURCE\_XX user in the top right of the screen.
+
+Create the AIRLINE_SAMPLE table.
 
 Paste the following SQL statement in the Worksheet and click the 'Run Statement' button
 
@@ -596,7 +598,15 @@ You should see the following results if the code runs correctly.
 ![AIDP Notebook](./images/aidp-gold-notebook7.png)
 
 
-4. Cast columns to decimal type. This is to conform the spark data frames to the AI Lakehouse column definitions. 
+4. Click the "+" button to create new code block
+
+![AIDP Notebook](./images/aidp-gold-notebook8.png)
+
+Cast columns to decimal type. This is to conform the spark data frames to the AI Lakehouse column definitions. 
+
+Paste the code block. Click the Run button.
+
+![AIDP Notebook](./images/aidp-gold-notebook9.png)
 
 ```python
 <copy>
@@ -641,11 +651,21 @@ df_gold_typed.createOrReplaceTempView("df_gold")
 </copy>
 ```
 
+You should see the following results if the code runs correctly. 
+
+![AIDP Notebook](./images/aidp-gold-notebook10.png)
+
 ---
 
 ## Task 8: Create Gold Table and Insert Data
 
-1. In AI Lakehouse SQL Developer, sign in as Gold_XX, create the gold table:
+1. Navigate back to SQL Developer browser tab for the AI Lakehouse database aidp-db, that you created in Lab 1. Ensure that you can see the GOLD\_XX user in the top right of the screen.
+
+Create the AIRLINE_SAMPLE_GOLD table
+
+Paste the following SQL statement in the Worksheet and click the 'Run Statement' button
+
+![Create Gold Table](./images/adl-gold-table-creation1.png)
 
 ```sql
 <copy>
@@ -666,11 +686,23 @@ CREATE TABLE AIRLINE_SAMPLE_GOLD (
 </copy>
 ```
 
-2. Back in AIDP notebook, refresh the external catalog "airlines\_external\_adb\_gold\_xx" from Master_Catalog
+2. Back in AIDP Master Catalog, refresh the external catalog "airlines\_external\_adb\_gold\_xx" from Master_Catalog
 
 ![Refresh Catalog](./images/refresh-catalog.png)
 
-3. Using the airlines-notebook Notebook, insert data:
+3. Go back to your notebook. Click airline-workspace_xx workspace link, and then airline-notebook.ipynb link.
+
+![AIDP Notebook](./images/aidp-gold-notebook1.png)
+
+Click the "+" button to create new code block
+
+![AIDP Notebook](./images/aidp-gold-notebook11.png)
+
+Insert data in airline_sample_gold table in AI Lakehouse :
+
+Paste the code block. Make sure the language selected is SQL. Click the Run button.
+
+![AIDP Notebook](./images/aidp-gold-notebook12.png)
 
 ```sql
 <copy>
@@ -678,6 +710,10 @@ CREATE TABLE AIRLINE_SAMPLE_GOLD (
 INSERT into airlines_external_adb_gold_xx.gold_xx.airline_sample_gold select * from df_gold
 </copy>
 ```
+
+You should see the following results if the code runs correctly. 
+
+![AIDP Notebook](./images/aidp-gold-notebook14.png)
 
 **NOTE** We use the sql insert instead of the native spark insert, because spark causes the dataframe to be pushed with lowercase column names. This results in OAC unable to visualize the data. Using sql INSERT into avoids this issue. 
 
