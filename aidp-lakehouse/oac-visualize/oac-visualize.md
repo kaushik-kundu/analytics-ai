@@ -87,7 +87,7 @@ This lab assumes you have:
 
 ![Create Gold Dataset](./images/create-dataset-gold1.jpg)
 
-9. Select the save button at the top right to create the dataset. Name the dataset **aidp_gold_xx_dataset**.
+9. Select the save button at the top right to create the dataset. Name the dataset **aidp\_gold\_xx\_dataset**.
 
 ![Save Gold Dataset](./images/create-dataset1.png)
 
@@ -117,11 +117,17 @@ From the dropdown, select Pie as the chart to see a visualization
 
 ![Select Visualization](./images/oac-chart3.png)
 
+The fields should be finally mapped as follows:
+
 ![Average Departure Delay Pie Chart](./images/avg-dep-delay-pie.png) 
+
+ - You'll be able to view the pie chart visualization of the average departure delay by airline.
 
 ![Average Departure Delay Pie Chart](./images/avg-dep-delay-pie-2.png)
 
-4. We can also create a bar chart by average departure delay. Drag and drop the following fields onto the canvas.
+4. We can also create a bar chart by average departure delay. 
+
+Drag and drop the following fields onto the canvas.
  - AVG\_DEP\_DELAY
  - Airline
 
@@ -185,7 +191,9 @@ The fields should be finally mapped as follows
 
 ![GenAI](./images/oac-genai2.png)
 
-3. If the 'Status' shows Inactive, click the 3 dots and then click 'Set Active'
+3. If the 'Status' shows 'Active', proceed to the next step.
+
+If the 'Status' shows 'Inactive', click the 3 dots and then click 'Set Active'
 
 ![GenAI](./images/oac-genai4.png)
 
@@ -193,7 +201,9 @@ The 'Status' should be set to 'Active'
 
 ![GenAI](./images/oac-genai5.png)
 
-4. For each of the features, clcik the dropdown and select 'Oracle Analytics'
+4. For each of the features, the dropdown should indicate 'Oracle Analytics'. If that's indicated, proceed to the next step.
+
+If not, for each of the features, click the dropdown and select 'Oracle Analytics'
 
 ![GenAI](./images/oac-genai6.png)
 
