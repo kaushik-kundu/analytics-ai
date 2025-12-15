@@ -53,33 +53,41 @@ This lab assumes you have:
 
 ## Task 2: Connect OAC to Your Gold Data Table
 
-1. In Analytics Cloud instance, navigate to the service console. 
+1. Using the Navigation menu, navigate to Analytics & AI -> Analytics -> Analytics Cloud
 
-2. Go to **Create → Connection**, then select Oracle Autonomous Warehouse (Now Autonomous AI Lakehouse) 
+![Analytics Cloud](./images/oac-instance1.png)
 
-![Create Connection](./images/create-connection.png)
+2. Click on the OAC instance 'aidpoac' name, and then 'Analytics Home Page', to open the service console. 
+
+![Analytics Cloud](./images/oac-instance2.png)
+
+![Analytics Cloud](./images/oac-instance3.png)
+
+3. Go to **Create → Connection**, then select Oracle Autonomous Warehouse (Now Autonomous AI Lakehouse) 
+
+![Create Connection](./images/create-connection1.png)
 
 ![Select Lakehouse](./images/create-adl-conn.png)
 
-3. Provide the details for the lakehouse, and upload the wallet as client credentials from Task 1. Use GOLD_XX schema credentials.
+4. Provide the name **adl-conn-xx**, the  details for the lakehouse, and upload the wallet as client credentials from Task 1. Use GOLD_XX schema credentials.
 
 ![Create ADL Connection](./images/create-adl-conn-3.jpg)
 
-4. Select Save.
+5. Select Save.
 
-5. From the OAC home page, select Create > Dataset
+6. From the OAC home page, select Create > Dataset
 
-![Create Dataset](./images/create-dataset.png)
+![Create Dataset](./images/create-dataset2.png)
 
-6. Select the **adl-conn-xx** just created 
+7. Select the **adl-conn-xx** just created 
 
 ![Create ADL Dataset](./images/create-adl-conn-4.jpg)
 
-7. Expand the Schemas on the left-hand side and GOLD\_XX schema. Drag and drop the **AIRLINE\_SAMPLE\_GOLD** table to the white space to the right 
+8. Expand the Schemas on the left-hand side and GOLD\_XX schema. Drag and drop the **AIRLINE\_SAMPLE\_GOLD** table to the white space to the right 
 
 ![Create Gold Dataset](./images/create-dataset-gold1.jpg)
 
-8. Select the save button at the top right to create the dataset. 
+9. Select the save button at the top right to create the dataset. Name the dataset **aidp_gold_xx_dataset**.
 
 ![Save Gold Dataset](./images/create-dataset1.png)
 
@@ -89,6 +97,8 @@ This lab assumes you have:
 
 1. From the OAC home page, select Create > Workbook
 
+![Create Workbook](./images/create-workbook1.png)
+
 2. Select the dataset just created > Add to workbook
 
 ![Select Dataset](./images/select-dataset1.png)
@@ -97,13 +107,35 @@ This lab assumes you have:
     - AVG\_DEP\_DELAY
     - AIRLINE
 
-![Average Departure Delay Pie Chart](./images/avg-dep-delay-pie.png)
+![Drag OAC fields](./images/oac-chart1.png)
 
-- Select Pie as the chart to see a visualization 
+Drag the 'Airline' to the 'Color' field
+
+![Drag OAC fields](./images/oac-chart2.png)
+
+From the dropdown, select Pie as the chart to see a visualization
+
+![Select Visualization](./images/oac-chart3.png)
+
+![Average Departure Delay Pie Chart](./images/avg-dep-delay-pie.png) 
 
 ![Average Departure Delay Pie Chart](./images/avg-dep-delay-pie-2.png)
 
-4. We can also create a bar chart by average departure delay. Drag and drop the field AVG\_DEP\_DELAY onto the canvas, outside of the existing pie chart. Map the following fields - 
+4. We can also create a bar chart by average departure delay. Drag and drop the following fields onto the canvas.
+ - AVG\_DEP\_DELAY
+ - Airline
+
+![OAC Chart](./images/oac-chart4.png)
+
+Drop the fields outside of the existing pie chart. 
+
+![OAC Chart](./images/oac-chart5.png)
+
+Drag the 'Airline' to the 'Color' field
+
+![OAC Chart](./images/oac-chart6.png)
+
+The fields should be finally mapped as follows:
 
 ![Average Departure Delay Bar Chart](./images/avg-dep-delay-bar.png)
 
@@ -111,15 +143,28 @@ This lab assumes you have:
 
 ![Average Departure Delay Bar Chart](./images/avg-dep-delay-bar-2.png)
 
-5. Finally we'll add a new table graph for the reviews and sentiments. Drag the **AIRLINE** field underneath the existing charts. Map the following fields - 
+5. Finally we'll add a new table graph for the reviews and sentiments. 
+
+Drag the following fields
+ - Airline
+ - Review
+ - Sentiment
+
+![OAC Chart](./images/oac-chart7.png)
+
+Drop the fields underneath the existing charts. 
+
+![OAC Chart](./images/oac-chart8.png)
+
+The fields should be finally mapped as follows 
 
 ![Sentiment Table](./images/sentiment-table.png)
 
-- You should now be able to see a table of sentiments - 
+- You should now be able to see a table of sentiments  
 
 ![Sentiment Table](./images/sentiment-table-2.png)
 
-- Once all the charts are configured, the workbook will show all the analytics on one page - 
+- Once all the charts are configured, the workbook will show all the analytics on one page 
 
 ![Analytics AIDP](./images/aidp-oac-workbook1.png)
 
@@ -140,25 +185,41 @@ This lab assumes you have:
 
 ![GenAI](./images/oac-genai2.png)
 
-3. Under "Oracle Analytics AI Assistant Features," select Oracle Analytics from the Gen AI Service dropdown and click Update to enable the service
+3. If the 'Status' shows Inactive, click the 3 dots and then click 'Set Active'
+
+![GenAI](./images/oac-genai4.png)
+
+The 'Status' should be set to 'Active'
+
+![GenAI](./images/oac-genai5.png)
+
+4. For each of the features, clcik the dropdown and select 'Oracle Analytics'
+
+![GenAI](./images/oac-genai6.png)
+
+Click 'Update'
+
+![GenAI](./images/oac-genai7.png)
+
+Finally the Generative AI service should be set as follows:
 
 ![GenAI](./images/oac-genai3.png)
 
-4. From the OAC Home Page, open the OAC Workbook "aidp-gold-xx-workbook" (that you created)
+5. From the OAC Home Page, open the OAC Workbook "aidp-gold-xx-workbook" (that you created)
 
 ![Assistant1](./images/aidp-oac-workbook5.png)
 
 ![Assistant1](./images/aidp-oac-workbook6.png)
 
-5. CLick the 'edit' mode
+6. CLick the 'edit' mode
 
 ![Assistant1](./images/aidp-oac-workbook7.png)
 
-6. Click the  "Present" tab. In the left panel, scroll down to the 'Insights Panel'. Ensure that the "Workbook Assistant" is turned "On" in the 'Insights Panel', and your dataset 'aidp_gold_xx_dataset' is checked.
+7. Click the  "Present" tab. In the left panel, scroll down to the 'Insights Panel'. Ensure that the "Workbook Assistant" is turned "On" in the 'Insights Panel', and your dataset 'aidp_gold_xx_dataset' is checked.
 
 ![Assistant1](./images/aidp-oac-workbook2.png)
 
-7. Save the updated workbook
+8. Save the updated workbook
 
 ![Assistant1](./images/aidp-oac-workbook8.png)
 
