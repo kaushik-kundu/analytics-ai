@@ -249,9 +249,7 @@ Paste the code block. Click the Run button.
 
 ![AIDP Notebook](./images/aidp-notebook5.png)
 
-Write the new data frame to your Object Storage bucket. 
-The **aidp-demo-bucket_xx** refers to the bucket name in OCI.
-Replace **your-os-namespace** with your Object Storage namespace. Please refer to "Lab 1 Task 11 Step 5" for getting your Object Storage namespace.
+The code block below will write a new data frame to the object storage bucket you created in Lab 1. The **aidp-demo-bucket_xx** refers to the bucket name in OCI. After pasting in the code you will need to replace **your-os-namespace** with your Object Storage namespace. Please refer to "Lab 1 Task 11 Step 5" for getting your Object Storage namespace.”
 
 ```python
 <copy>
@@ -263,6 +261,10 @@ df.write.format("delta").mode("overwrite").save(delta_path)
 You should see the following results if the code runs correctly. 
 
 ![AIDP Notebook](./images/aidp-notebook6.png)
+
+The output of this code should look like this in the object storage bucket created in Lab 1. 
+
+![OS Bucket](./images/os-bucket-2.png)
 
 
 **NOTE** Only one table can be associated with a given delta path. If a table is created on a path that already is associated with another table, it will throw an error. The associated table will have to be deleted then re-write the dataframe to the path. 
@@ -305,11 +307,11 @@ You should see the following results if the code runs correctly.
 
 ![AIDP Notebook](./images/aidp-notebook11.png)
 
+Clean the data - this block will look at the existing data and delete the records where distance is null or distance is less than 0.
+
 Paste the code block. Click the Run button.
 
 ![AIDP Notebook](./images/aidp-notebook10.png)
-
-Clean the data 
 
 ```python
 <copy>
@@ -329,6 +331,8 @@ You should see the following results if the code runs correctly.
 ![AIDP Notebook](./images/aidp-notebook13.png)
 
 Test versioning capabilities of delta tables. With delta lake capabilities the user can now show older versions of tables before they were modified.
+
+In this example the results will look back at version 0 before you deleted the records where distance is null or distance is less than 0.
 
 Paste the code block. Click the Run button.
 
@@ -353,14 +357,13 @@ You should see the following results if the code runs correctly.
 
 ![AIDP Notebook](./images/aidp-notebook16.png)
 
-Write to silver schema of Medallion Architecture 
+Write to silver schema of Medallion Architecture. With our bronze layer in place the next code block you will begin the enrichment process. As a first step you will create a silver schema.
 
 Paste the code block. Click the Run button.
 
 ![AIDP Notebook](./images/aidp-notebook17.png)
 
-The **aidp-demo-bucket_xx** refers to the bucket name in OCI.
-Replace **your-os-namespace** with your Object Storage namespace. Please refer to "Lab 1 Task 11 Step 5" for getting your Object Storage namespace.
+The **aidp-demo-bucket_xx** refers to the bucket name in OCI. After pasting in the code you will need to replace **your-os-namespace** with your Object Storage namespace. Please refer to "Lab 1 Task 11 Step 5" for getting your Object Storage namespace.”
 
 ```python
 <copy>
@@ -394,11 +397,15 @@ You should see the following results if the code runs correctly.
 
 ![AIDP Notebook](./images/aidp-notebook18.png)
 
+The output of this code should look like this in the object storage bucket created in Lab 1. 
+
+![OS Bucket](./images/os-bucket-3.png)
+
 2. Click the "+" button to create new code block
 
 ![AIDP Notebook](./images/aidp-notebook19.png)
 
-Enrich the data 
+Enrich the data by adding aggregates/average delays and distance.
 
 Paste the code block. Click the Run button.
 
@@ -490,11 +497,17 @@ enhanced_df.show(10, False)
 </copy>
 ```
 
-You should see the following results if the code runs correctly. 
+You should see the following similar results if the code runs correctly. The output might slightly vary, based on the LLM Model used.
 
 ![AIDP Notebook](./images/aidp-notebook27.png)
 
-**NOTE** AIDP as of writing (Dec 2025) supports cohere and grok models. Dragging and dropping the other sample models from the catalog can result in 'model not found' errors. A temporary workaround can be to remove the '**default.oci\_ai\_models**' prefix from the model path. This should be fixed in the near future. 
+**NOTE** AIDP as of writing (Dec 2025) supports cohere and grok models, and it's region specific. 
+
+For example:
+ - Use "**cohere.command-latest**" LLM Model when the AIDP Instance is in "**US Midwest (Chicago)**" region.
+ - Use "**xai.grok-4**" LLM Model when the AIDP Instance is in "**US East (Ashburn)**" or "**US West (Phoenix)**" regions.
+
+Dragging and dropping the other sample models from the catalog can result in 'model not found' errors. A temporary workaround can be to remove the '**default.oci\_ai\_models**' prefix from the model path. This should be fixed in the near future. 
 
 ---
 
@@ -546,14 +559,15 @@ You should see the following results if the code runs correctly.
 
 ![AIDP Notebook](./images/aidp-gold-notebook2.png)
 
+With our silver layer in place the next code block will write the enriched data. As a first step we will create a Gold Schema, and save Averaged Data to Gold Schema.
+
 Paste the code block. Click the Run button.
 
 ![AIDP Notebook](./images/aidp-gold-notebook3.png)
 
 Save new data to gold schema 
 
-The **aidp-demo-bucket_xx** refers to the bucket name in OCI.
-Replace **your-os-namespace** with your Object Storage namespace. Please refer to "Lab 1 Task 11 Step 5" for getting your Object Storage namespace.
+The **aidp-demo-bucket_xx** refers to the bucket name in OCI. After pasting in the code you will need to replace **your-os-namespace** with your Object Storage namespace. Please refer to "Lab 1 Task 11 Step 5" for getting your Object Storage namespace.”
 
 ```python
 <copy>
@@ -583,6 +597,10 @@ df_gold.show()
 You should see the following results if the code runs correctly. 
 
 ![AIDP Notebook](./images/aidp-gold-notebook4.png)
+
+The output of this code should look like this in the object storage bucket created in Lab 1. 
+
+![OS Bucket](./images/os-bucket-4.png)
 
 3.Click the "+" button to create new code block
 
@@ -677,7 +695,7 @@ Create the AIRLINE\_SAMPLE\_GOLD table
 
 Paste the following SQL statement in the Worksheet and click the 'Run Statement' button
 
-![Create Gold Table](./images/adl-gold-table-creation1.png)
+![Create Gold Table](./images/adl-gold-table-creation11.png)
 
 ```sql
 <copy>
@@ -693,7 +711,7 @@ CREATE TABLE AIRLINE_SAMPLE_GOLD (
   AVG_ARR_DELAY   NUMBER,
   AVG_DISTANCE    NUMBER,
   REVIEW      VARCHAR2(4000),
-  SENTIMENT VARCHAR2(200)
+  SENTIMENT VARCHAR2(10000)
 );
 </copy>
 ```
