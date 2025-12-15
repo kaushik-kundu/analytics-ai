@@ -28,10 +28,13 @@ In this lab, you will:
 - Create a Gold_XX schema in AI Lakehouse
 - Provision AI Data Platform
 - Provision Object Storage buckets
+- Provision Analytics Cloud
 
 ---
 
 ### Important Note
+
+If multiple instances of ATP, AI Lakehouse and Analytics Cloud instances need to be created, please ensure that the instance names are unique. The instance names can then end with _01, _02, _03 etc.
 
 If multiple users are concurrently working on this workshop, then for different users _01, _02, _03 can be used, instead of using _XX.
 
@@ -49,6 +52,7 @@ This lab assumes you have:
 - Access to Oracle Autonomous AI Lakehouse
 - Access to Oracle AI Data Platform
 - Access to Oracle Object Storage
+- Access to Oracle Analytics Cloud
 - Basic familiarity with web-based Oracle Cloud interfaces
 
 ---

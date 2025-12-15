@@ -480,17 +480,17 @@ Test and run AI model against reviews of flights
 
 Paste the code block. Click the Run button.
 
-![AIDP Notebook](./images/aidp-notebook26.png)
+![AIDP Notebook](./images/aidp-notebook26a.png)
 
 ```python
 <copy>
 # test model 
-spark.sql("select query_model('cohere.command-latest','What is Intelligent Data Lake Service in Oracle?') as questions").show(truncate=False)
+spark.sql("select query_model('xai.grok-4','What is Intelligent Data Lake Service in Oracle?') as questions").show(truncate=False)
 
 # Run Sentiment Analysis Against Review with LLM 
 from pyspark.sql.functions import expr
 enhanced_df = df_with_review.withColumn("SENTIMENT",\
-                     expr("query_model('cohere.command-latest', concat('What is the sentiment for this review: ', REVIEW))"))\
+                     expr("query_model('xai.grok-4', concat('What is the sentiment for this review: ', REVIEW))"))\
 #.show(10, False)
 
 enhanced_df.show(10, False)
@@ -499,13 +499,11 @@ enhanced_df.show(10, False)
 
 You should see the following similar results if the code runs correctly. The output might slightly vary, based on the LLM Model used.
 
-![AIDP Notebook](./images/aidp-notebook27.png)
+![AIDP Notebook](./images/aidp-notebook27a.png)
 
 **NOTE** AIDP as of writing (Dec 2025) supports cohere and grok models, and it's region specific. 
 
-For example:
- - Use "**cohere.command-latest**" LLM Model when the AIDP Instance is in "**US Midwest (Chicago)**" region.
- - Use "**xai.grok-4**" LLM Model when the AIDP Instance is in "**US East (Ashburn)**" or "**US West (Phoenix)**" regions.
+For example, you can use "**xai.grok-4**" LLM Model when the AIDP Instance is in "**US East (Ashburn)**" or "**US West (Phoenix)**" or "**US Midwest (Chicago)**" regions. You can also use "**cohere.command-latest**" LLM Model when the AIDP Instance is in "**US Midwest (Chicago)**" region.
 
 Dragging and dropping the other sample models from the catalog can result in 'model not found' errors. A temporary workaround can be to remove the '**default.oci\_ai\_models**' prefix from the model path. This should be fixed in the near future. 
 
@@ -557,7 +555,7 @@ Dragging and dropping the other sample models from the catalog can result in 'mo
 
 2. Click the "+" button to create new code block
 
-![AIDP Notebook](./images/aidp-gold-notebook2.png)
+![AIDP Notebook](./images/aidp-gold-notebook2a.png)
 
 With our silver layer in place the next code block will write the enriched data. As a first step we will create a Gold Schema, and save Averaged Data to Gold Schema.
 
