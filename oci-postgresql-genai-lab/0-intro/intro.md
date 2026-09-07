@@ -51,10 +51,10 @@ You need an Oracle Cloud account (i.e. access to an OCI tenancy) to complete thi
 ### Laptop
 You need a computer (laptop or desktop) with web browser, a text editor, and internet access. (Attempting to accomplish this workshop using a tablet or phone might be possible but is not recommended and it hasn't been tested on those types of devices.)
 
-### Access to Frankfurt or Chicago
-- *The Cloud Account should have access to the Chicago Region or Frankfurt region* where the Enterprise AI is available.
+### Access to Ashburn or Phoenix or Chicago
+- *The Cloud Account should have access to the Chicago Region or Ashburn or Phoenix region* where the Enterprise AI is available.
     - For Free Trial account, this means that the Free Trial should be created in the Chicago region
-    - For Paid account, you will need to add the Chicago or Frankfurt Region to your tenancy to access the Enterprise AI APIs. (See lab 1) 
+    - For Paid account, you will need to add the Chicago or Ashburn or Phoenix Region to your tenancy to access the Enterprise AI APIs. (See lab 1) 
 
 
 **Please proceed to the [next lab.](#next)**
