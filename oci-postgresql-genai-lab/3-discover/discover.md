@@ -108,13 +108,13 @@ Compute instance is used to host the application logic.
 
    ![Menu Compute](images/compute-1.png) 
 
-## Task 5: OCI GenAI Service
+## Task 5: OCI Enterprise AI Service
 
-OCI Generative AI provides access to pretrained, foundational models from Cohere, OpenAI, Google, and Meta. It also provides dedicated AI clusters, where you can host foundational models on dedicated GPUs that are private to you. These clusters provide stable, high-throughput performance that’s required for production use cases and can support hosting and fine-tuning workloads. OCI Generative AI enables you to scale out your cluster with zero downtime to handle changes in volume.
+OCI Enterprise AI provides access to pretrained, foundational models from Cohere, OpenAI, Google, and Meta. It also provides dedicated AI clusters, where you can host foundational models on dedicated GPUs that are private to you. These clusters provide stable, high-throughput performance that’s required for production use cases and can support hosting and fine-tuning workloads. OCI Enterprise AI enables you to scale out your cluster with zero downtime to handle changes in volume.
 
 In this step you will explore the AI Services that are leveraged in the solution. 
 
-   1. Explore the Generative AI Service used in the solution. Common use cases of the Generative AI Service include: Create text for any purpose, Extract data from text, Summarize articles, transcripts, and more. Classify intent in chat logs, support tickets, and more. Rewrite content in a different style or language.    
+   1. Explore the Enterprise AI Service used in the solution. Common use cases of the Enterprise AI Service include: Create text for any purpose, Extract data from text, Summarize articles, transcripts, and more. Classify intent in chat logs, support tickets, and more. Rewrite content in a different style or language.    
     1. Go the Cloud console 3-bar/hamburger menu and select the following    
         1. Analytics & AI
         2. AI Services
@@ -122,11 +122,12 @@ In this step you will explore the AI Services that are leveraged in the solution
 
       ![Menu GenerativeAI](images/postgres-genai-ai1.png)
         
-        OCI Generative AI offers several playground modes, each with ready-to-use pretrained models:
-            Generation: Generates text or extracts information from text
-            Summarization: Summarizes text with specified format, length, and tone
-            Embedding: Converts text to vector embeddings to use in applications for semantic searches, text classification, or text clustering
-The Generative AI model available in your regions can be listed from the **Playground** > **Chat** tab
+        OCI Enterprise AI offers several playground modes, each with ready-to-use pretrained models:
+        - Chat: Generates text or extracts information from text
+        - Embedding: Converts text to vector embeddings to use in applications for semantic searches, text classification, or text clustering
+        
+      The Enterprise AI model available in your regions can be listed from the **Playground** > **Chat** tab
+
       ![OCI GenerativeAI](images/oci-genai-1.png)
 
 When you click on the model details you get the model OCID which is used the the environment variable file of the application to perform the inference in the RAG pipeline
@@ -198,11 +199,11 @@ Foreign-key constraints:
 
 **Congratulations! You have completed this workshop.**
 
-Here's what you accomplished. You explored multiple services in a compartment in your OCI tenancy. These included OCI VCN, Compute, OCI GenerativeAI, and OCI PostgreSQL Databae System. This lab has illustrated how different OCI services can be integrated together to make a complete cloud native AI search solution.
+Here's what you accomplished. You explored multiple services in a compartment in your OCI tenancy. These included OCI VCN, Compute, OCI Enterprise AI, and OCI PostgreSQL Database System. This lab has illustrated how different OCI services can be integrated together to make a complete cloud native AI search solution.
 
 ## Acknowledgements
 
 - **Created By/Date** - Shadab Mohammad, Master Principal Cloud Architect, January 2026
-- **Last Updated By** - Shadab Mohammad, January 2026
+- **Last Updated By** - Kaushik Kundu, Master Principal Cloud Architect, September 2026
 
 
