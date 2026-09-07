@@ -13,17 +13,17 @@ Estimated time: 40 min
 
 - An OCI Account with sufficient credits where you will perform the lab. (Some of the services used in this lab are not part of the *Always Free* program.)
 - Choose which web browser to use before you start. There is an option in a later lab to download a github repo to your local computer using the OCI Console Cloud Shell. Some users have experienced a bug attempting to do this with the Firefox Browser Extended Support Release (ESR). The Chrome browser is an alternative in this case.
-- Check that your tenancy has access to the **Chicago or Frankfurt Region**
+- Check that your tenancy has access to the **Chicago or Ashburn or Phoenix Region**
     - For Paid Tenancy
         - Click on region on top of the screen
-        - Check that the Chicago (or Frankfurt) Region is there (Green rectangle)
+        - Check that the Chicago (or Ashburn or Phoenix) Region is there (Green rectangle)
         - If not, Click on Manage Regions to add it to your regions list. You need Tenancy Admin right for this.
         - Click on the US MidWest (Chicago)
         - Click Subscribe
 
     ![Chicago Region](images/chicago-region.png)
 
-    - For Free Trial, the home region should be Chicago (or Frankfurt)
+    - For Free Trial, the home region should be Chicago (or Ashburn or Phoenix)
 - The OCI User used in this LiveLab should have OCI Administrator Priviliges in the OCI Tenancy
 
 
@@ -49,7 +49,7 @@ You can
 
 ## Task 2: Create OCI API Key
 
-The API key will be used to access OCI command line tool and OCI Generative AI service programatically 
+The API key will be used to access OCI command line tool and OCI Enterprise AI service programatically 
 
 1. Go to OCI Console Homepage
 
@@ -220,12 +220,10 @@ DB_POOL_MAX_SIZE=10
 Add OCI cli parameters based on the API Key created earlier
 
 ````
-# Set one of: none | openai | oci
+# Set oci
 LLM_PROVIDER=oci
-OPENAI_API_KEY=
-OPENAI_MODEL=
 
-# OCI Generative AI (when LLM_PROVIDER=oci)
+# OCI Enterprise AI (when LLM_PROVIDER=oci)
 OCI_REGION=us-chicago-1
 OCI_COMPARTMENT_OCID=ocid1.compartment.oc1..aaaaaaaad........................mfa
 OCI_GENAI_ENDPOINT=https://inference.generativeai.us-chicago-1.oci.oraclecloud.com
@@ -279,5 +277,5 @@ None
 ## Acknowledgements
 
 - **Created By/Date** - Shadab Mohammad, Master Principal Cloud Architect, January 2026
-- **Last Updated By** - Shadab Mohammad, January 2026
+- **Last Updated By** - Kaushik Kundu, Master Principal Cloud Architect, September 2026
 
