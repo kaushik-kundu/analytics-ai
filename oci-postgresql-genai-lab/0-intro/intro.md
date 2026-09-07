@@ -36,7 +36,7 @@ This picture shows the ingestion, embeddings and RAG pipeline workflow.
 
 ![Workflow](images/ai-workflow-1.png)
 
-![Workflow](images/ai-workflow-2.png)
+![Workflow](images/ai-workflow-3.png)
 
 
 ### Objectives
