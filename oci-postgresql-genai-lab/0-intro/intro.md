@@ -2,7 +2,7 @@
 # Introduction
 
 ## About This Workshop
-We will create a Generative AI / Hybrid Search web application, using Terraform. This application will search documents using OCI Database with PostgreSQL and the pgvector extension. pgvector will turn our OCI Database with PostgreSQL into a vector database where we can natively store and manage vector embeddings while handling unstructured data like pdf documents and html files.
+We will create a Enterprise AI / Hybrid Search web application, using Terraform. This application will search documents using OCI Database with PostgreSQL and the pgvector extension. pgvector will turn our OCI Database with PostgreSQL into a vector database where we can natively store and manage vector embeddings while handling unstructured data like pdf documents and html files.
 
 We’ll be able to search documents like:
 - PDF with text 
@@ -29,7 +29,7 @@ It works like this:
 1. A document is uploaded in the Search App
 2. The document is converted, parsed & cleaned.
 3. Using an embedding model, vector embeddings are created and stored in OCI PostgreSQL database
-4. You can now ask natural language questions in the App to retrieve results using a combination of semantic search using pgvector and OCI Generative AI service LLM
+4. You can now ask natural language questions in the App to retrieve results using a combination of semantic search using pgvector and OCI Enterprise AI service LLM
 
 
 This picture shows the ingestion, embeddings and RAG pipeline workflow.
@@ -42,7 +42,7 @@ This picture shows the ingestion, embeddings and RAG pipeline workflow.
 ### Objectives
 
 - Provision the services needed for the system
-    - Compartment, VCN, Compute Intance, PostgreSQL, and Genarative AI services.
+    - Compartment, VCN, Compute Intance, PostgreSQL, and Enterprise AI services.
 
 ## Prerequisites
 ### Cloud Account
@@ -52,9 +52,9 @@ You need an Oracle Cloud account (i.e. access to an OCI tenancy) to complete thi
 You need a computer (laptop or desktop) with web browser, a text editor, and internet access. (Attempting to accomplish this workshop using a tablet or phone might be possible but is not recommended and it hasn't been tested on those types of devices.)
 
 ### Access to Frankfurt or Chicago
-- *The Cloud Account should have access to the Chicago Region or Frankfurt region* where the Generative AI is available.
+- *The Cloud Account should have access to the Chicago Region or Frankfurt region* where the Enterprise AI is available.
     - For Free Trial account, this means that the Free Trial should be created in the Chicago region
-    - For Paid account, you will need to add the Chicago or Frankfurt Region to your tenancy to access the Generative AI APIs. (See lab 1) 
+    - For Paid account, you will need to add the Chicago or Frankfurt Region to your tenancy to access the Enterprise AI APIs. (See lab 1) 
 
 
 **Please proceed to the [next lab.](#next)**
@@ -62,4 +62,4 @@ You need a computer (laptop or desktop) with web browser, a text editor, and int
 ## Acknowledgements 
 
 - **Created By/Date** - Shadab Mohammad, Master Principal Cloud Architect, January 2026
-- **Last Updated By** - Shadab Mohammad, January 2026
+- **Last Updated By** - Kaushik Kundu, Master Principal Cloud Architect, September 2026
