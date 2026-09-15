@@ -69,11 +69,8 @@ The API key will be used to access OCI command line tool and OCI Enterprise AI s
 
 ## Task 3: Run Terraform script 
 
-1. Download the Github code to your Local machine
+1. Your workshop instructor is going to email you the code file PostgreSQL-AI.zip. Download the code from the email to your Local machine, and unzip it.
 
-    ````
-   git clone https://github.com/shadabshaukat/oracle-livelabs.git
-     ````
 
        
 3. Go to OCI Console Home Page
@@ -133,10 +130,36 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
 Copy the public IP of the instance 
               ![Resource Manager](images/get-public-ip-2.png)
 
+## Task 4: Upload Code
 
-## Task 4: Setup Application
+1. Go to your Terminal and copy the public IP (from Task 3 step 14) and use the Private Key (from Task 2)
 
-1. Go to your Terminal and Copy the public IP from Task 3 step 14 and use the Private Key from Task 2.
+2. Use SCP to copy the code file PostgreSQL-AI.zip (from Task 3 step 1) to "/home/opc/" within the compute host.
+
+    Replace with your Private Key File Name and your Public IP in the following command
+
+    ````
+    scp -i <Private Key> PostgreSQL-AI.zip opc@<Public IP>:/home/opc/
+    ````
+3. In your local machine, make a copy of the private key file (downloaded in Task 2), and rename it to priv.key
+
+4. Use SCP to copy the key file priv.key file to "/home/opc/" within the compute host.
+
+    Replace with your Private Key File Name and your Public IP in the following command
+
+    ````
+    scp -i <Private Key> priv.key opc@<Public IP>:/home/opc/
+    ````
+
+## Task 5: Setup Application
+
+1. Go to your Terminal and copy the public IP from Task 3 step 14 and use the Private Key from Task 2, to connect to the host by SSH.
+
+    Replace with your Private Key File Name and your Public IP in the following command
+
+    ````
+    ssh -i <Private Key> opc@<Public IP>
+    ````
 
       ![SSH Host](images/ssh-to-host-1.png)
 
@@ -159,15 +182,11 @@ sudo firewall-cmd --permanent --add-port=8000/tcp
 sudo firewall-cmd --reload
 ````
 
-4. Download the Code Repository
-
-````
-git clone https://github.com/shadabshaukat/oracle-livelabs.git
-````
+4. Unzip the Code file PostgreSQL-AI.zip
 
 5. Setup OCI ClI
 
-Before we proceed upload the private key downloaded in Task 2 to this host and rename it to **priv.key** the location is /home/opc/priv.key
+    Change the permission of the priv.key file at /home/opc/priv.key
 
 ````
 chmod 600 /home/opc/priv.key
