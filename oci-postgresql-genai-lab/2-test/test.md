@@ -29,19 +29,38 @@ You will load a file into the search app which will be parsed, chunked, vector e
 1. Go to the ##APP URL## (eg:http://&lt;Public_IP&gt;:8000/)
 
     Replace with your Public_IP (from Task 3 step 14 in Lab 1) in the URL
+
+2. Login to the app, using the credentials set in Task 5 Step 6 in Lab 1
+
+    ![Login](images/app-login-1.png)
+
+3. Click on Account, scroll down, and register with your details. the 
+
+    ![Register](images/app-register-1.png)
+
+    Scroll down, click "Create Account"
+
+    ![Register](images/app-register-2.png)
+
+    Register with your Email and set your password
+
+    The Email can be a dummy email too.
+
+    ![Register](images/app-register-3.png)
+
     
-    In the Upload section, browse to the *dataset* folder and select both the sample files, and then click *Upload*
+4. In the Upload section, browse to the *dataset* folder and select both the sample files, and then click *Upload*
 
     ![Upload Files](images/app-upload-us-files1.png)
     ![Upload Files](images/app-upload-us-files2.png)
     ![Upload Files](images/app-upload-us-files3.png)
 
-2. Click on "Search Options", then ensure *RAG*  is selected as the Search Mode
+5. Click on "Search Options", then ensure *RAG*  is selected as the Search Mode
 
     ![RAG](images/app-us-search-1.png) 
     ![RAG](images/app-us-search-2.png)   
 
-3. Type "What are the key differences in coverage, costs, provider choice, and prescription-drug coverage between Original Medicare and Medicare Advantage?", and click on *Search*
+6. Type "What are the key differences in coverage, costs, provider choice, and prescription-drug coverage between Original Medicare and Medicare Advantage?", and click on *Search*
 
     ![RAG](images/app-us-search-3.png)
 
@@ -49,7 +68,7 @@ You will load a file into the search app which will be parsed, chunked, vector e
 
     ![RAG](images/app-us-search-4.png)
    
-4. Type "What are the standard-deduction amounts for each filing status, and who may claim an additional deduction because of age or blindness?", then *Search*
+7. Type "What are the standard-deduction amounts for each filing status, and who may claim an additional deduction because of age or blindness?", then *Search*
 
     ![RAG](images/app-us-search-5.png)
 

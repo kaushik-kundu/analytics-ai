@@ -60,10 +60,16 @@ The API key will be used to access OCI command line tool and OCI Enterprise AI s
 3. Go to *Tokens & Keys*, then *Add API Key*
     ![Create API key](images/create-api-keys-2.png)
     
-4. Generate API Key pair and Download the Private an Public Key. 
+4. Generate API PEM Key pair and Download the Private an Public Key. 
     ![Create API key](images/create-api-keys-3.png)
+
+    This key will be used as API signing key in the config file
     
-***We will use the public key later in provisioning the stack and private key to connect to the VM***
+5. Generate SSH Private/Public Key pair using the following command
+    ````
+    ssh-keygen -t rsa -f <Your_Folder_Path>/id_rsa
+    ````
+    This key will be used to connect to the Compute VM
 
 
 
@@ -73,41 +79,41 @@ The API key will be used to access OCI command line tool and OCI Enterprise AI s
 
 
        
-3. Go to OCI Console Home Page
+2. Go to OCI Console Home Page
 
-4. Click on *Developer Services* and then *Stack*
+3. Click on *Developer Services* and then *Stack*
     ![Resource Manager](images/resource-manager-1.png)
 
-5. Change your compartment to the one created in Task 1 above
+4. Change your compartment to the one created in Task 1 above
 
-6. Select *My Configuration* scroll down to the *Stack Configuration* and add the newly downloaded folder
+5. Select *My Configuration* scroll down to the *Stack Configuration* and add the newly downloaded folder
        ![Resource Manager](images/resource-manager-2.png)
        
    Select the *oci_postgres_tf_stack* folder from your local machine
        ![Resource Manager](images/resource-manager-3.png)
        
-7. Select the compartment and click **Next**
+6. Select the compartment and click **Next**
        ![Resource Manager](images/resource-manager-4.png)
 
-8. Select the **compute assign public ip** option
+7. Select the **compute assign public ip** option
           ![Resource Manager](images/resource-manager-5.png)
 
-9. Paste the Public SSH key created in Task 2 and check **create compute** | **create_psql_configurtion** box
+8. Paste the Public SSH key created in Task 2 (Step 5) and check **create compute** | **create\_psql\_configurtion** box
     ![Resource Manager](images/resource-manager-5-a.png)
 
-10. pgvector extension and user variables added
+9. pgvector extension and user variables added
      ![Resource Manager](images/resource-manager-5-c.png)
 
-11. Enter Postgres Admin user and password
+10. Enter Postgres Admin user and password
               ![Resource Manager](images/resource-manager-6.png)
 
-12. Enter a region and click next
+11. Enter a region and click next
               ![Resource Manager](images/resource-manager-7.png)
 
-13. Select *Run apply* and create the stack
+12. Select *Run apply* and create the stack
               ![Resource Manager](images/resource-manager-8.png)
 
-14. Wait about 10-15 minutes for the stack to finish provisioning
+13. Wait about 10-15 minutes for the stack to finish provisioning
               ![Resource Manager](images/resource-manager-9.png)
               
 
@@ -130,22 +136,34 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
 Copy the public IP of the instance 
               ![Resource Manager](images/get-public-ip-2.png)
 
-## Task 4: Upload Code
+15. Go to OCI Console *Databases -> PostgreSQL -> DB Systems*
 
-1. Go to your Terminal and copy the public IP (from Task 3 step 14) and use the Private Key (from Task 2)
+    ![Resource Manager](images/get-db-host-1.png)
+
+    Click on the database name to view the details
+
+    ![Resource Manager](images/get-db-host-2.png)
+
+    Note the DB Primary endpoint
+
+    ![Resource Manager](images/get-db-host-3.png)
+
+## Task 4: Upload Code & Key
+
+1. Go to your Terminal and copy the public IP (from Task 3 step 14) and use the Private SSH Key (from Task 2 Step 5)
 
 2. Use SCP to copy the code file PostgreSQL-AI.zip (from Task 3 step 1) to "/home/opc/" within the compute host.
 
-    Replace with your Private Key File Name and your Public IP in the following command
+    Replace with your Private SSH Key File Name (downloaded in Task 2 Step 5) and your Public IP in the following command
 
     ````
     scp -i <Private Key> PostgreSQL-AI.zip opc@<Public IP>:/home/opc/
     ````
-3. In your local machine, make a copy of the private key file (downloaded in Task 2), and rename it to priv.key
+3. In your local machine, make a copy of the private PEM key file (downloaded in Task 2 Step 4), and rename it to priv.key
 
 4. Use SCP to copy the key file priv.key file to "/home/opc/" within the compute host.
 
-    Replace with your Private Key File Name and your Public IP in the following command
+    Replace with your Private SSH Key File Name (downloaded in Task 2 Step 5) and your Public IP in the following command
 
     ````
     scp -i <Private Key> priv.key opc@<Public IP>:/home/opc/
@@ -153,7 +171,7 @@ Copy the public IP of the instance
 
 ## Task 5: Setup Application
 
-1. Go to your Terminal and copy the public IP from Task 3 step 14 and use the Private Key from Task 2, to connect to the host by SSH.
+1. Go to your Terminal and copy the public IP from Task 3 step 14 and use the Private SSH Key from Task 2 (Step 5), to connect to the host by SSH.
 
     Replace with your Private Key File Name and your Public IP in the following command
 
@@ -196,7 +214,7 @@ chmod 600 /home/opc/priv.key
 oci setup config
 ````
 
-Enter the details as per Task 2
+Enter the details as per Task 2 Step 4
 
 ````
 Enter a location for your config [/home/opc/.oci/config]:
@@ -217,7 +235,7 @@ Config written to /home/opc/.oci/config
 6. Configure the variables to reflect the provisioned stack and API keys
 
 ````
-cd oracle-livelabs/search-app/
+cd PostgreSQL-AI/search-app/
 ````
 
 ````
@@ -225,16 +243,24 @@ vi .env.example
 ````
 
 Add DB Parameters based on the DBSystem created earlier
+
 ````
-DB_HOST=10.10.1.83
+DB_HOST=<DB_Host value from Task 3 Step 15>
 DB_PORT=5432
 DB_NAME=postgres
-DB_USER=postgres
-DB_PASSWORD=YourPWD12345##
+DB_USER=postgres OR <Your Postgres Admin Name from task 3 Step 10>
+DB_PASSWORD=<Your Postgres Password from task 3 Step 10>
 DB_SSLMODE=require
 DB_POOL_MIN_SIZE=1
 DB_POOL_MAX_SIZE=10
 ````
+
+Set Security (Basic Auth) parameters
+````
+BASIC_AUTH_USER=admin
+BASIC_AUTH_PASSWORD=<Set your password>
+````
+
 
 Add OCI cli parameters based on the API Key created earlier
 
@@ -262,7 +288,7 @@ OCI_PRIVATE_KEY_PASSPHRASE=
 7. Copy environment variables in example file to .env file
 
 ````
-cd /home/opc/oracle-livelabs/search-app
+cd /home/opc/PostgreSQL-AI/search-app
 
 cp -p .env.example .env
 ````
