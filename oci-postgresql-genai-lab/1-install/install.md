@@ -43,7 +43,7 @@ You can
     ![Menu Compartment](images/compartment1.png =40%x*)
     
 2. Click ***Create Compartment***
-    - Give a name: ***oci-starter***
+    - Give a name: ***oci-starter_XX*** (where XX is the initial of the user working on this LiveLab)
     - Then again: ***Create Compartment***
     ![Create Compartment](images/compartment2.png)
 
@@ -95,11 +95,14 @@ The API key will be used to access OCI command line tool and OCI Enterprise AI s
 6. Select the compartment and click **Next**
        ![Resource Manager](images/resource-manager-4.png)
 
-7. Select the **compute assign public ip** option
+7. Ensure that the "compartment_ocid" is set correctly. Select the **compute assign public ip** option
           ![Resource Manager](images/resource-manager-5.png)
 
 8. Paste the Public SSH key created in Task 2 (Step 5) and check **create compute** | **create\_psql\_configurtion** box
-    ![Resource Manager](images/resource-manager-5-a.png)
+
+    Ensure object_storage_bucket_name is set as "search-app-uploads_XX" (where XX is the initial of the user working on this LiveLab)
+
+    ![Resource Manager](images/resource-manager-5-a1.png)
 
 9. pgvector extension and user variables added
      ![Resource Manager](images/resource-manager-5-c.png)
@@ -107,7 +110,7 @@ The API key will be used to access OCI command line tool and OCI Enterprise AI s
 10. Enter Postgres Admin user and password
               ![Resource Manager](images/resource-manager-6.png)
 
-11. Enter a region and click next
+11. Ensure that the region is correctly set, and click next
               ![Resource Manager](images/resource-manager-7.png)
 
 12. Select *Run apply* and create the stack
@@ -147,6 +150,29 @@ Copy the public IP of the instance
     Note the DB Primary endpoint
 
     ![Resource Manager](images/get-db-host-3.png)
+
+16. Go to OCI Console *Analytics & AI -> AI Services -> Generative AI*
+
+    ![Enterprise AI](images/get-enterprise-ai-ocid1.png)
+
+    Click on *Chat*
+
+    ![Enterprise AI](images/get-enterprise-ai-ocid2.png)
+
+    Select the LLM Model you want to use for this LiveLab, and then click on *View model details*
+
+    ![Enterprise AI](images/get-enterprise-ai-ocid3.png)
+
+    Scroll down and Copy OCID to get the OCID of this LLM Model of OCI Enterprise AI.
+
+    ![Enterprise AI](images/get-enterprise-ai-ocid4.png)
+
+    Optionally, you can also click on View Code, and note the OCID from the code
+
+    ![Enterprise AI](images/get-enterprise-ai-ocid5.png)
+    ![Enterprise AI](images/get-enterprise-ai-ocid6.png)
+
+    Make a note of this OCID
 
 ## Task 4: Upload Code & Key
 
@@ -263,6 +289,8 @@ BASIC_AUTH_PASSWORD=<Set your password>
 
 
 Add OCI cli parameters based on the API Key created earlier
+
+OCI_GENAI_MODEL_ID can be set to the OCID received in Task 3 Step 16
 
 ````
 # Set oci
