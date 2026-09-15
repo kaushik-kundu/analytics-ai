@@ -26,11 +26,11 @@ You will need samples files on your laptop/desktop.
 
 You will load a file into the search app which will be parsed, chunked, vector embeddings created & ingested into the OCI PostgreSQL database. 
      
-1. Go to the ##APP URL## (eg:http://<Public_IP>:8000/)
+1. Go to the ##APP URL## (eg:http://&lt;Public_IP&gt;:8000/)
 
     Replace with your Public_IP (from Task 3 step 14 in Lab 1) in the URL
     
-    Browse to the dataset folder and select both the sample files, and then click *Upload*
+    In the Upload section, browse to the *dataset* folder and select both the sample files, and then click *Upload*
 
     ![Upload Files](images/app-upload-us-files1.png)
     ![Upload Files](images/app-upload-us-files2.png)
@@ -41,7 +41,7 @@ You will load a file into the search app which will be parsed, chunked, vector e
     ![RAG](images/app-us-search-1.png) 
     ![RAG](images/app-us-search-2.png)   
 
-3. Type "What are the key differences in coverage, costs, provider choice, and prescription-drug coverage between Original Medicare and Medicare Advantage?", and click on "Search"
+3. Type "What are the key differences in coverage, costs, provider choice, and prescription-drug coverage between Original Medicare and Medicare Advantage?", and click on *Search*
 
     ![RAG](images/app-us-search-3.png)
     ![RAG](images/app-us-search-4.png)
