@@ -44,11 +44,17 @@ You will load a file into the search app which will be parsed, chunked, vector e
 3. Type "What are the key differences in coverage, costs, provider choice, and prescription-drug coverage between Original Medicare and Medicare Advantage?", and click on *Search*
 
     ![RAG](images/app-us-search-3.png)
+
+    The References of the RAG Search are also listed.
+
     ![RAG](images/app-us-search-4.png)
    
 4. Type "What are the standard-deduction amounts for each filing status, and who may claim an additional deduction because of age or blindness?", then *Search*
 
     ![RAG](images/app-us-search-5.png)
+
+    The References of the RAG Search are also listed.
+
     ![RAG](images/app-us-search-6.png) 
        
  
