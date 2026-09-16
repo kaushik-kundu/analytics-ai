@@ -75,7 +75,17 @@ The API key will be used to access OCI command line tool and OCI Enterprise AI s
 
 ## Task 3: Run Terraform script 
 
-1. Your workshop instructor is going to email you the code file PostgreSQL-AI.zip. Download the code from the email to your Local machine, and unzip it.
+1. Review and accept the license agreement before downloading the GitHub code to your local machine.
+
+    <div class="sample-code-license-gate" data-license-gate>
+      <p>Review the Oracle Technology Network License Agreement in Appendix 1, then select <strong>Accept License Agreement</strong> to reveal the download command.</p>
+      <button type="button" class="license-gate-review" data-license-gate-review>Review License Agreement</button>
+      <p class="license-gate-status" data-license-gate-status aria-live="polite"></p>
+    </div>
+
+    <div class="sample-code-clone license-gate-is-hidden" data-license-gated-clone aria-hidden="true">
+      <pre><code>git clone https://github.com/kaushik-kundu/PostgreSQL-AI.git</code></pre>
+    </div>
 
 
        
@@ -174,20 +184,13 @@ Copy the public IP of the instance
 
     Make a note of this OCID
 
-## Task 4: Upload Code & Key
+## Task 4: Upload Key
 
 1. Go to your Terminal and copy the public IP (from Task 3 step 14) and use the Private SSH Key (from Task 2 Step 5)
 
-2. Use SCP to copy the code file PostgreSQL-AI.zip (from Task 3 step 1) to "/home/opc/" within the compute host.
+2. In your local machine, make a copy of the private PEM key file (downloaded in Task 2 Step 4), and rename it to priv.key
 
-    Replace with your Private SSH Key File Name (downloaded in Task 2 Step 5) and your Public IP in the following command
-
-    ````
-    scp -i <Private Key> PostgreSQL-AI.zip opc@<Public IP>:/home/opc/
-    ````
-3. In your local machine, make a copy of the private PEM key file (downloaded in Task 2 Step 4), and rename it to priv.key
-
-4. Use SCP to copy the key file priv.key file to "/home/opc/" within the compute host.
+3. Use SCP to copy the key file priv.key file to "/home/opc/" within the compute host.
 
     Replace with your Private SSH Key File Name (downloaded in Task 2 Step 5) and your Public IP in the following command
 
@@ -226,7 +229,11 @@ sudo firewall-cmd --permanent --add-port=8000/tcp
 sudo firewall-cmd --reload
 ````
 
-4. Unzip the Code file PostgreSQL-AI.zip
+4. Download the Code Repository to the compute instance. Use the license agreement above to reveal this command.
+
+    <div class="sample-code-clone license-gate-is-hidden" data-license-gated-clone aria-hidden="true">
+    <pre><code>git clone https://github.com/kaushik-kundu/PostgreSQL-AI.git</code></pre>
+    </div>
 
 5. Setup OCI ClI
 
