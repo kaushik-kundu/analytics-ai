@@ -13,14 +13,13 @@ Estimated time: 20 min
 - The previous lab must have been completed.
 
 ## Task 1: Download RAG dataset
-You will need samples files on your laptop/desktop. 
+You will need samples files on your local machine. 
 
-1. Use the code file PostgreSQL-AI.zip (from Task 3 step 1 in Lab 1)
+1. Use the code files from the directory PostgreSQL-AI (Cloned from Github in Task 3 Step 1 in Lab 1)
 
-1. Extract the PostgreSQL-AI.zip file to your computer. 
-![GitHub_Download](images/code-extract-zip.jpg) 
+    ![GitHub_Download](images/code-extract-zip.jpg) 
 
-1. Note the directory contains the program runned in previous lab in the ***search-app*** folder, and samples files in the ***dataset*** folder.
+2. Note the directory contains the program run in previous lab in the ***search-app*** folder, and the samples files in the ***dataset*** folder.
 
 ## Task 2: Upload the sample files to the search app
 
