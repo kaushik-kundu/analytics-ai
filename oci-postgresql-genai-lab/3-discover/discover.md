@@ -23,7 +23,8 @@ Go the Cloud console 3-bar/hamburger menu and select the following
   2. Choose Compartment
     ![GenAI Compartment](images/postgres-genai-compartment1.png)
  
-  3. Click on the compartment name ***oci-starter***
+  3. Click on the compartment name ***oci-starter_XX*** (where XX is the initial of the user working on this LiveLab)
+
      
    ![GenAI Compartment](images/postgres-genai-compartment2.png)
 
@@ -75,7 +76,7 @@ Go the Cloud console 3-bar/hamburger menu and select the following
 
   ![Menu PostgreSQL](images/postgres-genai-cluster1.png)
 
-  3. Check that you are in the right compartment (oci-starter in this case)
+  3. Check that you are in the right compartment (oci-starter_XX in this case -> where XX is the initial of the user)
   4. Click on the PostgreSQL db system name *psql_inst_1*
   5. Notice the General information:  
   Performance tier: 75K IOPS
@@ -102,7 +103,7 @@ Compute instance is used to host the application logic.
         2. Instances
     ![Compute details](images/postgres-genai-compute1.png)
     
-    2. Check that you are in the intended compartment. (*oci-starter* was the recommended compartment name.)
+    2. Check that you are in the intended compartment. (*oci-starter_XX* was the recommended compartment name -> where XX is the initial of the user.)
     3. Click **app-host-1** in the Compute instances list
     4. Review the information on the Compute instance details page 
 
@@ -110,7 +111,7 @@ Compute instance is used to host the application logic.
 
 ## Task 5: OCI Enterprise AI Service
 
-OCI Enterprise AI provides access to pretrained, foundational models from Cohere, OpenAI, Google, and Meta. It also provides dedicated AI clusters, where you can host foundational models on dedicated GPUs that are private to you. These clusters provide stable, high-throughput performance that’s required for production use cases and can support hosting and fine-tuning workloads. OCI Enterprise AI enables you to scale out your cluster with zero downtime to handle changes in volume.
+OCI Enterprise AI provides access to pretrained, foundational models from Cohere, OpenAI, Google, xAI, and Meta. It also provides dedicated AI clusters, where you can host foundational models on dedicated GPUs that are private to you. These clusters provide stable, high-throughput performance that’s required for production use cases and can support hosting and fine-tuning workloads. OCI Enterprise AI enables you to scale out your cluster with zero downtime to handle changes in volume.
 
 In this step you will explore the AI Services that are leveraged in the solution. 
 
@@ -118,7 +119,7 @@ In this step you will explore the AI Services that are leveraged in the solution
     1. Go the Cloud console 3-bar/hamburger menu and select the following    
         1. Analytics & AI
         2. AI Services
-        3. Select Generative AI
+        3. Generative AI
 
       ![Menu GenerativeAI](images/postgres-genai-ai1.png)
         
@@ -130,7 +131,7 @@ In this step you will explore the AI Services that are leveraged in the solution
 
       ![OCI GenerativeAI](images/oci-genai-1.png)
 
-When you click on the model details you get the model OCID which is used the the environment variable file of the application to perform the inference in the RAG pipeline
+When you click on the model details you get the model OCID which is used the environment variable file of the application to perform the inference in the RAG pipeline
 
   ![OCI GenerativeAI](images/oci-genai-2.png)
 
