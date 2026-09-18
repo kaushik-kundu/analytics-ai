@@ -12,19 +12,67 @@ Estimated time: 40 min
 ### Prerequisites
 
 - An OCI Account with sufficient credits where you will perform the lab. (Some of the services used in this lab are not part of the *Always Free* program.)
-- Choose which web browser to use before you start. There is an option in a later lab to download a github repo to your local computer using the OCI Console Cloud Shell. Some users have experienced a bug attempting to do this with the Firefox Browser Extended Support Release (ESR). The Chrome browser is an alternative in this case.
-- Check that your tenancy has access to the **Chicago or Ashburn or Phoenix Region**
+- A current web browser. Chrome or Edge is recommended.
+- A macOS or Windows 10/11 laptop. You will run a small number of commands locally, then run the remaining commands on the Oracle Linux Compute instance.
+- Check that your tenancy has access to the **US Midwest (Chicago)** region. This workshop is validated in Chicago and uses `us-chicago-1` by default.
     - For Paid Tenancy
         - Click on region on top of the screen
-        - Check that the Chicago (or Ashburn or Phoenix) Region is there (Green rectangle)
+        - Check that the Chicago Region is there (Green rectangle)
         - If not, Click on Manage Regions to add it to your regions list. You need Tenancy Admin right for this.
         - Click on the US MidWest (Chicago)
         - Click Subscribe
 
     ![Chicago Region](images/chicago-region.png)
 
-    - For Free Trial, the home region should be Chicago (or Ashburn or Phoenix)
-- The OCI User used in this LiveLab should have OCI Administrator Priviliges in the OCI Tenancy
+    - For Free Trial, the home region should be Chicago.
+- Ashburn can be used only when Chicago is unavailable. If you switch, use that same region for the Console, Terraform stack, OCI Generative AI endpoint, and model OCID.
+- The OCI User used in this LiveLab should have OCI Administrator privileges in the OCI Tenancy.
+
+### Local command preflight
+
+Run the applicable command on your **local laptop** before starting.
+
+**macOS Terminal**
+
+````
+command -v git ssh ssh-keygen scp
+````
+
+**Windows PowerShell**
+
+```powershell
+Get-Command git, ssh, ssh-keygen, scp -ErrorAction SilentlyContinue
+```
+
+### Install missing commands
+
+**macOS**
+
+macOS includes `ssh`, `ssh-keygen`, and `scp`. If `git` is missing, run the following command and complete the Apple Command Line Tools installer:
+
+````
+xcode-select --install
+````
+
+If an SSH command is missing, install current macOS software updates or contact your IT administrator before the workshop.
+
+**Windows PowerShell**
+
+If `git` is missing, install Git for Windows, then close and reopen PowerShell:
+
+```powershell
+winget install --id Git.Git -e --source winget
+```
+
+If `winget` is unavailable, download Git for Windows from [git-scm.com/install/windows](https://git-scm.com/install/windows).
+
+If `ssh`, `ssh-keygen`, or `scp` is missing, open PowerShell as Administrator and run:
+
+```powershell
+Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+```
+
+Close and reopen PowerShell, then rerun the preflight check. If an organization-managed device blocks either installation, ask an instructor for help or use a machine where the required tools are available.
 
 
 ## Task 1: Create a Compartment
@@ -42,14 +90,19 @@ You can
     2. Compartments
     ![Menu Compartment](images/compartment1.png =40%x*)
     
-2. Click ***Create Compartment***
+3. Click ***Create Compartment***
     - Give a name: ***oci-starter_XX*** (where XX is the initial of the user working on this LiveLab)
     - Then again: ***Create Compartment***
     ![Create Compartment](images/compartment2.png)
 
-## Task 2: Create OCI API Key
+## Task 2: Create API-signing and SSH keys
 
-The API key will be used to access OCI command line tool and OCI Enterprise AI service programatically 
+This lab uses two different private keys:
+
+- **OCI API-signing key**: authenticates the OCI CLI and the application to OCI APIs.
+- **SSH key**: authenticates you to the Compute VM.
+
+Keep both private keys private. Paste or upload only the SSH **public** key (`.pub`) to Resource Manager.
 
 1. Go to OCI Console Homepage
 
@@ -60,22 +113,34 @@ The API key will be used to access OCI command line tool and OCI Enterprise AI s
 3. Go to *Tokens & Keys*, then *Add API Key*
     ![Create API key](images/create-api-keys-2.png)
     
-4. Generate API Key pair and Download the Private an Public Key. 
+4. Generate the API key pair and download the private PEM key. Save it locally as `oci_api_key.pem`.
     ![Create API key](images/create-api-keys-3.png)
 
-    This PEM key will be used as API signing key in the config file
+    This PEM key is the OCI API-signing private key used later in the Compute-host configuration.
     
-5. Generate SSH Private/Public Key pair using the following command
+5. Generate an SSH private/public key pair. This key is used only to connect to the Compute VM.
+
+    **macOS Terminal**
+
     ````
-    ssh-keygen -t rsa -f <Your_Folder_Path>/id_rsa
+    mkdir -p ~/.ssh
+    ssh-keygen -t rsa -b 4096 -f ~/.ssh/oci_livelab
     ````
-    This SSH key will be used to connect to the Compute VM
+
+    **Windows PowerShell**
+
+    ```powershell
+    New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.ssh"
+    ssh-keygen -t rsa -b 4096 -f "$env:USERPROFILE\.ssh\oci_livelab"
+    ```
+
+    You will use `oci_livelab.pub` in Resource Manager and keep `oci_livelab` private.
 
 
 
 ## Task 3: Run Terraform script 
 
-1. Review and accept the license agreement before downloading the GitHub code to your local machine.
+1. Review and accept the license agreement before cloning the GitHub code to your local laptop.
 
     <div class="sample-code-license-gate" data-license-gate>
       <p>Review the Oracle Technology Network License Agreement in Appendix 1, then select <strong>Accept License Agreement</strong> to reveal the download command.</p>
@@ -96,7 +161,7 @@ The API key will be used to access OCI command line tool and OCI Enterprise AI s
 
 4. Change your compartment to the one created in Task 1 above
 
-5. Select *My Configuration* scroll down to the *Stack Configuration* and add the newly downloaded folder
+5. Select *My Configuration*, scroll down to *Stack Configuration*, and add the `oci_postgres_tf_stack` folder from your local `PostgreSQL-AI` clone.
        ![Resource Manager](images/resource-manager-2.png)
        
    Select the *oci_postgres_tf_stack* folder from your local machine
@@ -108,9 +173,23 @@ The API key will be used to access OCI command line tool and OCI Enterprise AI s
 7. Ensure that the "compartment_ocid" is set correctly. Select the **compute assign public ip** option
           ![Resource Manager](images/resource-manager-5.png)
 
-8. Paste the Public SSH key created in Task 2 (Step 5) and check **create compute** | **create\_psql\_configurtion** box
+8. Paste the contents of the `oci_livelab.pub` SSH public-key file created in Task 2, Step 5, and check **create compute** | **create\_psql\_configurtion**.
+
+    **macOS Terminal**
+
+    ````
+    cat ~/.ssh/oci_livelab.pub
+    ````
+
+    **Windows PowerShell**
+
+    ```powershell
+    Get-Content "$env:USERPROFILE\.ssh\oci_livelab.pub" | Set-Clipboard
+    ```
 
     Ensure object\_storage\_bucket_name is set as "search-app-uploads\_XX" (where XX is the initial of the user working on this LiveLab)
+
+    The stack currently permits ingress from `0.0.0.0/0` for workshop connectivity. If you know your public IP address and your venue networking is stable, you may restrict ingress to your public IP with a `/32` suffix. If that causes connectivity issues, temporarily use `0.0.0.0/0`.
 
     ![Resource Manager](images/resource-manager-5-a1.png)
 
@@ -184,26 +263,38 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
 
     Make a note of this OCID
 
-## Task 4: Upload Key
+## Task 4: Upload the OCI API-signing key
 
-1. In your local machine, make a copy of the private PEM key file (downloaded in Task 2 Step 4), and rename it to *priv.key*
+1. Locate the `oci_api_key.pem` private PEM file downloaded in Task 2, Step 4.
 
-2. Go to your Terminal, and use SCP to copy the key file priv.key file to "/home/opc/" within the compute host.
+2. Use SCP on your local laptop to copy the **OCI API-signing key** to the Compute host. The key provided with `-i` is the separate **SSH private key** from Task 2, Step 5.
 
-    In the following command, replace <Private_Key> with your Private SSH Key File Name (downloaded in Task 2 Step 5) and <Public_IP> with your Public IP (from Task 3 step 14)
+    **macOS Terminal**
 
     ````
-    scp -i <Private_Key> priv.key opc@<Public_IP>:/home/opc/
+    scp -i ~/.ssh/oci_livelab ~/Downloads/oci_api_key.pem opc@<PUBLIC_IP>:/home/opc/oci_api_key.pem
+    ````
+
+    **Windows PowerShell**
+
+    ```powershell
+    scp -i "$env:USERPROFILE\.ssh\oci_livelab" "$env:USERPROFILE\Downloads\oci_api_key.pem" opc@<PUBLIC_IP>:/home/opc/oci_api_key.pem
     ````
 
 ## Task 5: Setup Application
 
-1. Go to your Terminal, and use SSH to connect to the Compute Host.
+1. Use SSH on your local laptop to connect to the Compute host. All following commands in this task run on the **Oracle Linux Compute host**, not on your local laptop.
 
-    In the following command, replace <Private_Key> with your Private SSH Key File Name (downloaded in Task 2 Step 5) and <Public_IP> with your Public IP (from Task 3 step 14)
+    **macOS Terminal**
 
     ````
-    ssh -i <Private_Key> opc@<Public_IP>
+    ssh -i ~/.ssh/oci_livelab opc@<PUBLIC_IP>
+    ````
+
+    **Windows PowerShell**
+
+    ```powershell
+    ssh -i "$env:USERPROFILE\.ssh\oci_livelab" opc@<PUBLIC_IP>
     ````
 
       ![SSH Host](images/ssh-to-host-1.png)
@@ -211,21 +302,19 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
 2. Install Linux Packages
    
     ````
-    sudo dnf install -y curl git unzip firewalld oraclelinux-developer-release-el10 python3-oci-cli postgresql16
+    sudo dnf install -y curl git unzip firewalld nano oraclelinux-developer-release-el10 python3-oci-cli postgresql16
     ````
 
-3. Add firewall rules
+3. Add the firewall rule for the app port
    
     ````
-    # uv installer and PATH
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    export PATH="$HOME/.local/bin:$PATH"
-
     # Firewalld rules for the app port (default 8000)
     sudo systemctl enable --now firewalld
     sudo firewall-cmd --permanent --add-port=8000/tcp
     sudo firewall-cmd --reload
     ````
+
+    Do not install `uv` manually. When you run `bash run.sh` later in this lab, it installs the repository-pinned `uv` and Python versions automatically.
 
 4. Download the Code Repository to the compute instance. Use the license agreement above to reveal this command.
 
@@ -235,25 +324,28 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
 
 5. Setup OCI ClI
 
-    Change the permission of the priv.key file at /home/opc/priv.key
+    Move the API-signing key into the OCI configuration directory and restrict its permissions.
 
     ````
-    chmod 600 /home/opc/priv.key
+    mkdir -p ~/.oci
+    chmod 700 ~/.oci
+    mv ~/oci_api_key.pem ~/.oci/oci_api_key.pem
+    chmod 600 ~/.oci/oci_api_key.pem
     ````
 
     ````
     oci setup config
     ````
 
-    Enter the details as per Task 2 Step 4
+    Enter the details from Task 2, Step 4. Use Chicago (`us-chicago-1`) unless you deliberately selected Ashburn for the entire lab.
 
     ````
     Enter a location for your config [/home/opc/.oci/config]:
     Enter a user OCID: ocid1.user.oc1..aaaaaa...........................aq
     Enter a tenancy OCID: ocid1.tenancy.oc1..aaaaaaaa....................ua
-    Enter a region by index or name(e.g.) :  us-ashburn-1
+    Enter a region by index or name(e.g.) :  us-chicago-1
 
-    Enter the location of your API Signing private key file: /home/opc/priv.key
+    Enter the location of your API Signing private key file: /home/opc/.oci/oci_api_key.pem
 
     Config written to /home/opc/.oci/config
         If you haven't already uploaded your API Signing public key through the
@@ -263,14 +355,21 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
             https://docs.cloud.oracle.com/Content/API/Concepts/apisigningkey.htm#How2
     ````
 
-6. Configure the variables to reflect the provisioned stack and API keys
+    Verify that the OCI CLI can authenticate:
 
     ````
-    cd PostgreSQL-AI/search-app/
+    oci os ns get
+    ````
+
+6. Configure the application variables to reflect the provisioned stack and API key.
+
+    ````
+    cd ~/PostgreSQL-AI/search-app/
+    cp -p .env.example .env
     ````
 
     ````
-    vi .env.example
+    nano .env
     ````
 
     Add DB Parameters based on the DBSystem created earlier
@@ -286,11 +385,15 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
     DB_POOL_MAX_SIZE=10
     ````
 
+    Enter the exact PostgreSQL password that you chose for `DB_PASSWORD`. Do not add quotes or URL-encode special characters such as `@`.
+
     Set Security (Basic Auth) parameters
     ````
     BASIC_AUTH_USER=admin
-    BASIC_AUTH_PASSWORD=<Set your password>
+    BASIC_AUTH_PASSWORD=<Choose a separate application password>
     ````
+
+    `BASIC_AUTH_PASSWORD` is not the PostgreSQL password. Use a separate value.
 
 
     Add OCI cli parameters based on the API Key created earlier
@@ -301,7 +404,7 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
     # Set oci
     LLM_PROVIDER=oci
 
-    # OCI Enterprise AI (when LLM_PROVIDER=oci)
+    # OCI Enterprise AI (when LLM_PROVIDER=oci). Use the same region selected for the stack.
     OCI_REGION=us-chicago-1
     OCI_COMPARTMENT_OCID=ocid1.compartment.oc1..aaaaaaaad........................mfa
     OCI_GENAI_ENDPOINT=https://inference.generativeai.us-chicago-1.oci.oraclecloud.com
@@ -310,23 +413,9 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
     # Option 1: Use config file
     OCI_CONFIG_FILE=/home/opc/.oci/config
     OCI_CONFIG_PROFILE=DEFAULT
-    # Option 2: API key envs
-    OCI_TENANCY_OCID=
-    OCI_USER_OCID=
-    OCI_FINGERPRINT=
-    OCI_PRIVATE_KEY_PATH=
-    OCI_PRIVATE_KEY_PASSPHRASE=
     ````
 
-7. Copy environment variables in example file to .env file
-
-    ````
-    cd /home/opc/PostgreSQL-AI/search-app
-
-    cp -p .env.example .env
-    ````
-
-8. Run the Stack
+7. Save and exit `nano`, then run the stack.
 
     ````
     bash run.sh
@@ -341,7 +430,7 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
     http://128.x.x.54:8000/
     ````
 
-    Enter the API Auth User and Password set in the **.env.example** file earlier
+    Enter the API Auth User and Password set in the **.env** file earlier.
 
     ![API Auth](images/signin-api.png)
 
@@ -356,4 +445,3 @@ None
 
 - **Created By/Date** - Shadab Mohammad, Master Principal Cloud Architect, January 2026
 - **Last Updated By** - Kaushik Kundu, Master Principal Cloud Architect, September 2026
-

@@ -42,19 +42,20 @@ This picture shows the ingestion, embeddings and RAG pipeline workflow.
 ### Objectives
 
 - Provision the services needed for the system
-    - Compartment, VCN, Compute Intance, PostgreSQL, and Enterprise AI services.
+    - Compartment, VCN, Compute instance, PostgreSQL, and Enterprise AI services.
 
 ## Prerequisites
 ### Cloud Account
 You need an Oracle Cloud account (i.e. access to an OCI tenancy) to complete this workshop. Participants can take advantage of Oracle's free trial account that comes with free cloud credits that are good for 30 days or until used up. Many Oracle events, such as CloudWorld, offer trial accounts with extra free cloud credits. You should be able to complete this workshop in the allotted time if your free trial cloud account is already created and ready to use. If you previously had a free trial account but the credits have expired, you won't be able to complete the lab. An option in this case is to obtain a new free trial account with fresh credits using a different email address. You can also use an existing paid Oracle Cloud account as long as you have administrator rights that will be needed to provision services.
 
 ### Laptop
-You need a computer (laptop or desktop) with web browser, a text editor, and internet access. (Attempting to accomplish this workshop using a tablet or phone might be possible but is not recommended and it hasn't been tested on those types of devices.)
+You need a macOS or Windows 10/11 computer (laptop or desktop) with a web browser, a text editor, and internet access. Chrome, Edge, or another current browser is recommended. Windows participants also need the OpenSSH Client and Git for Windows; Lab 1 includes preflight checks. Attempting this workshop on a tablet or phone is not recommended and has not been tested.
 
-### Access to Ashburn or Phoenix or Chicago
-- *The Cloud Account should have access to the Chicago Region or Ashburn or Phoenix region* where the Enterprise AI is available.
-    - For Free Trial account, this means that the Free Trial should be created in the Chicago region
-    - For Paid account, you will need to add the Chicago or Ashburn or Phoenix Region to your tenancy to access the Enterprise AI APIs. (See lab 1) 
+### Region
+This workshop is validated in the **US Midwest (Chicago)** region (`us-chicago-1`) and uses it by default. Ashburn can be used only if you deliberately change the Console region, Terraform region, OCI Generative AI endpoint, and model OCID so that they all use the same region.
+
+- For a Free Trial account, create the trial in Chicago when possible.
+- For a paid account, subscribe to Chicago if it is not already available in the tenancy. Use Ashburn only when Chicago is unavailable.
 
 
 **Please proceed to the [next lab.](#next)**
