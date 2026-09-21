@@ -65,6 +65,8 @@ You can designate a subnet as either public or private when you create it. Priva
        Source CIDR: *0.0.0.0/0*, Destination Port: *9000* /required for accessing application from the internet    
        Source CIDR: *0.0.0.0/0*, Destination Port: *443* /required for accessing https from the internet
 ````
+
+For workshop reliability, the stack uses `0.0.0.0/0` as the public ingress source. If you know your public IP address and the venue network is stable, you can restrict access to your public IP with a `/32` suffix. If that prevents access during the workshop, temporarily restore `0.0.0.0/0`.
        
 ## Task 3: PostgreSQL Database System
 
@@ -202,9 +204,25 @@ Foreign-key constraints:
 
 Here's what you accomplished. You explored multiple services in a compartment in your OCI tenancy. These included OCI VCN, Compute, OCI Enterprise AI, and OCI PostgreSQL Database System. This lab has illustrated how different OCI services can be integrated together to make a complete cloud native AI search solution.
 
+## Cleanup
+
+When you no longer need the workshop environment, run **Destroy** for the Resource Manager stack to remove the Compute instance, PostgreSQL DB system, network resources, and Object Storage bucket. If the bucket contains objects, delete those objects first.
+
+If you keep the Compute instance after completing the workshop, remove the API-signing private key from the VM:
+
+````
+rm -f ~/.oci/oci_api_key.pem
+test ! -e ~/.oci/oci_api_key.pem && echo "Workshop API-signing key removed from this VM."
+````
+
+Removing this key disables the app's OCI Generative AI access until a credential is configured again. Also delete the workshop API-signing key from your OCI user settings and delete the local PEM file if it was created solely for this workshop.
+
 ## Acknowledgements
 
-- **Created By/Date** - Shadab Mohammad, Master Principal Cloud Architect, January 2026
-- **Last Updated By** - Kaushik Kundu, Master Principal Cloud Architect, September 2026
-
-
+- **Author**:
+  - Shadab Mohammad, Master Principal Cloud Architect, January 2026
+- **Contributors**:
+  - Kaushik Kundu, Master Principal Cloud Architect
+  - Sasanka Abeysinghe, Principal Cloud Architect
+  - Luke Farley, Senior Cloud Engineer
+- **Last Updated By** - Luke Farley, Senior Cloud Engineer, September 2026

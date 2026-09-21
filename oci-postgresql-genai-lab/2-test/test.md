@@ -12,20 +12,24 @@ Estimated time: 20 min
 ### Prerequisites
 - The previous lab must have been completed.
 
-## Task 1: Download RAG dataset
-You will need samples files on your local machine. 
+## Task 1: Locate the RAG dataset
+You will use the local repository cloned in Lab 1. Its `dataset` folder contains the sample files for this exercise:
 
-1. Use the code files from the directory PostgreSQL-AI (Cloned from Github in Task 3 Step 1 in Lab 1)
+````
+PostgreSQL-AI/dataset/
+````
 
-    ![GitHub_Download](images/code-extract-zip.jpg) 
-
-2. Note the directory contains the program run in previous lab in the ***search-app*** folder, and the samples files in the ***dataset*** folder.
+Keep this local repository available while testing the application.
 
 ## Task 2: Upload the sample files to the search app
 
 You will load a file into the search app which will be parsed, chunked, vector embeddings created & ingested into the OCI PostgreSQL database. 
      
-1. Go to the ##APP URL## (eg:http://&lt;Public_IP&gt;:8000/)
+1. Go to the application URL:
+
+    ````
+    http://&lt;PUBLIC_IP&gt;:8000/
+    ````
 
     Replace with your Public_IP (from Task 3 step 14 in Lab 1) in the URL
 
@@ -33,7 +37,7 @@ You will load a file into the search app which will be parsed, chunked, vector e
 
     ![Login](images/app-login-1.png)
 
-3.  Click on Account 
+3. Click on Account
 
     ![Register](images/app-register-1.png)
 
@@ -87,7 +91,10 @@ None
 
 ## Acknowledgements
 
-- **Created By/Date** - Shadab Mohammad, Master Principal Cloud Architect, January 2026
-- **Last Updated By** - Kaushik Kundu, Master Principal Cloud Architect, September 2026
-
-
+- **Author**:
+  - Shadab Mohammad, Master Principal Cloud Architect, January 2026
+- **Contributors**:
+  - Kaushik Kundu, Master Principal Cloud Architect
+  - Sasanka Abeysinghe, Principal Cloud Architect
+  - Luke Farley, Senior Cloud Engineer
+- **Last Updated By** - Luke Farley, Senior Cloud Engineer, September 2026
