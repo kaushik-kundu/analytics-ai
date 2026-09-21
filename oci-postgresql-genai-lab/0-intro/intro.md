@@ -29,7 +29,7 @@ It works like this:
 1. A document is uploaded in the Search App
 2. The document is converted, parsed & cleaned.
 3. Using an embedding model, vector embeddings are created and stored in OCI PostgreSQL database
-4. You can now ask natural language questions in the App to retrieve results using a combination of semantic search using pgvector and OCI Enterprise AI service LLM
+4. You can now ask natural language questions in the App to retrieve results using a combination of semantic search using pgvector and OCI Enterprise AI service LLM.
 
 
 This picture shows the ingestion, embeddings and RAG pipeline workflow.
