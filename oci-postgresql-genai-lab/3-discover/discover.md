@@ -11,7 +11,7 @@ Estimated time: 20 min
 - Discover services that have been created by automation and that comprise the solution
 
 ### Prerequisites
-- You've completed the previous labs
+- You've completed the previous labs.
 
 ## Task 1: Compartment
 
