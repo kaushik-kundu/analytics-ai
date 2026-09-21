@@ -302,7 +302,7 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
 2. Install Linux Packages
    
     ````
-    sudo dnf install -y curl git unzip firewalld nano oraclelinux-developer-release-el10 python3-oci-cli postgresql16
+    sudo dnf install -y curl git unzip firewalld oraclelinux-developer-release-el10 python3-oci-cli postgresql16
     ````
 
 3. Add the firewall rule for the app port
@@ -313,8 +313,6 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
     sudo firewall-cmd --permanent --add-port=8000/tcp
     sudo firewall-cmd --reload
     ````
-
-    Do not install `uv` manually. When you run `bash run.sh` later in this lab, it installs the repository-pinned `uv` and Python versions automatically.
 
 4. Download the Code Repository to the compute instance. Use the license agreement above to reveal this command.
 
@@ -369,7 +367,7 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
     ````
 
     ````
-    nano .env
+    vi .env
     ````
 
     Add DB Parameters based on the DBSystem created earlier
@@ -415,7 +413,7 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
     OCI_CONFIG_PROFILE=DEFAULT
     ````
 
-7. Save and exit `nano`, then run the stack.
+7. Save and exit `vi`: press `Esc`, type `:wq`, then press `Enter`. Run the stack.
 
     ````
     bash run.sh
@@ -443,5 +441,10 @@ None
 
 ## Acknowledgements
 
-- **Created By/Date** - Shadab Mohammad, Master Principal Cloud Architect, January 2026
-- **Last Updated By** - Kaushik Kundu, Master Principal Cloud Architect, September 2026
+- **Author**:
+  - Shadab Mohammad, Master Principal Cloud Architect, January 2026
+- **Contributors**:
+  - Kaushik Kundu, Master Principal Cloud Architect
+  - Sasanka Abeysinghe, Principal Cloud Architect
+  - Luke Farley, Senior Cloud Engineer
+- **Last Updated By** - Luke Farley, Senior Cloud Engineer, September 2026
