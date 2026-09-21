@@ -28,7 +28,7 @@ You will load a file into the search app which will be parsed, chunked, vector e
 1. Go to the application URL:
 
     ````
-    http://&lt;PUBLIC_IP&gt;:8000/
+    http://<PUBLIC_IP>:8000/
     ````
 
     Replace with your Public_IP (from Task 3 step 14 in Lab 1) in the URL
@@ -92,9 +92,9 @@ None
 ## Acknowledgements
 
 - **Author**:
-  - Shadab Mohammad, Master Principal Cloud Architect, January 2026
+    - Shadab Mohammad, Master Principal Cloud Architect, January 2026
 - **Contributors**:
-  - Kaushik Kundu, Master Principal Cloud Architect
-  - Sasanka Abeysinghe, Principal Cloud Architect
-  - Luke Farley, Senior Cloud Engineer
+    - Kaushik Kundu, Master Principal Cloud Architect
+    - Sasanka Abeysinghe, Principal Cloud Architect
+    - Luke Farley, Senior Cloud Engineer
 - **Last Updated By** - Luke Farley, Senior Cloud Engineer, September 2026
