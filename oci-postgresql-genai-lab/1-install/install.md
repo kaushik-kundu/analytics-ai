@@ -164,7 +164,7 @@ Keep both private keys private. Paste or upload only the SSH **public** key (`.p
 5. Select *My Configuration*, scroll down to *Stack Configuration*, and add the `oci_postgres_tf_stack` folder from your local `PostgreSQL-AI` clone.
        ![Resource Manager](images/resource-manager-2.png)
        
-   Select the *oci_postgres_tf_stack* folder from your local machine
+    Select the *oci_postgres_tf_stack* folder from your local machine
        ![Resource Manager](images/resource-manager-3.png)
        
 6. Select the compartment and click **Next**
@@ -209,17 +209,17 @@ Keep both private keys private. Paste or upload only the SSH **public** key (`.p
               ![Resource Manager](images/resource-manager-9.png)
               
 
-Copy the last 10 lines of the job log and save it in a notepad, it will be like something below
+    Copy the last 10 lines of the job log and save it in a notepad, it will be like something below
 
-````
-Outputs:
-compute_instance_id = "ocid1.instance.oc1.iad.anuw...................uq"
-compute_private_ip = "10.10.2.23"
-compute_public_ip = "150.x.x.74"
-compute_state = "RUNNING"
-psql_admin_pwd = <sensitive>
-psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa............snq" 
-````
+    ````
+    Outputs:
+    compute_instance_id = "ocid1.instance.oc1.iad.anuw...................uq"
+    compute_private_ip = "10.10.2.23"
+    compute_public_ip = "150.x.x.74"
+    compute_state = "RUNNING"
+    psql_admin_pwd = <sensitive>
+    psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa............snq"
+    ````
 
 
 14. Go to OCI Console *Compute* and then *Instances*
@@ -433,7 +433,7 @@ psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa..........
     ![API Auth](images/signin-api.png)
 
 
-**You may now proceed to the [next lab](#next)**
+    **You may now proceed to the [next lab](#next)**
 
 ## Known issues
 

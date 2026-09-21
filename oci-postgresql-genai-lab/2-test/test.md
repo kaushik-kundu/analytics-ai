@@ -37,7 +37,7 @@ You will load a file into the search app which will be parsed, chunked, vector e
 
     ![Login](images/app-login-1.png)
 
-3.  Click on Account 
+3. Click on Account
 
     ![Register](images/app-register-1.png)
 
