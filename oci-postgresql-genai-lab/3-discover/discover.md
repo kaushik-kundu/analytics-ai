@@ -206,7 +206,16 @@ Here's what you accomplished. You explored multiple services in a compartment in
 
 ## Cleanup
 
-When you no longer need the workshop environment, delete the Resource Manager stack to remove the Compute instance, PostgreSQL DB system, network resources, and Object Storage bucket. If the bucket contains objects, delete those objects first. Also delete the OCI API-signing key created for this workshop from your user settings. This prevents ongoing charges and removes the private-key credential from use.
+When you no longer need the workshop environment, run **Destroy** for the Resource Manager stack to remove the Compute instance, PostgreSQL DB system, network resources, and Object Storage bucket. If the bucket contains objects, delete those objects first.
+
+If you keep the Compute instance after completing the workshop, remove the API-signing private key from the VM:
+
+````
+rm -f ~/.oci/oci_api_key.pem
+test ! -e ~/.oci/oci_api_key.pem && echo "Workshop API-signing key removed from this VM."
+````
+
+Removing this key disables the app's OCI Generative AI access until a credential is configured again. Also delete the workshop API-signing key from your OCI user settings and delete the local PEM file if it was created solely for this workshop.
 
 ## Acknowledgements
 
