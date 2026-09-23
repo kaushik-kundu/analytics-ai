@@ -130,8 +130,8 @@ Keep both private keys private. Paste or upload only the SSH **public** key (`.p
     **Windows PowerShell**
 
     ```powershell
-    New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.ssh"
-    ssh-keygen -t rsa -b 4096 -f "$env:USERPROFILE\.ssh\oci_livelab"
+    New-Item -ItemType Directory -Force -Path "$HOME\.ssh"
+    ssh-keygen -t rsa -b 4096 -f "$HOME\.ssh\oci_livelab"
     ```
 
     You will use `oci_livelab.pub` in Resource Manager and keep `oci_livelab` private.
@@ -184,7 +184,7 @@ Keep both private keys private. Paste or upload only the SSH **public** key (`.p
     **Windows PowerShell**
 
     ```powershell
-    Get-Content "$env:USERPROFILE\.ssh\oci_livelab.pub" | Set-Clipboard
+    Get-Content "$HOME\.ssh\oci_livelab.pub" | Set-Clipboard
     ```
 
     Ensure object\_storage\_bucket_name is set as "search-app-uploads\_XX" (where XX is the initial of the user working on this LiveLab)
@@ -282,7 +282,7 @@ Keep both private keys private. Paste or upload only the SSH **public** key (`.p
     **Windows PowerShell**
 
     ```powershell
-    scp -i "$env:USERPROFILE\.ssh\oci_livelab" "$env:USERPROFILE\Downloads\oci_api_key.pem" opc@<PUBLIC_IP>:/home/opc/oci_api_key.pem
+    scp -i "$HOME\.ssh\oci_livelab" "$HOME\Downloads\oci_api_key.pem" opc@<PUBLIC_IP>:/home/opc/oci_api_key.pem
     ````
 
 ## Task 5: Setup Application
@@ -300,7 +300,7 @@ Keep both private keys private. Paste or upload only the SSH **public** key (`.p
     **Windows PowerShell**
 
     ```powershell
-    ssh -i "$env:USERPROFILE\.ssh\oci_livelab" opc@<PUBLIC_IP>
+    ssh -i "$HOME\.ssh\oci_livelab" opc@<PUBLIC_IP>
     ````
 
       ![SSH Host](images/ssh-to-host-1.png)
