@@ -220,9 +220,9 @@ Removing this key disables the app's OCI Generative AI access until a credential
 ## Acknowledgements
 
 - **Author**:
-  - Shadab Mohammad, Master Principal Cloud Architect, January 2026
+    - Shadab Mohammad, Master Principal Cloud Architect, January 2026
 - **Contributors**:
-  - Kaushik Kundu, Master Principal Cloud Architect
-  - Sasanka Abeysinghe, Principal Cloud Architect
-  - Luke Farley, Senior Cloud Engineer
+    - Kaushik Kundu, Master Principal Cloud Architect
+    - Sasanka Abeysinghe, Principal Cloud Architect
+    - Luke Farley, Senior Cloud Engineer
 - **Last Updated By** - Luke Farley, Senior Cloud Engineer, September 2026
