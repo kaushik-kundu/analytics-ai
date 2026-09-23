@@ -267,7 +267,11 @@ Keep both private keys private. Paste or upload only the SSH **public** key (`.p
 
 1. Locate the `oci_api_key.pem` private PEM file downloaded in Task 2, Step 4.
 
+    This is the OCI API signing private key. It is different from the SSH private key used to connect to the VM.
+
 2. Use SCP on your local laptop to copy the **OCI API-signing key** to the Compute host. The key provided with `-i` is the separate **SSH private key** from Task 2, Step 5.
+
+    The file after -i is the SSH login key; oci_api_key.pem is the API private key being uploaded.
 
     **macOS Terminal**
 
@@ -284,6 +288,8 @@ Keep both private keys private. Paste or upload only the SSH **public** key (`.p
 ## Task 5: Setup Application
 
 1. Use SSH on your local laptop to connect to the Compute host. All following commands in this task run on the **Oracle Linux Compute host**, not on your local laptop.
+
+    'oci_livelab' is the same SSH private key used for SCP in Task 4 Step 2
 
     **macOS Terminal**
 
@@ -306,6 +312,8 @@ Keep both private keys private. Paste or upload only the SSH **public** key (`.p
     ````
 
 3. Add the firewall rule for the app port
+
+    This opens TCP port 8000 on the VM so you can access the application in a browser later. OCI network ingress rules must also allow port 8000.
    
     ````
     # Firewalld rules for the app port (default 8000)
@@ -447,4 +455,4 @@ None
   - Kaushik Kundu, Master Principal Cloud Architect
   - Sasanka Abeysinghe, Principal Cloud Architect
   - Luke Farley, Senior Cloud Engineer
-- **Last Updated By** - Luke Farley, Senior Cloud Engineer, September 2026
+- **Last Updated By** - Kaushik Kundu, Master Principal Cloud Architect, September 2026
