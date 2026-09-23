@@ -271,7 +271,7 @@ Keep both private keys private. Paste or upload only the SSH **public** key (`.p
 
 2. Use SCP on your local laptop to copy the **OCI API-signing key** to the Compute host. The key provided with `-i` is the separate **SSH private key** from Task 2, Step 5.
 
-    The file after -i is the SSH login key; oci_api_key.pem is the API private key being uploaded.
+    The file after -i is the SSH login key; 'oci_api_key.pem' is the API private key being uploaded.
 
     **macOS Terminal**
 
