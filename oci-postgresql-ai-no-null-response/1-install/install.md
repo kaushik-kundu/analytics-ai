@@ -1,458 +1,181 @@
-# Install the Components
+# Install the components
 
 ## Introduction
-In this lab, you will install all the components needed for this workshop. Some of these will be provisioned manually and many will be provisioned automatically using a provided Terraform script.
 
-Estimated time: 40 min
+In this lab, you will obtain the workshop code, provision private OCI PostgreSQL and Bastion, start an SSH tunnel, and run the search app on your laptop. PostgreSQL has no public IP. The database subnet has a route to OCI services only; OCI Bastion provides time-limited access to the private database.
 
-### Objectives
+Estimated time: 45–60 minutes, plus first-time laptop downloads.
 
-- Provision all the cloud components
+### Before you start
 
-### Prerequisites
+- Sign in with the temporary OCI user and use the compartment assigned for this workshop. Keep the Console in the workshop region (normally `us-chicago-1`).
+- Have a browser, Git, OpenSSH, and laptop internet access for the app's pinned dependencies. You will find your public IPv4 address online, choose the PostgreSQL admin username while creating the stack, and find an available chat model in your OCI tenancy.
+- The current app runner supports Apple Silicon macOS 14+ and Linux. On Windows, Oracle Linux 9 under WSL 2 is recommended when available; Ubuntu is also an option for this public workshop. The WSL path has not yet had an end-to-end workshop test, and `run.sh` does not support native Windows.
 
-- An OCI Account with sufficient credits where you will perform the lab. (Some of the services used in this lab are not part of the *Always Free* program.)
-- A current web browser. Chrome or Edge is recommended.
-- A macOS or Windows 10/11 laptop. You will run a small number of commands locally, then run the remaining commands on the Oracle Linux Compute instance.
-- Check that your tenancy has access to the **US Midwest (Chicago)** region. This workshop is validated in Chicago and uses `us-chicago-1` by default.
-    - For Paid Tenancy
-        - Click on region on top of the screen
-        - Check that the Chicago Region is there (Green rectangle)
-        - If not, Click on Manage Regions to add it to your regions list. You need Tenancy Admin right for this.
-        - Click on the US MidWest (Chicago)
-        - Click Subscribe
-
-    ![Chicago Region](images/chicago-region.png)
-
-    - For Free Trial, the home region should be Chicago.
-- Ashburn can be used only when Chicago is unavailable. If you switch, use that same region for the Console, Terraform stack, OCI Generative AI endpoint, and model OCID.
-- The OCI User used in this LiveLab should have OCI Administrator privileges in the OCI Tenancy.
-
-### Local command preflight
-
-Run the applicable command on your **local laptop** before starting.
+### Check laptop commands
 
 **macOS Terminal**
 
-````
-command -v git ssh ssh-keygen scp
-````
+```bash
+command -v git ssh ssh-keygen python3
+```
+
+If Git is missing, run `xcode-select --install` and complete the installer. macOS includes OpenSSH.
 
 **Windows PowerShell**
 
 ```powershell
-Get-Command git, ssh, ssh-keygen, scp -ErrorAction SilentlyContinue
+Get-Command git, ssh, ssh-keygen -ErrorAction SilentlyContinue
+wsl --version
+wsl --list --verbose
 ```
 
-### Install missing commands
+If Git is missing, install [Git for Windows](https://git-scm.com/install/windows) or run `winget install --id Git.Git -e --source winget`. If OpenSSH is missing, run `Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0` in Administrator PowerShell, then reopen it.
 
-**macOS**
+For the app, use a WSL 2 Linux distribution. [Oracle Linux 9 is available in the Microsoft Store](https://apps.microsoft.com/detail/9MXQ65HLMC27) and is recommended. If Ubuntu is already installed, it is acceptable for this public workshop. If WSL itself is missing, run `wsl --install --no-distribution` in Administrator PowerShell, then install and launch a distribution. A Windows restart may be required. In the Linux terminal, check `id -u` (the app must run as a non-root user) and `systemctl status` (the app bootstrap requires systemd). [Microsoft documents enabling systemd in WSL](https://learn.microsoft.com/en-us/windows/wsl/systemd).
 
-macOS includes `ssh`, `ssh-keygen`, and `scp`. If `git` is missing, run the following command and complete the Apple Command Line Tools installer:
+Install the basic tools inside the selected Linux distribution:
 
-````
-xcode-select --install
-````
-
-If an SSH command is missing, install current macOS software updates or contact your IT administrator before the workshop.
-
-**Windows PowerShell**
-
-If `git` is missing, install Git for Windows, then close and reopen PowerShell:
-
-```powershell
-winget install --id Git.Git -e --source winget
+```bash
+# Oracle Linux 9
+sudo dnf install -y git curl python3 openssh-clients iproute procps-ng util-linux
 ```
 
-If `winget` is unavailable, download Git for Windows from [git-scm.com/install/windows](https://git-scm.com/install/windows).
-
-If `ssh`, `ssh-keygen`, or `scp` is missing, open PowerShell as Administrator and run:
-
-```powershell
-Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+```bash
+# Ubuntu, if that is the distribution already on your laptop
+sudo apt update
+sudo apt install -y git curl python3 openssh-client ca-certificates iproute2 util-linux
 ```
 
-Close and reopen PowerShell, then rerun the preflight check. If an organization-managed device blocks either installation, ask an instructor for help or use a machine where the required tools are available.
+Use the Linux terminal for the clone, keys, tunnel, and app commands below. If WSL setup or the app bootstrap stalls during this 90-minute lab, ask an instructor for help in the room. You can use another supported laptop if available.
 
+## Task 1: Review the license and clone the code
 
-## Task 1: Create a Compartment
+Review the Oracle Technology Network License Agreement in Appendix 1 before cloning the workshop code. Select **Accept License Agreement** to reveal the command.
 
-The compartment will be used to contain all the components of the lab.
+<div class="sample-code-license-gate" data-license-gate>
+  <p>Review the Oracle Technology Network License Agreement in Appendix 1, then select <strong>Accept License Agreement</strong> to reveal the download command.</p>
+  <button type="button" class="license-gate-review" data-license-gate-review>Review License Agreement</button>
+  <p class="license-gate-status" data-license-gate-status aria-live="polite"></p>
+</div>
 
-You can
-- Use an existing compartment to run the lab 
-- Or create a new one (recommended)
+<div class="sample-code-clone license-gate-is-hidden" data-license-gated-clone aria-hidden="true">
+  <p>Source: <a href="https://github.com/kaushik-kundu/PostgreSQL-AI">PostgreSQL-AI on GitHub</a></p>
+  <pre><code>git clone https://github.com/kaushik-kundu/PostgreSQL-AI.git</code></pre>
+</div>
 
-1. Login to your OCI account/tenancy
+The cloned repository contains both `oci_postgres_tf_stack` and `search-app`. Run the revealed clone command in Terminal or, on Windows, in your WSL 2 Linux terminal. Keep this local copy for Lab 2's sample files. Before provisioning, check that `search-app/.env.example` contains `DB_HOSTADDR=127.0.0.1` and `oci_postgres_tf_stack/network.tf` contains an `oci_bastion_bastion` resource. If either is missing, the workshop revision has not been published yet; ask an instructor for the current code.
 
-2. Click the Hamburger menu at the top-left corner of the console and select
-    1. Identity & Security
-    2. Compartments
-    ![Menu Compartment](images/compartment1.png =40%x*)
-    
-3. Click ***Create Compartment***
-    - Give a name: ***oci-starter_XX*** (where XX is the initial of the user working on this LiveLab)
-    - Then again: ***Create Compartment***
-    ![Create Compartment](images/compartment2.png)
+## Task 2: Prepare your SSH and OCI API keys
 
-## Task 2: Create API-signing and SSH keys
+Use **two different keys**: a Bastion SSH key for the tunnel and an OCI API-signing key for Generative AI calls. Keep both private keys on your laptop.
 
-This lab uses two different private keys:
+**macOS/Linux Terminal** (Windows attendees: your WSL 2 Linux terminal)
 
-- **OCI API-signing key**: authenticates the OCI CLI and the application to OCI APIs.
-- **SSH key**: authenticates you to the Compute VM.
+```bash
+mkdir -p ~/.ssh ~/.oci
+ssh-keygen -t ed25519 -f ~/.ssh/oci_workshop_bastion
+```
 
-Keep both private keys private. Paste or upload only the SSH **public** key (`.pub`) to Resource Manager.
+Only the `.pub` file is uploaded when you create a Bastion session. Do not upload or share the SSH private key.
 
-1. Go to OCI Console Homepage
+In the OCI Console, open your **User Settings → Tokens & Keys → Add API Key**. The screenshot shows the **Add API key** button on the **My profile → Tokens and keys** page; your workshop region may differ from the example.
 
-2. Click User icon on the top right and *User Settings*
+![OCI Console Tokens and keys page with Add API key highlighted and account values masked](images/add-api-key-redacted.png)
 
-    ![Create API key](images/create-api-keys-1.png)
-    
-3. Go to *Tokens & Keys*, then *Add API Key*
-    ![Create API key](images/create-api-keys-2.png)
-    
-4. Generate the API key pair and download the private PEM key. Save it locally as `oci_api_key.pem`.
-    ![Create API key](images/create-api-keys-3.png)
+Choose **Generate API key pair**, select **Download private key**, and then select **Add**. The private key is shown for download only at this step; keep it on your laptop.
 
-    This PEM key is the OCI API-signing private key used later in the Compute-host configuration.
-    
-5. Generate an SSH private/public key pair. This key is used only to connect to the Compute VM.
+![OCI Console Add API key dialog with Generate API key pair and Download private key highlighted](images/generate-api-key.png)
 
-    **macOS Terminal**
+In **Configuration file preview**, select **Copy** and paste the snippet into `~/.oci/config`. Replace the `key_file` placeholder with the actual path to your downloaded private key, removing the trailing `# TODO`. Use your assigned workshop region in the config file; the region in this screenshot is only an example.
 
-    ````
-    mkdir -p ~/.ssh
-    ssh-keygen -t rsa -b 4096 -f ~/.ssh/oci_livelab
-    ````
+![OCI configuration file preview with account identifiers masked and Copy highlighted](images/api-config-preview-redacted.png)
 
-    **Windows PowerShell**
+Save the downloaded private key in `~/.oci/` and restrict it with `chmod 600`. Confirm that the config contains `user`, `fingerprint`, `tenancy`, `region`, and `key_file`. On Windows, copy the downloaded PEM from Windows Downloads into WSL Linux and restrict it there:
 
-    ```powershell
-    New-Item -ItemType Directory -Force -Path "$HOME\.ssh"
-    ssh-keygen -t rsa -b 4096 -f "$HOME\.ssh\oci_livelab"
-    ```
+```bash
+cp /mnt/c/Users/<Windows-user>/Downloads/oci_api_key.pem ~/.oci/oci_api_key.pem
+chmod 600 ~/.oci/oci_api_key.pem
+```
 
-    You will use `oci_livelab.pub` in Resource Manager and keep `oci_livelab` private.
+Create the OCI config inside WSL Linux so the app can read it. For macOS or Linux, move the downloaded PEM into `~/.oci/` and run the same `chmod 600` command. The profile's `key_file` must be the exact path to the PEM; do not add an inline comment such as `# TODO` after the path. Set `OCI_CONFIG_PROFILE` in `.env` to the profile name between square brackets in the config file. See [OCI SDK configuration](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm).
 
+## Task 3: Provision the private stack
 
+In the OCI Console, open **Developer Services → Resource Manager → Stacks → Create stack**. Select **My configuration → Folder**, then browse to the **`oci_postgres_tf_stack` folder inside your PostgreSQL-AI clone**. Use the folder wherever you cloned the repository; it may not be under your home directory. Oracle's [folder upload instructions](https://docs.oracle.com/en-us/iaas/Content/ResourceManager/Tasks/create-stack-local-folder.htm) describe this Console option.
 
-## Task 3: Run Terraform script 
+A fresh clone contains the Terraform `.tf` files and may contain `.terraform.lock.hcl`. That lock file is okay. If you previously ran Terraform CLI inside the folder, check for a hidden **`.terraform` directory** before uploading. Resource Manager rejects a folder containing that local provider cache with “An invalid .terraform directory was found.” Delete only the `.terraform` directory or upload a fresh clone; do not delete the `.tf` files or `.terraform.lock.hcl`. On Windows, browse to `\\wsl$\<distribution-name>\home\<linux-user>\PostgreSQL-AI\oci_postgres_tf_stack` in File Explorer; get the exact distribution name with `wsl --list --verbose`.
 
-1. Review and accept the license agreement before cloning the GitHub code to your local laptop.
+Select your assigned compartment and set the stack variables:
 
-    <div class="sample-code-license-gate" data-license-gate>
-      <p>Review the Oracle Technology Network License Agreement in Appendix 1, then select <strong>Accept License Agreement</strong> to reveal the download command.</p>
-      <button type="button" class="license-gate-review" data-license-gate-review>Review License Agreement</button>
-      <p class="license-gate-status" data-license-gate-status aria-live="polite"></p>
-    </div>
+- `region`: use the Console region shown for this workshop, normally `us-chicago-1`.
+- `compartment_ocid`: copy the OCID from **Identity & Security → Compartments → your assigned compartment**.
+- `psql_admin`: **choose** the administrator username now (for example, `workshop_admin`) and record it. This DB System does not exist yet, so there is no username to look up until after provisioning. You can confirm it later on the DB System details page.
+- `bastion_client_cidrs`: on the same laptop and network you will use for the SSH tunnel, open [api.ipify.org](https://api.ipify.org) in a browser and note the public **IPv4** address. Add `/32`, for example `203.0.113.10/32`. In the Resource Manager Console's list item field, enter **only** `203.0.113.10/32` with your real address: no square brackets, quotation marks, spaces, or angle brackets. Do not copy the example address. You can also run `curl -4 https://api.ipify.org` in Terminal or WSL. Do not use the private IP shown by `ipconfig` or `ip addr`. If your network changes, this value must be updated on the Bastion.
 
-    <div class="sample-code-clone license-gate-is-hidden" data-license-gated-clone aria-hidden="true">
-      <pre><code>git clone https://github.com/kaushik-kundu/PostgreSQL-AI.git</code></pre>
-    </div>
+If a corporate proxy hides or changes your SSH source IP, the workshop stack also permits `0.0.0.0/0` as a temporary Bastion allowlist fallback. This allows connection attempts from any public IPv4 address; SSH still requires your Bastion session and private key. [Oracle recommends a limited CIDR range](https://docs.oracle.com/en-us/iaas/Content/Security/Reference/bastion_security.htm), so use your `/32` when it works and destroy the stack at the end of the workshop. An open allowlist does **not** bypass a network that blocks outbound SSH on TCP `22`.
 
+The stack creates PostgreSQL, its private VCN, and OCI Bastion. It does not create an app VM.
 
-       
-2. Go to OCI Console Home Page
+Run **Plan**, review it, then run **Apply**. Save the outputs `bastion_id`, `postgres_private_ip`, and sensitive `psql_admin_pwd` securely. Do not paste the password into chat or screenshots. On the PostgreSQL DB System's **Connection details** page, record the endpoint FQDN and download its CA certificate (`dbsystem.pub`) to your laptop. Save the certificate as `~/.oci/dbsystem.pub`; on macOS/Linux, if your browser saved it in Downloads, run `cp ~/Downloads/dbsystem.pub ~/.oci/dbsystem.pub`. Windows attendees should copy it from Windows Downloads into WSL Linux, for example `cp /mnt/c/Users/<Windows-user>/Downloads/dbsystem.pub ~/.oci/dbsystem.pub`. Then run `chmod 600 ~/.oci/dbsystem.pub` in Terminal or WSL Linux.
 
-3. Click on *Developer Services* and then *Stack*
-    ![Resource Manager](images/resource-manager-1.png)
+## Task 4: Open the Bastion tunnel
 
-4. Change your compartment to the one created in Task 1 above
+In **Identity & Security → Bastion**, open `postgres-workshop-bastion` in the workshop compartment. Create an **SSH port forwarding** session with:
 
-5. Select *My Configuration*, scroll down to *Stack Configuration*, and add the `oci_postgres_tf_stack` folder from your local `PostgreSQL-AI` clone.
-       ![Resource Manager](images/resource-manager-2.png)
-       
-       Select the *oci_postgres_tf_stack* folder from your local machine
-       ![Resource Manager](images/resource-manager-3.png)
-       
-6. Select the compartment and click **Next**
-       ![Resource Manager](images/resource-manager-4.png)
+- Target private IP: the `postgres_private_ip` stack output
+- Target port: `5432`
+- SSH public key: `~/.ssh/oci_workshop_bastion.pub`
 
-7. Ensure that the "compartment_ocid" is set correctly. Select the **compute assign public ip** option
-          ![Resource Manager](images/resource-manager-5.png)
+Creating the OCI session authorizes port forwarding, but does **not** start the tunnel on your laptop. On the session's Actions menu, select **Copy SSH command**. In a separate Terminal or WSL Linux window, replace `<privateKey>` with `~/.ssh/oci_workshop_bastion` and `<localPort>` with `15432`. The command should forward local port `15432` to the PostgreSQL private IP on port `5432`. Add `-N` to keep the terminal dedicated to forwarding, and run it. Keep this terminal open while using the app. Oracle's [Bastion instructions](https://docs.oracle.com/en-us/iaas/Content/Bastion/Tasks/connect-port-forwarding.htm) show the command format.
 
-8. Paste the contents of the `oci_livelab.pub` SSH public-key file created in Task 2, Step 5, and check **create compute** | **create\_psql\_configurtion**.
+Before starting the app, check that the local tunnel is listening. On macOS, run `lsof -nP -iTCP:15432 -sTCP:LISTEN`; on Linux or WSL, run `ss -lnt | grep ':15432'`. You should see an SSH listener on local port `15432`. If no listener appears, return to the SSH command and its terminal window.
 
-    **macOS Terminal**
+A session expires after at most three hours. If it expires, create a new session and restart the SSH command. If you move networks and your public source IP changes, ask an instructor to update the Bastion allowlist.
 
-    ````
-    cat ~/.ssh/oci_livelab.pub
-    ````
+## Task 5: Configure and start the search app
 
-    **Windows PowerShell**
+In a second Terminal (or WSL Linux) window, create the app settings file:
 
-    ```powershell
-    Get-Content "$HOME\.ssh\oci_livelab.pub" | Set-Clipboard
-    ```
+```bash
+cd ~/PostgreSQL-AI/search-app
+test -f .env || cp .env.example .env
+chmod 600 .env
+```
 
-    Ensure object\_storage\_bucket_name is set as "search-app-uploads\_XX" (where XX is the initial of the user working on this LiveLab)
+If you already have a `.env`, this command preserves it. Compare its tunnel, TLS, and OCI settings with `.env.example` before starting the app.
 
-    The stack currently permits ingress from `0.0.0.0/0` for workshop connectivity. If you know your public IP address and your venue networking is stable, you may restrict ingress to your public IP with a `/32` suffix. If that causes connectivity issues, temporarily use `0.0.0.0/0`.
+Find the chat model identifier in the same OCI region before editing `.env`: open **Analytics & AI → AI Services → Generative AI → Playground → Chat**, select an on-demand chat model available to your account, and open its model details. Copy the displayed model OCID or OCI model name into `OCI_GENAI_MODEL_ID`. If you use an OCID, check that it begins with `ocid1.`; a missing first character prevented a workshop test from getting an answer. Current OCI pretrained models may use a model name instead of an OCID. Keep the region in the Console, endpoint, and `.env` consistent. [Oracle's model instructions](https://docs.oracle.com/en-us/iaas/Content/generative-ai/create-endpoint.htm) explain both identifier forms.
 
-    ![Resource Manager](images/resource-manager-5-a1.png)
+The workshop template already sets the local web server, tunnel port and address, TLS verification, CA certificate path, OCI config path, Chicago endpoint, and local upload storage. Replace only these values in `.env` with values from your stack and OCI tenancy:
 
-9. pgvector extension and user variables added
-     ![Resource Manager](images/resource-manager-5-c.png)
+```ini
+DB_HOST=<PostgreSQL endpoint FQDN>
+DB_USER=<the psql_admin username you chose>
+DB_PASSWORD='<PostgreSQL admin password>'
+BASIC_AUTH_PASSWORD='<separate local app password>'
+OCI_COMPARTMENT_OCID=<assigned compartment OCID>
+OCI_GENAI_MODEL_ID=<chat model ID from OCI Generative AI>
+```
 
-10. Enter Postgres Admin user and password
-              ![Resource Manager](images/resource-manager-6.png)
+Replace the existing `REPLACE_WITH_...` values; do not append duplicate keys. If your assigned region is not Chicago, also change `OCI_REGION` and `OCI_GENAI_ENDPOINT` to that region. Keep `DATABASE_URL` unset because it overrides the individual DB values. Keep single quotes around the generated database password: the app runner reads `.env` as a shell file, and the generated password may contain shell characters. The generated character set excludes apostrophes. Use a single-quote-safe value for the local app password as well. Before running the app, confirm that `~/.oci/dbsystem.pub` and `~/.oci/config` both exist, and that `OCI_CONFIG_PROFILE` names a profile whose `key_file` exists in your Linux or macOS filesystem.
 
-11. Ensure that the region is correctly set, and click next
-              ![Resource Manager](images/resource-manager-7.png)
+`HOST` is the address where the local web app listens, so `127.0.0.1` keeps it on your laptop. `DB_HOST` must be the PostgreSQL endpoint FQDN from OCI; it is checked against the database certificate. `DB_HOSTADDR=127.0.0.1` sends the actual database connection through the Bastion tunnel. `DB_SSLROOTCERT` points to the downloaded CA certificate, and `DB_SSLMODE=verify-full` enables certificate and hostname verification. This is the [connection pattern documented by Oracle](https://docs.oracle.com/en-us/iaas/Content/postgresql/connect-to-db.htm).
 
-12. Select *Run apply* and create the stack
-              ![Resource Manager](images/resource-manager-8.png)
+Run the app from `search-app`:
 
-13. Wait about 10-15 minutes for the stack to finish provisioning
-              ![Resource Manager](images/resource-manager-9.png)
-              
+```bash
+./run.sh
+```
 
-        Copy the last 10 lines of the job log and save it in a notepad, it will be like something below
+The first run downloads pinned dependencies and model weights using **your laptop's internet connection**; the image model alone can be a large download. The current bootstrap may also install Ollama on your laptop, but `LLM_PROVIDER=oci` sends RAG answer generation to OCI Generative AI. These downloads happen on the laptop, not from the OCI private subnet. Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser. `STORAGE_BACKEND=local` keeps uploaded files on your laptop; extracted text and vectors go into private PostgreSQL. Proceed to Lab 2 after the app opens and the tunnel remains connected.
 
-        ````
-        Outputs:
-        compute_instance_id = "ocid1.instance.oc1.iad.anuw...................uq"
-        compute_private_ip = "10.10.2.23"
-        compute_public_ip = "150.x.x.74"
-        compute_state = "RUNNING"
-        psql_admin_pwd = <sensitive>
-        psql_configuration_id = "ocid1.postgresqlconfiguration.oc1.iad.amaaaaa............snq"
-        ````
+## If something does not connect
 
+- SSH tunnel: check that the session is active, the right `.pub` key was uploaded, your current public IP is allowlisted, and the venue network permits outbound TCP `22`.
+- PostgreSQL: check the target private IP, port `5432`, and that the tunnel window is still open. A TLS error usually means the FQDN or downloaded CA certificate is wrong.
+- OCI AI: check your local `~/.oci/config`, the region, model identifier, and your temporary-user permissions.
 
-14. Go to OCI Console *Compute* and then *Instances*
-              ![Resource Manager](images/get-public-ip-1.png)
+## Cleanup
 
-    Copy the public IP of the instance 
-              ![Resource Manager](images/get-public-ip-2.png)
-
-15. Go to OCI Console *Databases -> PostgreSQL -> DB Systems*
-
-    ![Resource Manager](images/get-db-host-1.png)
-
-    Click on the database name to view the details
-
-    ![Resource Manager](images/get-db-host-2.png)
-
-    Note the DB Primary endpoint
-
-    ![Resource Manager](images/get-db-host-3.png)
-
-16. Go to OCI Console *Analytics & AI -> AI Services -> Generative AI*
-
-    ![Enterprise AI](images/get-enterprise-ai-ocid1.png)
-
-    Click on *Chat*
-
-    ![Enterprise AI](images/get-enterprise-ai-ocid2.png)
-
-    Select the LLM Model you want to use for this LiveLab, and then click on *View model details*
-
-    ![Enterprise AI](images/get-enterprise-ai-ocid3.png)
-
-    Scroll down and *Copy OCID* to get the OCID of this LLM Model of OCI Enterprise AI.
-
-    ![Enterprise AI](images/get-enterprise-ai-ocid4.png)
-
-    Optionally, you can also click on *View Code*, and note the OCID from the code
-
-    ![Enterprise AI](images/get-enterprise-ai-ocid5.png)
-    ![Enterprise AI](images/get-enterprise-ai-ocid6.png)
-
-    Make a note of this OCID
-
-## Task 4: Upload the OCI API-signing key
-
-1. Locate the `oci_api_key.pem` private PEM file downloaded in Task 2, Step 4.
-
-    This is the OCI API signing private key. It is different from the SSH private key used to connect to the VM.
-
-2. Use SCP on your local laptop to copy the **OCI API-signing key** to the Compute host. The key provided with `-i` is the separate **SSH private key** from Task 2, Step 5.
-
-    The file after -i is the SSH login key; 'oci\_api\_key.pem' is the API private key being uploaded.
-
-    **macOS Terminal**
-
-    ````
-    scp -i ~/.ssh/oci_livelab ~/Downloads/oci_api_key.pem opc@<PUBLIC_IP>:/home/opc/oci_api_key.pem
-    ````
-
-    **Windows PowerShell**
-
-    ```powershell
-    scp -i "$HOME\.ssh\oci_livelab" "$HOME\Downloads\oci_api_key.pem" opc@<PUBLIC_IP>:/home/opc/oci_api_key.pem
-    ````
-
-## Task 5: Setup Application
-
-1. Use SSH on your local laptop to connect to the Compute host. All following commands in this task run on the **Oracle Linux Compute host**, not on your local laptop.
-
-    'oci_livelab' is the same SSH private key used for SCP in Task 4 Step 2
-
-    **macOS Terminal**
-
-    ````
-    ssh -i ~/.ssh/oci_livelab opc@<PUBLIC_IP>
-    ````
-
-    **Windows PowerShell**
-
-    ```powershell
-    ssh -i "$HOME\.ssh\oci_livelab" opc@<PUBLIC_IP>
-    ````
-
-      ![SSH Host](images/ssh-to-host-1.png)
-
-2. Install Linux Packages
-   
-    ````
-    sudo dnf install -y curl git unzip firewalld oraclelinux-developer-release-el10 python3-oci-cli postgresql16
-    ````
-
-3. Add the firewall rule for the app port
-
-    This opens TCP port 8000 on the VM so you can access the application in a browser later. OCI network ingress rules must also allow port 8000.
-   
-    ````
-    # Firewalld rules for the app port (default 8000)
-    sudo systemctl enable --now firewalld
-    sudo firewall-cmd --permanent --add-port=8000/tcp
-    sudo firewall-cmd --reload
-    ````
-
-4. Download the Code Repository to the compute instance. Use the license agreement above to reveal this command.
-
-    <div class="sample-code-clone license-gate-is-hidden" data-license-gated-clone aria-hidden="true">
-    <pre><code>git clone https://github.com/kaushik-kundu/PostgreSQL-AI.git</code></pre>
-    </div>
-
-5. Setup OCI ClI
-
-    Move the API-signing key into the OCI configuration directory and restrict its permissions.
-
-    ````
-    mkdir -p ~/.oci
-    chmod 700 ~/.oci
-    mv ~/oci_api_key.pem ~/.oci/oci_api_key.pem
-    chmod 600 ~/.oci/oci_api_key.pem
-    ````
-
-    ````
-    oci setup config
-    ````
-
-    Enter the details from Task 2, Step 4. Use Chicago (`us-chicago-1`) unless you deliberately selected Ashburn for the entire lab.
-
-    ````
-    Enter a location for your config [/home/opc/.oci/config]:
-    Enter a user OCID: ocid1.user.oc1..aaaaaa...........................aq
-    Enter a tenancy OCID: ocid1.tenancy.oc1..aaaaaaaa....................ua
-    Enter a region by index or name(e.g.) :  us-chicago-1
-
-    Enter the location of your API Signing private key file: /home/opc/.oci/oci_api_key.pem
-
-    Config written to /home/opc/.oci/config
-        If you haven't already uploaded your API Signing public key through the
-        console, follow the instructions on the page linked below in the section
-        'How to upload the public key':
-
-            https://docs.cloud.oracle.com/Content/API/Concepts/apisigningkey.htm#How2
-    ````
-
-    Verify that the OCI CLI can authenticate:
-
-    ````
-    oci os ns get
-    ````
-
-6. Configure the application variables to reflect the provisioned stack and API key.
-
-    ````
-    cd ~/PostgreSQL-AI/search-app/
-    cp -p .env.example .env
-    ````
-
-    ````
-    vi .env
-    ````
-
-    Add DB Parameters based on the DBSystem created earlier
-
-    ````
-    DB_HOST=<DB_Host value from Task 3 Step 15>
-    DB_PORT=5432
-    DB_NAME=postgres
-    DB_USER=postgres OR <Your Postgres Admin Name from task 3 Step 10>
-    DB_PASSWORD=<Your Postgres Password from task 3 Step 10>
-    DB_SSLMODE=require
-    DB_POOL_MIN_SIZE=1
-    DB_POOL_MAX_SIZE=10
-    ````
-
-    Enter the exact PostgreSQL password that you chose for `DB_PASSWORD`. Do not add quotes or URL-encode special characters such as `@`.
-
-    Set Security (Basic Auth) parameters
-    ````
-    BASIC_AUTH_USER=admin
-    BASIC_AUTH_PASSWORD=<Choose a separate application password>
-    ````
-
-    `BASIC_AUTH_PASSWORD` is not the PostgreSQL password. Use a separate value.
-
-
-    Add OCI cli parameters based on the API Key created earlier
-
-    OCI\_GENAI\_MODEL\_ID can be set to the OCID received in Task 3 Step 16
-
-    ````
-    # Set oci
-    LLM_PROVIDER=oci
-
-    # OCI Enterprise AI (when LLM_PROVIDER=oci). Use the same region selected for the stack.
-    OCI_REGION=us-chicago-1
-    OCI_COMPARTMENT_OCID=ocid1.compartment.oc1..aaaaaaaad........................mfa
-    OCI_GENAI_ENDPOINT=https://inference.generativeai.us-chicago-1.oci.oraclecloud.com
-    OCI_GENAI_MODEL_ID=ocid1.generativeaimodel.oc1.us-chicago-1.amaaaaaask7d.......zta
-    #
-    # Option 1: Use config file
-    OCI_CONFIG_FILE=/home/opc/.oci/config
-    OCI_CONFIG_PROFILE=DEFAULT
-    ````
-
-7. Save and exit `vi`: press `Esc`, type `:wq`, then press `Enter`. Run the stack.
-
-    ````
-    bash run.sh
-    ````
-
-    ![App Build](images/app-build-1.png)
-    ![App Build](images/app-build-2.png)
-
-    After the app has completed startup, open a browser with the public IP of the VM with tcp/8000
-
-    ````
-    http://128.x.x.54:8000/
-    ````
-
-    Enter the API Auth User and Password set in the **.env** file earlier.
-
-    ![API Auth](images/signin-api.png)
-
-
-    **You may now proceed to the [next lab](#next)**
-
-## Known issues
-
-None
-
-## Acknowledgements
-
-- **Author**:
-    - Shadab Mohammad, Master Principal Cloud Architect, January 2026
-- **Contributors**:
-    - Kaushik Kundu, Master Principal Cloud Architect
-    - Sasanka Abeysinghe, Principal Cloud Architect
-    - Luke Farley, Senior Cloud Engineer
-- **Last Updated By** - Kaushik Kundu, Master Principal Cloud Architect, September 2026
+Stop the local app and SSH tunnel. Destroy your Resource Manager stack when the workshop is over. Remove the temporary OCI API key from your user settings and laptop according to instructor guidance.

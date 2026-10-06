@@ -13,61 +13,16 @@ Estimated time: 20 min
 ### Prerequisites
 - You've completed the previous labs.
 
-## Task 1: Compartment
+## Task 1: Your workshop compartment
 
-The compartment is used to contains all the components of the lab.
-From an architectural viewpoint, a compartment is simply a logical group of OCI resources. There is no specific implication of network structure, geographical placement, or even any relationship between resources. They are merely a set of resources that are associated with a set of group based permissions.
+In the OCI Console, open **Identity & Security → Compartments** and find the compartment assigned to you by your instructor. It groups the cloud resources you created in Lab 1. Select this compartment when exploring the database and Bastion below.
 
-Go the Cloud console 3-bar/hamburger menu and select the following
-  1. Identity & Security
-  2. Choose Compartment
-    ![GenAI Compartment](images/postgres-genai-compartment1.png)
- 
-  3. Click on the compartment name ***oci-starter_XX*** (where XX is the initial of the user working on this LiveLab)
+## Task 2: Private network and Bastion
 
-     
-   ![GenAI Compartment](images/postgres-genai-compartment2.png)
+Open **Networking → Virtual Cloud Networks**, select your workshop compartment, and open `vcn1`. The `psql-priv-subnet` is private: the database has no public IP. Its Service Gateway lets it reach OCI services. Your laptop reaches the database through OCI Bastion instead of connecting to the private IP directly.
 
-## Task 2: Virtual Cloud Network
+Open **Identity & Security → Bastion** and select `postgres-workshop-bastion`. The session you created in Lab 1 connects local port `15432` to PostgreSQL port `5432`. If the session has expired, follow Lab 1 to create another one before using the app.
 
-The Virtual Cloud Network allows you to manage the network of the components.
-A virtual cloud network (VCN) is a virtual, private network that closely resembles a traditional network, with firewall rules and specific types of communication gateways that you can choose. A VCN resides in a single OCI region and covers one or more CIDR blocks (IPv4 and IPv6, if enabled). Each subnet consists of a contiguous range of IP addresses (for IPv4 and IPv6, if enabled) that do not overlap with other subnets in the VCN.
-
-Go the Cloud console 3-bar/hamburger menu and select the following
-  1. Networking
-  2. Virtual Cloud Network
-
-   ![Menu VCN](images/discover-stack-1.png)
-
-  3. Check that you are in the right compartment (oci-starter in this case)
-  4. Click on vcn name *vcn1*
-  5. Notice two subnets: psql-priv-subnet Private (Regional) and pub-subnet Public (Regional). 
-You can designate a subnet as either public or private when you create it. Private means VNICs in the subnet can't have public IPv4 addresses and internet communication with IPv6 endpoints will be prohibited. Public means VNICs in the subnet can have public IPv4 addresses and internet communication is permitted with IPv6 endpoints.
-    ![VCN subnet details](images/discover-stack-2.png)
-  7. Choose *Security* and scroll down to the security lists
-  8. Then click on *VCN1-PRIVATE-SL* and *VCN1-PUBLIC-SL*
-  9. Notice Ingress Rules that were created for this lab
-
-*VCN1-PRIVATE-SL* 
-  ![VCN security list details](images/discover-stack-3.png)
-````
-       Source CIDR: *10.0.0.0/16*, Destination Port: *22* /required for accessing SSH in the same VCN 
-       Source CIDR: *10.0.0.0/16*, Destination Port: *5432* /required for accessing PostgreSQL from a compute instance in the same VCN
-````
-
-*VCN1-Public-SL*
-  ![VCN security list details](images/discover-stack-4.png)
-  
-````
-       Source CIDR: *0.0.0.0/0*, Destination Port: *22* /required for accessing SSH from the internet  
-       Source CIDR: *0.0.0.0/0*, Destination Port: *8000* /required for accessing application from the internet       
-       Source CIDR: *0.0.0.0/0*, Destination Port: *8443* /required for accessing application from the internet   
-       Source CIDR: *0.0.0.0/0*, Destination Port: *9000* /required for accessing application from the internet    
-       Source CIDR: *0.0.0.0/0*, Destination Port: *443* /required for accessing https from the internet
-````
-
-For workshop reliability, the stack uses `0.0.0.0/0` as the public ingress source. If you know your public IP address and the venue network is stable, you can restrict access to your public IP with a `/32` suffix. If that prevents access during the workshop, temporarily restore `0.0.0.0/0`.
-       
 ## Task 3: PostgreSQL Database System
 
 OCI Database with PostgreSQL allows us to store extracted text from documents including their corresponding vector embeddings by using the pgvector extension so we can perform a semantic search. Database with PostgreSQL is a fully managed PostgreSQL service with intelligent sizing, tuning and high durability.
@@ -78,7 +33,7 @@ Go the Cloud console 3-bar/hamburger menu and select the following
 
   ![Menu PostgreSQL](images/postgres-genai-cluster1.png)
 
-  3. Check that you are in the right compartment (oci-starter_XX in this case -> where XX is the initial of the user)
+  3. Select your assigned workshop compartment
   4. Click on the PostgreSQL db system name *psql_inst_1*
   5. Notice the General information:  
   Performance tier: 75K IOPS
@@ -95,21 +50,9 @@ A Database system is PostgreSQL database cluster running on one or more OCI VM C
   ![PostgreSQL details](images/psql-dbsystem-1.png)
 
 
-## Task 4: Compute Instance
+## Task 4: Bastion and local app
 
-Compute instance is used to host the application logic.
-
-   1. Explore the Compute instance details    
-    1. Go the Cloud console 3-bar/hamburger menu and select the following    
-        1. Compute
-        2. Instances
-    ![Compute details](images/postgres-genai-compute1.png)
-    
-    2. Check that you are in the intended compartment. (*oci-starter_XX* was the recommended compartment name -> where XX is the initial of the user.)
-    3. Click **app-host-1** in the Compute instances list
-    4. Review the information on the Compute instance details page 
-
-   ![Menu Compute](images/compute-1.png) 
+The Python app runs on your laptop at `http://127.0.0.1:8000/`. Its database pool connects to local port `15432`, which SSH forwards through OCI Bastion to the private PostgreSQL endpoint. Keep the SSH session open while using the app. The database connection uses `verify-full` and the DB System CA certificate.
 
 ## Task 5: OCI Enterprise AI Service
 
@@ -133,11 +76,11 @@ In this step you will explore the AI Services that are leveraged in the solution
 
       ![OCI GenerativeAI](images/oci-genai-1.png)
 
-When you click on the model details you get the model OCID which is used the environment variable file of the application to perform the inference in the RAG pipeline
+Open a chat model's details to find its identifier. OCI may show an OCID or a model name. The value used by the app is `OCI_GENAI_MODEL_ID` in `search-app/.env`.
 
   ![OCI GenerativeAI](images/oci-genai-2.png)
 
-If you want to try a different model, you can select a model from this menu, copy its OCID and paste it in the environment file and restart the App stack.
+To try a different on-demand chat model, copy its identifier into `OCI_GENAI_MODEL_ID` and restart the local app. Keep the model and app endpoint in the same OCI region.
 
 ## Task 6: PostgreSQL Schema
 
@@ -202,20 +145,11 @@ Foreign-key constraints:
 
 **Congratulations! You have completed this workshop.**
 
-Here's what you accomplished. You explored multiple services in a compartment in your OCI tenancy. These included OCI VCN, Compute, OCI Enterprise AI, and OCI PostgreSQL Database System. This lab has illustrated how different OCI services can be integrated together to make a complete cloud native AI search solution.
+You explored the private VCN, OCI Bastion, PostgreSQL DB System, and OCI Generative AI. The search app and its uploaded files run on your laptop.
 
 ## Cleanup
 
-When you no longer need the workshop environment, run **Destroy** for the Resource Manager stack to remove the Compute instance, PostgreSQL DB system, network resources, and Object Storage bucket. If the bucket contains objects, delete those objects first.
-
-If you keep the Compute instance after completing the workshop, remove the API-signing private key from the VM:
-
-````
-rm -f ~/.oci/oci_api_key.pem
-test ! -e ~/.oci/oci_api_key.pem && echo "Workshop API-signing key removed from this VM."
-````
-
-Removing this key disables the app's OCI Generative AI access until a credential is configured again. Also delete the workshop API-signing key from your OCI user settings and delete the local PEM file if it was created solely for this workshop.
+Stop the local app and Bastion SSH tunnel, then run **Destroy** on your Resource Manager stack. Follow your instructor's directions for removing the temporary API key.
 
 ## Acknowledgements
 
