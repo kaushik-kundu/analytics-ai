@@ -104,6 +104,16 @@ Create the OCI config inside WSL Linux so the app can read it. For macOS or Linu
 
 In the OCI Console, open **Developer Services → Resource Manager → Stacks → Create stack**. Select **My configuration → Folder**, then browse to the **`oci_postgres_tf_stack` folder inside your PostgreSQL-AI clone**. Use the folder wherever you cloned the repository; it may not be under your home directory. Oracle's [folder upload instructions](https://docs.oracle.com/en-us/iaas/Content/ResourceManager/Tasks/create-stack-local-folder.htm) describe this Console option.
 
+The following screenshots show an earlier Console layout. Use your assigned compartment and workshop region; the example names and region in the screenshots may differ.
+
+![OCI Console menu showing Developer Services and Resource Manager Stacks](images/resource-manager-1.png)
+
+![Resource Manager Create stack page showing My configuration and Folder upload](images/resource-manager-2.png)
+
+Select the `oci_postgres_tf_stack` folder, as shown below.
+
+![Folder picker showing the Terraform stack directory and Upload button](images/resource-manager-3.png)
+
 A fresh clone contains the Terraform `.tf` files and may contain `.terraform.lock.hcl`. That lock file is okay. If you previously ran Terraform CLI inside the folder, check for a hidden **`.terraform` directory** before uploading. Resource Manager rejects a folder containing that local provider cache with “An invalid .terraform directory was found.” Delete only the `.terraform` directory or upload a fresh clone; do not delete the `.tf` files or `.terraform.lock.hcl`. On Windows, browse to `\\wsl$\<distribution-name>\home\<linux-user>\PostgreSQL-AI\oci_postgres_tf_stack` in File Explorer; get the exact distribution name with `wsl --list --verbose`.
 
 Select your assigned compartment and set the stack variables:
@@ -117,7 +127,21 @@ If a corporate proxy hides or changes your SSH source IP, the workshop stack als
 
 The stack creates PostgreSQL, its private VCN, and OCI Bastion. It does not create an app VM.
 
-Run **Plan**, review it, then run **Apply**. Save the outputs `bastion_id`, `postgres_private_ip`, and sensitive `psql_admin_pwd` securely. Do not paste the password into chat or screenshots. On the PostgreSQL DB System's **Connection details** page, record the endpoint FQDN and download its CA certificate (`dbsystem.pub`) to your laptop. Save the certificate as `~/.oci/dbsystem.pub`; on macOS/Linux, if your browser saved it in Downloads, run `cp ~/Downloads/dbsystem.pub ~/.oci/dbsystem.pub`. Windows attendees should copy it from Windows Downloads into WSL Linux, for example `cp /mnt/c/Users/<Windows-user>/Downloads/dbsystem.pub ~/.oci/dbsystem.pub`. Then run `chmod 600 ~/.oci/dbsystem.pub` in Terminal or WSL Linux.
+Run **Plan**, review it, then run **Apply**. Save the outputs `bastion_id`, `postgres_private_ip`, and sensitive `psql_admin_pwd` securely. Do not paste the password into chat or screenshots.
+
+Open **Databases → PostgreSQL → DB Systems**.
+
+![OCI Console menu showing PostgreSQL DB Systems](images/get-db-host-1.png)
+
+Select your assigned compartment and open your `psql_inst_1` DB System.
+
+![PostgreSQL DB Systems list showing the workshop database](images/get-db-host-2.png)
+
+The database details page shows its **Connection details**. Use the endpoint FQDN from your own DB System, rather than the example in the screenshot.
+
+![PostgreSQL database details with the primary endpoint highlighted](images/get-db-host-3.png)
+
+On the PostgreSQL DB System's **Connection details** page, record the endpoint FQDN and download its CA certificate (`dbsystem.pub`) to your laptop. Save the certificate as `~/.oci/dbsystem.pub`; on macOS/Linux, if your browser saved it in Downloads, run `cp ~/Downloads/dbsystem.pub ~/.oci/dbsystem.pub`. Windows attendees should copy it from Windows Downloads into WSL Linux, for example `cp /mnt/c/Users/<Windows-user>/Downloads/dbsystem.pub ~/.oci/dbsystem.pub`. Then run `chmod 600 ~/.oci/dbsystem.pub` in Terminal or WSL Linux.
 
 ## Task 4: Open the Bastion tunnel
 
@@ -146,6 +170,26 @@ chmod 600 .env
 If you already have a `.env`, this command preserves it. Compare its tunnel, TLS, and OCI settings with `.env.example` before starting the app.
 
 Find the chat model identifier in the same OCI region before editing `.env`: open **Analytics & AI → AI Services → Generative AI → Playground → Chat**, select an on-demand chat model available to your account, and open its model details. Copy the displayed model OCID or OCI model name into `OCI_GENAI_MODEL_ID`. If you use an OCID, check that it begins with `ocid1.`; a missing first character prevented a workshop test from getting an answer. Current OCI pretrained models may use a model name instead of an OCID. Keep the region in the Console, endpoint, and `.env` consistent. [Oracle's model instructions](https://docs.oracle.com/en-us/iaas/Content/generative-ai/create-endpoint.htm) explain both identifier forms.
+
+Use the screenshots below to locate the service and model controls. The available models and Console layout may differ in your assigned region.
+
+![OCI Console Analytics and AI menu showing Generative AI](images/get-enterprise-ai-ocid1.png)
+
+Open **Playground → Chat**.
+
+![Generative AI overview with the Chat navigation item highlighted](images/get-enterprise-ai-ocid2.png)
+
+Select an available on-demand chat model and open **View model details**.
+
+![Generative AI Chat model selector and View model details button](images/get-enterprise-ai-ocid3.png)
+
+Copy the selected model's identifier. Use a model available to your temporary user; the screenshot's model is an example.
+
+![Available models dialog with the Copy OCID action highlighted](images/get-enterprise-ai-ocid4.png)
+
+If the model details do not show the identifier clearly, open **View code** in Chat and locate the model identifier in the example request. Copy only the identifier into `OCI_GENAI_MODEL_ID`.
+
+![Generative AI example request with the model identifier highlighted](images/get-enterprise-ai-ocid6.png)
 
 The workshop template already sets the local web server, tunnel port and address, TLS verification, CA certificate path, OCI config path, Chicago endpoint, and local upload storage. Replace only these values in `.env` with values from your stack and OCI tenancy:
 
