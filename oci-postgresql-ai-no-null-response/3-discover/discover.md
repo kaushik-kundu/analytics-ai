@@ -15,13 +15,13 @@ Estimated time: 20 min
 
 ## Task 1: Your workshop compartment
 
-In the OCI Console, open **Identity & Security → Compartments** and find the compartment assigned to you by your instructor. It groups the cloud resources you created in Lab 1. Select this compartment when exploring the database and Bastion below.
+In the OCI Console, open **Identity & Security → Compartments** and find the compartment assigned to you by your instructor. It contains the database resources you created in Lab 1. Shared networking and a pre-created Bastion may be in other compartments; use the compartments specified by LiveLabs when exploring those resources.
 
 ## Task 2: Private network and Bastion
 
-Open **Networking → Virtual Cloud Networks**, select your workshop compartment, and open `vcn1`. The `psql-priv-subnet` is private: the database has no public IP. Its Service Gateway lets it reach OCI services. Your laptop reaches the database through OCI Bastion instead of connecting to the private IP directly.
+Open **Networking → Virtual Cloud Networks**, select the shared network compartment specified by LiveLabs, and open the supplied VCN and private subnet. The database has no public IP. LiveLabs configures the Service Gateway, routes, and security rules for OCI services and required private connectivity. Your laptop reaches the database through OCI Bastion. These network resources are managed by LiveLabs.
 
-Open **Identity & Security → Bastion** and select `postgres-workshop-bastion`. The session you created in Lab 1 connects local port `15432` to PostgreSQL port `5432`. If the session has expired, follow Lab 1 to create another one before using the app.
+Open **Identity & Security → Bastion**, select its assigned compartment, and open the Bastion you used in Lab 1. The session you created in Lab 1 connects local port `15432` to PostgreSQL port `5432`. If the session has expired, follow Lab 1 to create another one before using the app.
 
 ## Task 3: PostgreSQL Database System
 
@@ -149,7 +149,7 @@ You explored the private VCN, OCI Bastion, PostgreSQL DB System, and OCI Generat
 
 ## Cleanup
 
-Stop the local app and Bastion SSH tunnel, then run **Destroy** on your Resource Manager stack. Follow your instructor's directions for removing the temporary API key.
+Stop the local app and Bastion SSH tunnel, then run **Destroy** on your Resource Manager stack to remove the PostgreSQL resources it created. Delete your Bastion session and follow instructor guidance for any Bastion you created manually. Shared networking and pre-created Bastions are managed by LiveLabs. Follow your instructor's directions for removing the temporary API key.
 
 ## Acknowledgements
 

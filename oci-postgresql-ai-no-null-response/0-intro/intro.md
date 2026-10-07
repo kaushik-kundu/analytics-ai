@@ -19,7 +19,7 @@ The website created during the workshop has several ways to search:
 - Hybrid: Based on the 2 above search
 - RAG (Retrieval Augmented Generation): Answer questions based on documents
 
-This event uses temporary users in a dedicated OCI tenancy. Your instructor provides access to the workshop compartment. In Lab 1 you clone the code, find your public IP, choose the PostgreSQL admin username, and select an available OCI chat model.
+This event uses temporary users in a dedicated OCI tenancy. Your instructor provides access to the workshop compartment. In Lab 1 you clone the code, supply the shared subnet and any NSG OCIDs, choose the PostgreSQL admin username, and select an available OCI chat model. You use a Bastion supplied by LiveLabs or create one if authorized.
 
 Estimated Workshop Time: 90 minutes
 
@@ -42,7 +42,7 @@ This picture shows the ingestion, embeddings and RAG pipeline workflow.
 ### Objectives
 
 - Provision the services needed for the system
-    - Compartment, private VCN, OCI Bastion, PostgreSQL, and OCI Generative AI services. The web app runs on your laptop.
+    - Provision PostgreSQL in the private network supplied by LiveLabs, connect through a separately managed Bastion, and use OCI Generative AI. The web app runs on your laptop.
 
 ## Prerequisites
 ### Cloud Account

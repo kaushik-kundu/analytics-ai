@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this lab, you will obtain the workshop code, provision private OCI PostgreSQL and Bastion, start an SSH tunnel, and run the search app on your laptop. PostgreSQL has no public IP. The database subnet has a route to OCI services only; OCI Bastion provides time-limited access to the private database.
+In this lab, you will obtain the workshop code, provision private OCI PostgreSQL in the network supplied by LiveLabs, select or create a Bastion, start an SSH tunnel, and run the search app on your laptop. PostgreSQL has no public IP. LiveLabs configures the network for OCI-service-only egress and required private connectivity; OCI Bastion provides time-limited access to the database.
 
 Estimated time: 45–60 minutes, plus first-time laptop downloads.
 
@@ -64,7 +64,7 @@ Review the Oracle Technology Network License Agreement in Appendix 1 before clon
   <pre><code>git clone https://github.com/kaushik-kundu/PostgreSQL-AI.git</code></pre>
 </div>
 
-The cloned repository contains both `oci_postgres_tf_stack` and `search-app`. Run the revealed clone command in Terminal or, on Windows, in your WSL 2 Linux terminal. Keep this local copy for Lab 2's sample files. Before provisioning, check that `search-app/.env.example` contains `DB_HOSTADDR=127.0.0.1` and `oci_postgres_tf_stack/network.tf` contains an `oci_bastion_bastion` resource. If either is missing, the workshop revision has not been published yet; ask an instructor for the current code.
+The cloned repository contains both `oci_postgres_tf_stack` and `search-app`. Run the revealed clone command in Terminal or, on Windows, in your WSL 2 Linux terminal. Keep this local copy for Lab 2's sample files. Before provisioning, check that `search-app/.env.example` contains `DB_HOSTADDR=127.0.0.1` and `oci_postgres_tf_stack/vars.tf` defines `psql_subnet_ocid`. If either is missing, the workshop revision has not been published yet; ask an instructor for the current code.
 
 ## Task 2: Prepare your SSH and OCI API keys
 
@@ -116,18 +116,21 @@ Select the `oci_postgres_tf_stack` folder, as shown below.
 
 A fresh clone contains the Terraform `.tf` files and may contain `.terraform.lock.hcl`. That lock file is okay. If you previously ran Terraform CLI inside the folder, check for a hidden **`.terraform` directory** before uploading. Resource Manager rejects a folder containing that local provider cache with “An invalid .terraform directory was found.” Delete only the `.terraform` directory or upload a fresh clone; do not delete the `.tf` files or `.terraform.lock.hcl`. On Windows, browse to `\\wsl$\<distribution-name>\home\<linux-user>\PostgreSQL-AI\oci_postgres_tf_stack` in File Explorer; get the exact distribution name with `wsl --list --verbose`.
 
-Select your assigned compartment and set the stack variables:
+LiveLabs supplies the shared VCN, private subnet, security rules, and any NSGs. These may be in a different compartment from your database. Obtain the network compartment name, subnet OCID, and any PostgreSQL NSG OCIDs from your workshop access details or instructor. In **Networking → Virtual Cloud Networks**, select the shared network compartment, open the assigned VCN, and copy the private subnet OCID from **Subnets**. Copy any assigned NSG OCIDs from **Network Security Groups**. Do not create or edit network resources.
+
+Create a new stack for this workshop revision. Select your assigned attendee compartment and set the stack variables:
 
 - `region`: use the Console region shown for this workshop, normally `us-chicago-1`.
 - `compartment_ocid`: copy the OCID from **Identity & Security → Compartments → your assigned compartment**.
 - `psql_admin`: **choose** the administrator username now (for example, `workshop_admin`) and record it. This DB System does not exist yet, so there is no username to look up until after provisioning. You can confirm it later on the DB System details page.
-- `bastion_client_cidrs`: on the same laptop and network you will use for the SSH tunnel, open [api.ipify.org](https://api.ipify.org) in a browser and note the public **IPv4** address. Add `/32`, for example `203.0.113.10/32`. In the Resource Manager Console's list item field, enter **only** `203.0.113.10/32` with your real address: no square brackets, quotation marks, spaces, or angle brackets. Do not copy the example address. You can also run `curl -4 https://api.ipify.org` in Terminal or WSL. Do not use the private IP shown by `ipconfig` or `ip addr`. If your network changes, this value must be updated on the Bastion.
+- `psql_subnet_ocid`: paste the OCID of the existing private subnet supplied by LiveLabs. The stack only needs the subnet OCID, not the VCN or network compartment OCID.
+- `psql_nsg_ocids`: enter each assigned PostgreSQL NSG OCID as a list item, without brackets or quotes. Leave the list empty only if LiveLabs confirms that the subnet security lists provide the required rules. These NSGs must belong to the subnet's VCN.
 
-If a corporate proxy hides or changes your SSH source IP, the workshop stack also permits `0.0.0.0/0` as a temporary Bastion allowlist fallback. This allows connection attempts from any public IPv4 address; SSH still requires your Bastion session and private key. [Oracle recommends a limited CIDR range](https://docs.oracle.com/en-us/iaas/Content/Security/Reference/bastion_security.htm), so use your `/32` when it works and destroy the stack at the end of the workshop. An open allowlist does **not** bypass a network that blocks outbound SSH on TCP `22`.
+Your temporary user needs permission to use the subnet and any NSGs in their owning compartment, plus permission to create PostgreSQL resources in your attendee compartment. A Bastion is not required to provision the database; it is required later for the laptop connection.
 
-The stack creates PostgreSQL, its private VCN, and OCI Bastion. It does not create an app VM.
+The stack creates PostgreSQL and its configuration. The shared network and Bastion are managed separately.
 
-Run **Plan**, review it, then run **Apply**. Save the outputs `bastion_id`, `postgres_private_ip`, and sensitive `psql_admin_pwd` securely. Do not paste the password into chat or screenshots.
+Run **Plan**, review it, then run **Apply**. Save the outputs `postgres_private_ip`, `psql_configuration_id`, and sensitive `psql_admin_pwd` securely. Do not paste the password into chat or screenshots.
 
 Open **Databases → PostgreSQL → DB Systems**.
 
@@ -141,11 +144,21 @@ The database details page shows its **Connection details**. Use the endpoint FQD
 
 ![PostgreSQL database details with the primary endpoint highlighted](images/get-db-host-3.png)
 
-On the PostgreSQL DB System's **Connection details** page, record the endpoint FQDN and download its CA certificate (`dbsystem.pub`) to your laptop. Save the certificate as `~/.oci/dbsystem.pub`; on macOS/Linux, if your browser saved it in Downloads, run `cp ~/Downloads/dbsystem.pub ~/.oci/dbsystem.pub`. Windows attendees should copy it from Windows Downloads into WSL Linux, for example `cp /mnt/c/Users/<Windows-user>/Downloads/dbsystem.pub ~/.oci/dbsystem.pub`. Then run `chmod 600 ~/.oci/dbsystem.pub` in Terminal or WSL Linux.
+On the PostgreSQL DB System's **Connection details** page, record the endpoint FQDN and select **Download** beside **CA certificate**. The endpoint values are masked in this example.
+
+![PostgreSQL connection details with endpoint values masked and the CA certificate Download button highlighted](images/download-postgres-ca-redacted.png)
+
+Your browser downloads the certificate as `dbsystem.pub`. Save it as `~/.oci/dbsystem.pub`; on macOS/Linux, if your browser saved it in Downloads, run `cp ~/Downloads/dbsystem.pub ~/.oci/dbsystem.pub`. Windows attendees should copy it from Windows Downloads into WSL Linux, for example `cp /mnt/c/Users/<Windows-user>/Downloads/dbsystem.pub ~/.oci/dbsystem.pub`. Then run `chmod 600 ~/.oci/dbsystem.pub` in Terminal or WSL Linux.
 
 ## Task 4: Open the Bastion tunnel
 
-In **Identity & Security → Bastion**, open `postgres-workshop-bastion` in the workshop compartment. Create an **SSH port forwarding** session with:
+In **Identity & Security → Bastion**, select the compartment and Bastion specified by LiveLabs. The Bastion may be in the shared network compartment instead of your attendee compartment.
+
+If LiveLabs instructs you to create your own Bastion and grants the required permissions, select **Create bastion**, select the supplied VCN and target subnet, and give it a name such as `postgres-workshop-bastion`. Otherwise, use the pre-created Bastion; ask an instructor if none is available. LiveLabs must configure private TCP `5432` connectivity from that Bastion to the DB subnet/NSGs.
+
+The Bastion's **CIDR block allowlist** must include the public IPv4 source address of your SSH connection. On the laptop and network you will use, open [api.ipify.org](https://api.ipify.org) or run `curl -4 https://api.ipify.org`, then append `/32` to the address. This is a Bastion setting, not a Terraform stack variable. For a pre-created Bastion, give the address to an instructor. If a corporate proxy hides or changes your SSH source IP, ask an instructor whether `0.0.0.0/0` is an approved temporary fallback. An open allowlist does not bypass a network that blocks outbound TCP `22`.
+
+Open the Bastion and create an **SSH port forwarding** session with:
 
 - Target private IP: the `postgres_private_ip` stack output
 - Target port: `5432`
@@ -218,8 +231,8 @@ The first run downloads pinned dependencies and model weights using **your lapto
 
 - SSH tunnel: check that the session is active, the right `.pub` key was uploaded, your current public IP is allowlisted, and the venue network permits outbound TCP `22`.
 - PostgreSQL: check the target private IP, port `5432`, and that the tunnel window is still open. A TLS error usually means the FQDN or downloaded CA certificate is wrong.
-- OCI AI: check your local `~/.oci/config`, the region, model identifier, and your temporary-user permissions.
+- OCI AI: check your local `~/.oci/config`, region, model identifier, temporary-user permissions, and `OCI_COMPARTMENT_OCID`. A wrong compartment OCID can cause a `404` response even when the endpoint and model identifier are correct. Use the OCID of your assigned attendee compartment and restart the app after changing `.env`.
 
 ## Cleanup
 
-Stop the local app and SSH tunnel. Destroy your Resource Manager stack when the workshop is over. Remove the temporary OCI API key from your user settings and laptop according to instructor guidance.
+Stop the local app and SSH tunnel. Destroy your Resource Manager stack when the workshop is over; it removes your database and any configuration created by the stack. Delete your Bastion session and, if you created a Bastion yourself, remove it according to instructor guidance. LiveLabs manages cleanup of shared networking and any pre-created Bastion. Remove the temporary OCI API key from your user settings and laptop according to instructor guidance.
